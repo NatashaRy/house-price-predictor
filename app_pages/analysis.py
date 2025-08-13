@@ -32,7 +32,7 @@ def analysis_body():
         st.error("Failed to load the dataset. Please check the file path.")
         return
 
-    ##### Handle missing values
+##### Handle missing values
     # Code from Notebook 3, Section 3.1: Convert Categorical Variables
     categorical_vars = df.select_dtypes(include='object').columns
     numerical_vars = df.select_dtypes(include=['int64', 'float64']).columns
@@ -41,7 +41,7 @@ def analysis_body():
     for col in numerical_vars:
         df[col] = df[col].fillna(df[col].median())
 
-    ##### Perform one-hot encoding
+##### Perform one-hot encoding
     # Code from Notebook 3, Section 3.1: Convert Categorical Variables
     encoder = OneHotEncoder(variables=categorical_vars.to_list(), drop_last=False)
     df_ohe = encoder.fit_transform(df)
@@ -54,7 +54,7 @@ def analysis_body():
         'MasVnrArea', 'OverallQual', 'TotalBsmtSF', 'YearBuilt', 'YearRemodAdd'
     ]
 
-    ##### Create DataFrame for analysis
+##### Create DataFrame for analysis
     # Code from Notebook 3, Section 4.2: Create New DataFrame for Exploratory Data Analysis
     df_eda = df_ohe.filter(vars_to_study + ['SalePrice'])
 
@@ -64,7 +64,7 @@ def analysis_body():
         st.error(f"The following variables are missing from the dataset: {missing_vars}")
         return
 
-    ##### Title and introduction
+##### Title and introduction
     # Code from Notebook 3, Section 3: Correlation and PPS Analysis
     st.title("Correlation Analysis")
     st.markdown(
@@ -72,12 +72,12 @@ def analysis_body():
         "**The goal is to identify key predictors for modeling and provide insights into how these attributes influence house prices.**"
     )
 
-    ##### Reminder of business requirement 1
-    st.info(
-        "***Business Requirement 1**: The client is interested in discovering how the house attributes correlate with the sale price. Therefore, the client expects data visualizations of the correlated variables against the sale price to show that.*"
+##### Reminder of business requirement 1
+    st.info("This page is designed to answer **Business Requirement 1**: "
+        "The client is interested in discovering how the house attributes correlate with the sale price. Therefore, the client expects data visualizations of the correlated variables against the sale price to show that."
     )
 
-    ##### Optional inspection of the first 10 rows of the raw dataset
+##### Optional inspection of the first 10 rows of the raw dataset
     # Code from Notebook 3, Section 1: Load Data
     if st.checkbox("Would you like to inspect the raw dataset?"):
         st.write("##### Inspection of house prices raw data")
@@ -86,7 +86,7 @@ def analysis_body():
 
     st.markdown("---")
 
-    ##### Conclusions
+##### Conclusions
     st.write("## Conclusions\n"
              "The correlation analysis and visualization provided valuable insights into the relationships between house attributes and sale prices. These findings will guide the next steps in feature engineering and modeling.\n\n"
              "### Key Observations:\n"
@@ -97,7 +97,7 @@ def analysis_body():
 
     st.markdown("---")
 
-    ##### Visualizations
+##### Visualizations
     # Code from Notebook 3, Section 3.2: Calculate and Visualize Relationships in Dataset
     st.write("## Data Visualizations\n"
              "To further illustrate the findings from the correlation study, we provide the following visualizations:\n"
@@ -107,7 +107,7 @@ def analysis_body():
              "\nThese visualizations will help in understanding the relationships more intuitively."
     )
 
-    #### Heatmap Section
+#### Heatmap Section
     # Code from Notebook 3, Section 3.4: Generate Correlation Heatmaps
     st.write("\n### Heatmaps\n"
              "Below are visualizations of correlation heatmaps using different methods."
@@ -131,13 +131,13 @@ def analysis_body():
         pps_matrix = pps_matrix_raw.pivot(index='y', columns='x', values='ppscore')
         pps_heatmap(pps_matrix, "PPS Heatmap")
 
-    #### Distribution of Target Variable
+#### Distribution of Target Variable
     # Code from Notebook 3, Section 4.3: Visualization of Target Variable Distribution
     st.write("\n### Distribution of Target Variable")
     if st.checkbox("Show Distribution"):
         plot_target_hist(df, "SalePrice")
 
-    #### Bivariate Analysis of Key Variables and SalePrice
+#### Bivariate Analysis of Key Variables and SalePrice
     # Code from Notebook 3, Section 4.4: Bivariate Analysis of Key Variables and SalePrice
     st.write("\n### Bivariate Analysis of Key Variables and SalePrice")
     st.write("Check the box below to display visualizations for all key variables:")

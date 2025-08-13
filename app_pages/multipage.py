@@ -28,7 +28,3 @@ class MultiPage:
         # Radio buttons in sidebar navigation
         page = st.sidebar.radio("Navigation", self.pages, format_func=lambda page: page["title"])
         page["function"]()
-
-        st.sidebar.markdown("\n\n\n\n\n\n---")
-        st.sidebar.markdown("For more detailed information, please refer to the [README file](https://github.com/NatashaRy/milestone-project-heritage-housing-issues/blob/main/README.md)  |  Made by Natasha Rydell")
-        st.sidebar.markdown("Made by [Natasha Rydell](https://github.com/NatashaRy)")
