@@ -21,16 +21,16 @@ def summary_body():
     )
 
     # Displays Dataset Details
-    st.write("###  Dataset Details\n"
+    st.write("### Dataset Details\n"
              "The dataset used in this project is the [Heritage Housing dataset](https://www.kaggle.com/datasets/your-dataset-link). The dataset contains information about house in Ames, Iowa, including their attributes and sale prices.\n"
              "#### Quick dataset summary:")
     # Displays dataset characteristics
     try:
         df = load_pricing_data()
-        st.write(f"**Number of rows**: {df.shape[0]}")
-        st.write(f"**Number of columns**: {df.shape[1]}")
-        st.write(f"**Target variable**: `SalePrice`")
-        st.write(f"**Key variables**: `GrLivArea`, `OverallQual`, `YearBuilt`")
+        st.write(f"* **Number of rows**: {df.shape[0]}")
+        st.write(f"* **Number of columns**: {df.shape[1]}")
+        st.write(f"* **Target variable**: `SalePrice`")
+        st.write(f"* **Key variables**: `GrLivArea`, `OverallQual`, `YearBuilt`")
     except FileNotFoundError:
         st.error("Dataset file not found. Please ensure the dataset is available in the specified path.")
     
@@ -46,6 +46,6 @@ def summary_body():
     st.markdown("---")
 
     # Link to README file
-    st.markdown("#### Wanna know more?\n"
+    st.markdown("#### ⬇️ Wanna know more about this project?\n"
                 "Please visit [README file](https://github.com/NatashaRy/milestone-project-heritage-housing-issues/blob/main/README.md) for additional information."
     )
