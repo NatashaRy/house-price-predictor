@@ -22,8 +22,14 @@ def hypotheses_body():
     )
 
     st.markdown("---")
-
+    
+##### Conclusion of hypotheses and results
     st.write("## Hypotheses and Results\n")
+    st.info("### **Summary of Findings**\n"
+        "\nThe hypotheses were validated using statistical methods and visualizations. All four hypotheses were confirmed to be correct:\n"
+        "- Larger houses, higher quality, newer construction, and the presence of garages are all strongly associated with higher sale prices.\n"
+        "- These findings align with **Business Requirement 1** and provide actionable insights for feature engineering and predictive modeling.\n"
+    )
 
 
     ### Hypothesis 1
@@ -89,13 +95,3 @@ def hypotheses_body():
             - The scatter plot confirmed that houses with larger garage areas tend to have higher sale prices.\n
         """
     )
-
-    st.markdown("---")
-
-##### Conclusion of hypotheses and results
-    st.info("### **Summary of Findings**\n"
-        "\nThe hypotheses were validated using statistical methods and visualizations. All four hypotheses were confirmed to be correct:\n"
-        "- Larger houses, higher quality, newer construction, and the presence of garages are all strongly associated with higher sale prices.\n"
-        "- These findings align with **Business Requirement 1** and provide actionable insights for feature engineering and predictive modeling.\n"
-    )
-    

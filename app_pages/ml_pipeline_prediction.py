@@ -2,13 +2,13 @@ import streamlit as st
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
-from src.data_management import load_pricing_data, load_pkl_file
+from src.data_management import load_pkl_file
 from src.machine_learning.evaluate_reg import regression_performance
 
 
 def ml_pipeline_prediction_body():
     """
-    Displays the content of the prediction page in the Streamlit app.
+    Displays the content of the ML pipline in the Streamlit app.
 
     This includes:
     - Introduction to the machine learning pipeline
@@ -23,9 +23,16 @@ def ml_pipeline_prediction_body():
     )
 
     st.info(
-        "* This page is designed to answer **Business Requirement 2**: "
-        "The client wants a machine learning model that can predict the sale price of a house based on its attributes.\n"
-        "* The model's performance is evaluated on both training and test datasets, and key metrics are presented below."
+        """
+        To address **Business Requirement 2 (BR2)**, we aimed to train a Regressor model and tune the pipeline 
+        to achieve at least 0.75 accuracy in predicting the sales price of a property based on its attributes. 
+        We successfully met this target and trained multiple versions of the model to ensure we explored potential improvements.\n
+        * The pipeline performance for the best model:
+            * Train set **R² = 0.83**
+            * Test set **R² = 0.82*\n
+        We present the pipeline steps, the list of best features along with the feature importance plot,
+        pipeline performance, and regression performance report below.
+        """
     )
 
     st.markdown("---")
@@ -48,6 +55,16 @@ def ml_pipeline_prediction_body():
         y_train = pd.read_parquet(f"outputs/ml_pipeline/predict_price/{version}/y_train.parquet")
         y_test = pd.read_parquet(f"outputs/ml_pipeline/predict_price/{version}/y_test.parquet")
 
+        # Synchronize columns between X_train and X_test
+        missing_cols = set(X_train.columns) - set(X_test.columns)
+        for col in missing_cols:
+            X_test[col] = 0  # Or np.nan for numerical columns
+
+        extra_cols = set(X_test.columns) - set(X_train.columns)
+        X_test = X_test.drop(columns=extra_cols)
+
+        X_test = X_test[X_train.columns]
+
     except FileNotFoundError as e:
         st.error(f"Failed to load data: {e}")
         return
@@ -60,6 +77,7 @@ def ml_pipeline_prediction_body():
 
 ##### Show feature importance
     st.write("### Feature Importance")
+    st.write(X_train.columns.tolist())
     st.write("The plot shows the importance of each feature in the model.")
 
     # Path to feature importance image

@@ -203,6 +203,10 @@ def pps_heatmap(df, title, threshold=0.2):
         cbar_kws={"shrink": 0.8},
         ax=ax
     )
+    # Remove axis titles
+    ax.set_xlabel('')
+    ax.set_ylabel('')
+
     ax.set_title(title, fontsize=16)
     st.pyplot(fig)
 
