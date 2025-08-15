@@ -5,8 +5,8 @@ This module provides functions for loading house pricing data,
 inherited house data, and machine learning model pickle files.
 """
 
+import os
 import joblib
-import numpy as np
 import pandas as pd
 import streamlit as st
 
@@ -19,7 +19,11 @@ def load_pricing_data():
     Returns:
         pd.DataFrame: Raw house pricing data
     """
-    df = pd.read_csv(r"inputs\datasets\raw\house_prices_records.csv")
+    file_path = os.path.join(
+        "inputs", "datasets", "raw", "house_prices_records.csv"
+        )
+    print(f"Loading house pricing data from: {file_path}")
+    df = pd.read_csv(file_path)
     return df
 
 
@@ -31,7 +35,11 @@ def load_inherited_data():
     Returns:
         pd.DataFrame: Raw inherited house pricing data
     """
-    df_inherited = pd.read_csv(r"inputs\datasets\raw\inherited_houses.csv")
+    file_path = os.path.join(
+        "inputs", "datasets", "raw", "inherited_houses.csv"
+        )
+    print(f"Loading inherited house data from: {file_path}")
+    df_inherited = pd.read_csv(file_path)
     return df_inherited
 
 
@@ -45,4 +53,5 @@ def load_pkl_file(file_path):
     Returns:
         object: Loaded model object
     """
+    print(f"Loading pickle file from: {file_path}")
     return joblib.load(file_path)
