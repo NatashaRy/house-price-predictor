@@ -8,7 +8,7 @@ from src.machine_learning.evaluate_reg import regression_performance
 
 def ml_pipeline_prediction_body():
     """
-    Displays the content of the ML pipline in the Streamlit app.
+    Displays the content of the ML pipeline in the Streamlit app.
 
     This includes:
     - Introduction to the machine learning pipeline
@@ -29,7 +29,7 @@ def ml_pipeline_prediction_body():
         We successfully met this target and trained multiple versions of the model to ensure we explored potential improvements.\n
         * The pipeline performance for the best model:
             * Train set **R² = 0.83**
-            * Test set **R² = 0.82*\n
+            * Test set **R² = 0.82**\n
         We present the pipeline steps, the list of best features along with the feature importance plot,
         pipeline performance, and regression performance report below.
         """

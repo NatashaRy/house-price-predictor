@@ -22,7 +22,7 @@ def summary_body():
 
 ##### Displays dataset details
     st.write("### Dataset Details\n"
-             "The dataset used in this project is the [Heritage Housing dataset](https://www.kaggle.com/codeinstitute/housing-prices-data). The dataset contains information about house in Ames, Iowa, including their attributes and sale prices.\n"
+             "The dataset used in this project is the [Heritage Housing dataset](https://www.kaggle.com/codeinstitute/housing-prices-data). The dataset contains information about houses in Ames, Iowa, including their attributes and sale prices.\n"
              "#### Quick dataset summary:")
     
     # Displays quick summary of dataset
@@ -46,9 +46,9 @@ def summary_body():
 ##### Copied from README file
     st.write("### Business Requirements\n"
             "In this project our client has stated two business requirements that we need to address:\n"
-            "1. The client is interested in discovering how the house attributes correlate with the sale price. Therefore, the client expects data visualisations of the correlated variables against the sale price to show that. \n"
+            "1. The client is interested in discovering how the house attributes correlate with the sale price. Therefore, the client expects data visualizations of the correlated variables against the sale price to show that. \n"
             "This is addressed in the **[Correlation Analysis]( )** page.\n"
-            "2. The client is interested in predicting the house sale price from her four inherited houses and any other house in Ames, Iowa.\n"
+            "2. The client is interested in predicting the house sale price from her four inherited houses and any other houses in Ames, Iowa.\n"
             "This is addressed in the **[Predict Sale Price]( )** page and **[Machine Learning Model]( )** page."
     )
     st.markdown("---")
