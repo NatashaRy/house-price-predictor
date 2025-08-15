@@ -107,7 +107,7 @@ def ml_pipeline_prediction_body():
 
     # Path to feature importance image
     feature_importance_path = (
-        r"outputs\ml_pipeline\predict_price\v1\feature_importance.png"
+        "outputs/ml_pipeline/predict_price/v1/feature_importance.png"
     )
 
     try:
