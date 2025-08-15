@@ -1,9 +1,11 @@
 import streamlit as st
+import os
 import importlib
 
 class MultiPage:
     """
-    Explain class.
+    Class to create a multi-page Streamlit app, 
+    which allows users to navigate between different pages through a sidebar.
     """
     def __init__(self, app_name):
         # Initialize the page list to store pages in
@@ -22,9 +24,24 @@ class MultiPage:
     def add_page(self, title, func):
         self.pages.append({"title": title, "function": func})
 
+    # Dynamically add pages from a folder
+    def add_pages_from_folder(self, folder_path):
+        """
+        Dynamically load and add pages from a specified folder.
+        Each Python file in the folder (except __init__.py) is treated as a page.
+        """
+        for file in os.listdir(folder_path):
+            if file.endswith(".py") and file != "__init__.py":
+                module_name = file[:-3]  # Remove .py extension
+                module = importlib.import_module(f"{folder_path}.{module_name}")
+                # Add the page using its title and function
+                self.add_page(module.page_title, module.page_function)
+
     # Run the app by displaying the main title, sidebar and will render page of sidebar choice
     def run(self):
         st.sidebar.title(self.app_name)
-        # Radio buttons in sidebar navigation
-        page = st.sidebar.radio("Navigation", self.pages, format_func=lambda page: page["title"])
-        page["function"]()
+        try:
+            page = st.sidebar.radio("Navigation", self.pages, format_func=lambda page: page["title"])
+            page["function"]()
+        except Exception as e:
+            st.error(f"An error occurred: {e}")

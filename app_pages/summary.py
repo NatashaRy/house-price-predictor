@@ -20,32 +20,40 @@ def summary_body():
              "The goal is to help the client maximize the sales price of their inherited properties by providing insights into the most important factors affecting house prices and enabling accurate price predictions.**"
     )
 
-##### Displays Dataset Details
+##### Displays dataset details
     st.write("### Dataset Details\n"
-             "The dataset used in this project is the [Heritage Housing dataset](https://www.kaggle.com/datasets/your-dataset-link). The dataset contains information about house in Ames, Iowa, including their attributes and sale prices.\n"
+             "The dataset used in this project is the [Heritage Housing dataset](https://www.kaggle.com/codeinstitute/housing-prices-data). The dataset contains information about house in Ames, Iowa, including their attributes and sale prices.\n"
              "#### Quick dataset summary:")
-    # Displays dataset characteristics
+    
+    # Displays quick summary of dataset
     try:
         df = load_pricing_data()
         st.write(f"* **Number of rows**: {df.shape[0]}")
         st.write(f"* **Number of columns**: {df.shape[1]}")
         st.write(f"* **Target variable**: `SalePrice`")
-        st.write(f"* **Key variables**: `GrLivArea`, `OverallQual`, `YearBuilt`")
+        st.write(f"* **Key variables**: `GrLivArea`, `OverallQual`, `YearBuilt`\n")
     except FileNotFoundError:
         st.error("Dataset file not found. Please ensure the dataset is available in the specified path.")
+
+    st.markdown(" ")
+
+    st.write("\n##### Dataset Preview")
+    st.dataframe(df.head())
     
 ##### Horizontal line
     st.markdown("---")
 
-##### Displays Business Requirements
+##### Copied from README file
     st.write("### Business Requirements\n"
             "In this project our client has stated two business requirements that we need to address:\n"
-            "1. The client is interested in discovering how the house attributes correlate with the sale price. Therefore, the client expects data visualisations of the correlated variables against the sale price to show that.\n"
-            "2. The client is interested in predicting the house sale price from her four inherited houses and any other house in Ames, Iowa."
+            "1. The client is interested in discovering how the house attributes correlate with the sale price. Therefore, the client expects data visualisations of the correlated variables against the sale price to show that. \n"
+            "This is addressed in the **[Correlation Analysis]( )** page.\n"
+            "2. The client is interested in predicting the house sale price from her four inherited houses and any other house in Ames, Iowa.\n"
+            "This is addressed in the **[Predict Sale Price]( )** page and **[Machine Learning Model]( )** page."
     )
     st.markdown("---")
 
-##### Link to README file
+##### Link to README file, section "Requirements and Hypotheses"
     st.markdown("#### ⬇️ Wanna know more about this project?\n"
                 "Please visit [README file](https://github.com/NatashaRy/milestone-project-heritage-housing-issues/blob/main/README.md) for additional information."
     )

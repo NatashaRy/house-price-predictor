@@ -15,20 +15,20 @@ def predict_price_body():
     - Predicting the sale price of a custom house based on user input.
     """
 
-    ##### Load the saved pipeline
+##### Load the saved pipeline
     version = "v1"
     regression_pipeline = load_pkl_file(f"outputs/ml_pipeline/predict_price/{version}/regression_pipeline.pkl")
     house_features = (pd.read_parquet(f"outputs/ml_pipeline/predict_price/{version}/X_train.parquet")
                       .columns.tolist())
 
-    ##### Title and introduction
+##### Title and introduction
     st.title("Predict House Sale Price")
     st.markdown("This page allows you to predict the sale price of inherited houses "
                 "and other houses based on their features.")
 
     st.info("***Business Requirement 2**: The client is interested in predicting the house sale price from her four inherited houses and any other house in Ames, Iowa.*")
 
-    ##### Prediction for inherited houses
+##### Prediction for inherited houses
     st.write("## Predict the sale price of inherited houses")
 
     # Load dataset of inherited houses
@@ -51,6 +51,10 @@ def predict_price_body():
             total_price = X_inherited_with_predictions["PredictedSalePrice"].sum()
             st.write(f"### Total predicted sale price for all inherited houses: "
                      f"**💲{round(total_price, 2):,}**")
+
+            st.markdown(" ")
+            # Visualization: Bar chart of predicted prices
+            st.bar_chart(X_inherited_with_predictions[["PredictedSalePrice"]])
         else:
             st.error("An error occurred during the prediction for inherited houses.")
     else:
@@ -58,7 +62,7 @@ def predict_price_body():
 
     st.write("---")
 
-    ##### Prediction for user's own house
+##### Prediction for user's own house
     st.write("### Predict the sale price of your own house")
     st.write("Enter the features of your house below and click 'Predict Price'.")
 
@@ -74,7 +78,7 @@ def predict_price_body():
         else:
             st.error("An error occurred during the prediction. Check your input and try again.")
 
-
+##### Widget for user input
 def draw_input_widgets(house_features):
     """
     Create interactive widgets to collect user's house data.
@@ -88,52 +92,31 @@ def draw_input_widgets(house_features):
     # Define range for scaling input values
     percentage_min, percentage_max = 0.4, 2.0
 
-    # Create columns for user to input house features
-    col1, col2, col3, col4 = st.columns(4)
-
     # Initialize an empty DataFrame to store user's input
     X_live = pd.DataFrame([], index=[0])
 
-    # Create widgets for each feature
-    with col1:
-        feature = "GarageArea"
-        st_widget = st.number_input(
-            label=feature,
-            min_value=int(df[feature].min() * percentage_min),
-            max_value=int(df[feature].max() * percentage_max),
-            value=int(df[feature].median()),
-            step=50
-        )
-        X_live[feature] = st_widget
+    # Dynamically create widgets for each feature
+    for feature in house_features:
+        if feature in df.select_dtypes(include="object").columns:  # Categorical features
+            st_widget = st.selectbox(
+                label=feature,
+                options=["Excellent", "Good", "Typical", "Fair", "Poor"],
+                index=2
+            )
+            X_live[feature] = st_widget
+        else:  # Numerical features
+            st_widget = st.number_input(
+                label=feature,
+                min_value=int(df[feature].min() * percentage_min),
+                max_value=int(df[feature].max() * percentage_max),
+                value=int(df[feature].median()),
+                step=50
+            )
+            X_live[feature] = st_widget
 
-    with col2:
-        feature = "GrLivArea"
-        st_widget = st.number_input(
-            label=feature,
-            min_value=int(df[feature].min() * percentage_min),
-            max_value=int(df[feature].max() * percentage_max),
-            value=int(df[feature].median()),
-            step=50
-        )
-        X_live[feature] = st_widget
-
-    with col3:
-        feature = "KitchenQual"
-        st_widget = st.selectbox(
-            label=feature,
-            options=["Excellent", "Good", "Typical", "Fair", "Poor"],
-            index=2
-        )
-        X_live[feature] = st_widget
-
-    with col4:
-        feature = "OverallQual"
-        st_widget = st.slider(
-            label=feature,
-            min_value=1,
-            max_value=10,
-            value=5
-        )
-        X_live[feature] = st_widget
+    # Hantera saknade värden i kategoriska funktioner
+    for feature in df.select_dtypes(include="object").columns:
+        if feature not in X_live.columns:
+            X_live[feature] = "Typical"
 
     return X_live

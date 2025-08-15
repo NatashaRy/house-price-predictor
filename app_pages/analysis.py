@@ -107,12 +107,21 @@ def analysis_body():
              "\nThese visualizations will help in understanding the relationships more intuitively."
     )
 
-#### Heatmap Section
+#### Heatmaps
     # Code from Notebook 3, Section 3.4: Generate Correlation Heatmaps
     st.write("\n### Heatmaps\n"
              "Below are visualizations of correlation heatmaps using different methods."
     )
 
+    # Dynamic variable selection
+    st.write("\n#### Custom Correlation Heatmap")
+    selected_vars = st.multiselect("Select variables for analysis", df_eda.columns)
+    if selected_vars:
+        st.write("Correlation Heatmap")
+        corr = df_eda[selected_vars].corr()
+        correlation_heatmap(corr, "Custom Correlation Heatmap")
+    
+    st.write("\n#### Predefined Heatmaps")
     # Pearson Correlation Heatmap
     if st.checkbox("Show Pearson Correlation Heatmap"):
         pearson_corr = df_eda.corr(method="pearson")
@@ -130,6 +139,7 @@ def analysis_body():
         pps_matrix_raw = pps.matrix(df_eda_pps)
         pps_matrix = pps_matrix_raw.pivot(index='y', columns='x', values='ppscore')
         pps_heatmap(pps_matrix, "PPS Heatmap")
+
 
 #### Distribution of Target Variable
     # Code from Notebook 3, Section 4.3: Visualization of Target Variable Distribution

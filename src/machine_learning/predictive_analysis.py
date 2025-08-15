@@ -14,8 +14,20 @@ def predict_house_price(X_live, house_features, price_pipeline):
     float: Predicted house price.
     """
     try:
+        # Fill missing values for both numerical and categorical features
+        for feature in X_live.columns:
+            if X_live[feature].isnull().any():
+                if X_live[feature].dtype == "object":
+                    X_live[feature].fillna("Typical", inplace=True)  # Default value for categorical features
+                else:
+                    X_live[feature].fillna(0, inplace=True)  # Default value for numerical features
+
         # Filter relevant features from live data
         X_live_price = X_live.filter(house_features)
+
+        # Kontrollera om det fortfarande finns NaN-värden
+        if X_live_price.isnull().any().any():
+            raise ValueError("NaN values remain in the input data after preprocessing.")
 
         # Make a prediction
         price_prediction = price_pipeline.predict(X_live_price)
@@ -25,7 +37,6 @@ def predict_house_price(X_live, house_features, price_pipeline):
     except Exception as e:
         print(f"Error during prediction: {e}")
         return None
-
 
 def predict_inherited_house_price(X_inherited, house_features, price_pipeline):
     """

@@ -22,5 +22,8 @@ app.add_page("Predict Sale Price", predict_price_body)
 app.add_page("Machine Learning Model", ml_pipeline_prediction_body)
 
 # Run the app
-app.run()
+try:
+    app.run()
+except Exception as e:
+    st.error(f"An error occurred: {e}")
 
