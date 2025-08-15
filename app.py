@@ -1,4 +1,3 @@
-# Import 
 import streamlit as st
 
 # Import site navigation
@@ -26,4 +25,3 @@ try:
     app.run()
 except Exception as e:
     st.error(f"An error occurred: {e}")
-

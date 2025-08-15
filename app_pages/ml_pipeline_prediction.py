@@ -1,3 +1,10 @@
+"""
+Machine Learning Pipeline Prediction page for the Streamlit app.
+
+This module displays the trained ML pipeline, feature importance,
+and performance metrics for house price prediction.
+"""
+
 import streamlit as st
 import pandas as pd
 import seaborn as sns
@@ -15,45 +22,60 @@ def ml_pipeline_prediction_body():
     - Overview of the model's performance and feature importance
     - Visualizations of regression performance
     """
-##### Title and introduction
+    # Title and introduction
     st.title("ML Model: House Price Prediction")
     st.markdown(
-        "**This page provides an overview of the trained machine learning pipeline used to predict house prices.**\n"
-        "**The goal is to evaluate the model's performance, understand the importance of features, and visualize the regression results.**"
+        "**This page provides an overview of the trained machine learning "
+        "pipeline used to predict house prices.**\n"
+        "**The goal is to evaluate the model's performance, understand the "
+        "importance of features, and visualize the regression results.**"
     )
 
     st.info(
         """
-        To address **Business Requirement 2 (BR2)**, we aimed to train a Regressor model and tune the pipeline 
-        to achieve at least 0.75 accuracy in predicting the sales price of a property based on its attributes. 
-        We successfully met this target and trained multiple versions of the model to ensure we explored potential improvements.\n
+        To address **Business Requirement 2 (BR2)**, we aimed to train a
+        Regressor model and tune the pipeline to achieve at least 0.75
+        accuracy in predicting the sales price of a property based on its
+        attributes. We successfully met this target and trained multiple
+        versions of the model to ensure we explored potential improvements.
+
         * The pipeline performance for the best model:
             * Train set **R² = 0.83**
-            * Test set **R² = 0.82**\n
-        We present the pipeline steps, the list of best features along with the feature importance plot,
-        pipeline performance, and regression performance report below.
+            * Test set **R² = 0.82**
+
+        We present the pipeline steps, the list of best features along with
+        the feature importance plot, pipeline performance, and regression
+        performance report below.
         """
     )
 
     st.markdown("---")
 
-
-##### Load regression pipeline
+    # Load regression pipeline
     version = 'v1'
-    model_path = f"outputs/ml_pipeline/predict_price/{version}/regression_pipeline.pkl"
+    model_path = (f"outputs/ml_pipeline/predict_price/"
+                  f"{version}/regression_pipeline.pkl")
     price_pipe = load_pkl_file(model_path)
 
     if price_pipe is None:
-        st.error("Failed to load model from {model_path}, please check file.")
+        st.error(f"Failed to load model from {model_path}, please check file.")
         return
 
-##### Load training and test data
+    # Load training and test data
     try:
         version = 'v1'  # Specify version of the data
-        X_train = pd.read_parquet(f"outputs/ml_pipeline/predict_price/{version}/X_train.parquet")
-        X_test = pd.read_parquet(f"outputs/ml_pipeline/predict_price/{version}/X_test.parquet")
-        y_train = pd.read_parquet(f"outputs/ml_pipeline/predict_price/{version}/y_train.parquet")
-        y_test = pd.read_parquet(f"outputs/ml_pipeline/predict_price/{version}/y_test.parquet")
+        X_train = pd.read_parquet(
+            f"outputs/ml_pipeline/predict_price/{version}/X_train.parquet"
+        )
+        X_test = pd.read_parquet(
+            f"outputs/ml_pipeline/predict_price/{version}/X_test.parquet"
+        )
+        y_train = pd.read_parquet(
+            f"outputs/ml_pipeline/predict_price/{version}/y_train.parquet"
+        )
+        y_test = pd.read_parquet(
+            f"outputs/ml_pipeline/predict_price/{version}/y_test.parquet"
+        )
 
         # Synchronize columns between X_train and X_test
         missing_cols = set(X_train.columns) - set(X_test.columns)
@@ -69,32 +91,44 @@ def ml_pipeline_prediction_body():
         st.error(f"Failed to load data: {e}")
         return
 
-##### Show ML pipeline
+    # Show ML pipeline
     st.write("### ML Pipeline")
-    st.write("Structure of the trained machine learning pipeline used to predict house prices.")
+    st.write(
+        "Structure of the trained machine learning pipeline "
+        "used to predict house prices."
+    )
     st.code(price_pipe)  # Show pipeline structure
     st.markdown("---")
 
-##### Show feature importance
+    # Show feature importance
     st.write("### Feature Importance")
     st.write(X_train.columns.tolist())
     st.write("The plot shows the importance of each feature in the model.")
 
     # Path to feature importance image
-    feature_importance_path = r"outputs\ml_pipeline\predict_price\v1\feature_importance.png"
+    feature_importance_path = (
+        r"outputs\ml_pipeline\predict_price\v1\feature_importance.png"
+    )
 
     try:
         # Load and display the image
         feature_importance_img = plt.imread(feature_importance_path)
-        st.image(feature_importance_img, caption="Feature Importance", use_container_width=True)
+        st.image(
+            feature_importance_img,
+            caption="Feature Importance",
+            use_container_width=True
+        )
     except FileNotFoundError as e:
         st.error(f"Failed to load feature importance image: {e}")
 
     st.markdown("---")
 
-##### Evaluate the models performance
+    # Evaluate the models performance
     st.write("### Model Performance")
-    st.write("Performance metrics of the trained model on both the training and test datasets.")
+    st.write(
+        "Performance metrics of the trained model on both the "
+        "training and test datasets."
+    )
 
     # Call regression_performance function
     regression_performance(
@@ -104,17 +138,28 @@ def ml_pipeline_prediction_body():
     )
 
     # Call regression evaluation plots
-    st.write("### Regression Evaluation Plots\n"
-             "Compare actual values and predictions for both training and test datasets."
+    st.write(
+        "### Regression Evaluation Plots\n"
+        "Compare actual values and predictions for both training "
+        "and test datasets."
     )
     regression_evaluation_plots(X_train, y_train, X_test, y_test, price_pipe)
 
 
-##### Regression plots function
-def regression_evaluation_plots(X_train, y_train, X_test, y_test, pipeline, alpha_scatter=0.5):
+def regression_evaluation_plots(X_train, y_train, X_test, y_test, pipeline,
+                                alpha_scatter=0.5):
     """
     Create scatterplots to compare actual values and predictions
-    for both training and test datasets, with multiple colors from the Spectral palette.
+    for both training and test datasets, with multiple colors from the
+    Spectral palette.
+
+    Args:
+        X_train (pd.DataFrame): Training features
+        y_train (pd.DataFrame): Training target
+        X_test (pd.DataFrame): Test features
+        y_test (pd.DataFrame): Test target
+        pipeline: Trained ML pipeline
+        alpha_scatter (float): Transparency for scatter points
     """
     # Convert y_train and y_test to 1D array if they are DataFrames
     if isinstance(y_train, pd.DataFrame):
@@ -130,14 +175,20 @@ def regression_evaluation_plots(X_train, y_train, X_test, y_test, pipeline, alph
     fig, axes = plt.subplots(nrows=1, ncols=2, figsize=(12, 5))
 
     # Scatter plot for Train data
-    sns.scatterplot(x=y_train, y=pred_train, alpha=alpha_scatter, ax=axes[0], hue=pred_train, palette="Spectral", legend=False)
+    sns.scatterplot(
+        x=y_train, y=pred_train, alpha=alpha_scatter, ax=axes[0],
+        hue=pred_train, palette="Spectral", legend=False
+    )
     sns.lineplot(x=y_train, y=y_train, color='black', ax=axes[0])
     axes[0].set_xlabel("Actual")
     axes[0].set_ylabel("Predictions")
     axes[0].set_title("Train Set", fontsize=20)
 
     # Scatterplot for Test data
-    sns.scatterplot(x=y_test, y=pred_test, alpha=alpha_scatter, ax=axes[1], hue=pred_test, palette="Spectral", legend=False)
+    sns.scatterplot(
+        x=y_test, y=pred_test, alpha=alpha_scatter, ax=axes[1],
+        hue=pred_test, palette="Spectral", legend=False
+    )
     sns.lineplot(x=y_test, y=y_test, color='black', ax=axes[1])
     axes[1].set_xlabel("Actual")
     axes[1].set_ylabel("Predictions")
