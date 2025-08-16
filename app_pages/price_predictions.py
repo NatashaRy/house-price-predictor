@@ -7,6 +7,7 @@ for inherited houses and custom user-defined houses.
 
 import streamlit as st
 import pandas as pd
+import plotly.graph_objects as go
 
 from src.data_management import (
     load_inherited_data,
@@ -59,7 +60,8 @@ def predict_price_body():
     # Load dataset of inherited houses
     X_inherited = load_inherited_data()
     if X_inherited is not None:
-        st.write("### Inherited house data (filtered for prediction)")
+        st.write("### Inherited house data\n"
+                 "(Filtered for prediction)")
         st.write(X_inherited[house_features])
 
         # Make predictions for inherited houses
@@ -84,8 +86,53 @@ def predict_price_body():
 
             st.markdown(" ")
             # Visualization: Bar chart of predicted prices
-            chart_data = X_inherited_with_predictions[["PredictedSalePrice"]]
-            st.bar_chart(chart_data)
+            st.markdown("### Predicted Sale Prices for Inherited Houses")
+
+            # Round to two decimal places
+            predicted_prices = X_inherited_with_predictions[
+                "PredictedSalePrice"
+            ].round(2)
+            X_inherited_with_predictions[
+                "PredictedSalePrice"
+            ] = predicted_prices
+
+            # Create a bar chart with Plotly
+            fig = go.Figure(data=[
+                go.Bar(
+                    # Custom names for x-axis
+                    x=X_inherited_with_predictions["House"],
+                    # Predicted sale prices
+                    y=X_inherited_with_predictions["PredictedSalePrice"],
+                    # Show values as text
+                    text=X_inherited_with_predictions["PredictedSalePrice"],
+                    # Place text automatically
+                    textposition="auto",
+                    # Color of the bars
+                    marker_color="blue"
+                )
+            ])
+
+            # Customize the layout
+            house_count = len(X_inherited_with_predictions["House"])
+            fig.update_layout(
+                title="Predicted Sale Price",  # Chart title
+                xaxis_title="Houses",  # X-axis title
+                yaxis_title="Sale Price (USD)",  # Y-axis title
+                xaxis=dict(
+                    tickmode="array",  # Show custom tick names
+                    tickvals=list(range(house_count)),
+                    # Custom names for x-axis
+                    ticktext=X_inherited_with_predictions["House"]
+                ),
+                yaxis=dict(
+                    # Format y-axis as currency with two decimal places
+                    tickformat="$,.2f"
+                ),
+                template="plotly_white"  # White background for the chart
+            )
+
+            # Display the chart in Streamlit
+            st.plotly_chart(fig)
         else:
             st.error(
                 "An error occurred during the prediction for inherited houses."
@@ -187,7 +234,9 @@ def draw_input_widgets(house_features):
                 default_garage = int(df['GarageArea'].median())
 
             garage_area = st.number_input(
-                label=feature_display_names.get('GarageArea', 'GarageArea'),
+                label=feature_display_names.get(
+                    'GarageArea', 'GarageArea'
+                ),
                 min_value=min_garage,
                 max_value=max_garage,
                 value=default_garage,
@@ -208,7 +257,9 @@ def draw_input_widgets(house_features):
                 default_area = int(df['GrLivArea'].median())
 
             gr_liv_area = st.number_input(
-                label=feature_display_names.get('GrLivArea', 'GrLivArea'),
+                label=feature_display_names.get(
+                    'GrLivArea', 'GrLivArea'
+                ),
                 min_value=min_area,
                 max_value=max_area,
                 value=default_area,
@@ -223,7 +274,9 @@ def draw_input_widgets(house_features):
     with col1:
         if 'KitchenQual' in house_features:
             kitchen_qual = st.slider(
-                label=feature_display_names.get('KitchenQual', 'KitchenQual'),
+                label=feature_display_names.get(
+                    'KitchenQual', 'KitchenQual'
+                ),
                 min_value=1,
                 max_value=5,
                 value=3,  # Default to middle value (TA)
@@ -238,7 +291,9 @@ def draw_input_widgets(house_features):
     with col2:
         if 'OverallQual' in house_features:
             overall_qual = st.slider(
-                label=feature_display_names.get('OverallQual', 'OverallQual'),
+                label=feature_display_names.get(
+                    'OverallQual', 'OverallQual'
+                ),
                 min_value=1,
                 max_value=5,
                 value=3,  # Default to middle value

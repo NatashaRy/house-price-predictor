@@ -30,7 +30,7 @@ def summary_body():
         "### Dataset Details\n"
         "The dataset used in this project is the "
         "[Heritage Housing dataset]"
-        "(https://www.kaggle.com/codeinstitute/housing-prices-data)."
+        "(https://www.kaggle.com/codeinstitute/housing-prices-data). "
         "The dataset contains information about houses in Ames, Iowa, "
         "including their attributes and sale prices.\n"
         "#### Quick dataset summary:"
@@ -70,15 +70,12 @@ def summary_body():
         "attributes correlate with the sale price. Therefore, the "
         "client expects data visualizations of the correlated "
         "variables against the sale price to show that. \n"
-        "This is addressed in the **[Correlation Analysis]"
-        "( )** page.\n"
+        "This is addressed in the **[Correlation Analysis] page.\n"
         "2. The client is interested in predicting the house sale "
         "price from her four inherited houses and any "
         "other houses in Ames, Iowa.\n"
-        "This is addressed in the **[Predict Sale Price]"
-        "( )"
-        "** page and **[Machine Learning Model]"
-        "( )** page."
+        "This is addressed in the **[Predict Sale Price]** page "
+        "and **[Machine Learning Model] page."
     )
     st.markdown("---")
 
