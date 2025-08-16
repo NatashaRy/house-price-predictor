@@ -7,7 +7,7 @@ The **House Pricing Predictor** is an interactive dashboard designed to help use
 - Real-time predictions for house sale prices based on user input.
 - A technical overview of the machine learning model used for predictions.
 
-![Am I responsive screenshot](docs/readme-imgs/house-price-predictior.png)
+![Am I responsive screenshot](docs/readme-imgs/house-price-prediction.png)
 
 [Link to Streamlit Dashboard](https://pp5-sales-price-predictor.onrender.com)
 
@@ -16,23 +16,37 @@ The **House Pricing Predictor** is an interactive dashboard designed to help use
 2. [**Dataset Content**](#dataset-content)
 3. [**Business Requirements and Hypotheses**](#requirements-and-hypotheses)
     * [Requirements](#requirements)
-    * [Hypotheses and Validation Process](#hypothesis-and-validation)
+    * [Hypotheses and Validation Process](#hypotheses-and-validation-process)
 4. [**EPICS and User Stories**](#epics-and-user-stories)
 5. [**Technical Implementation of Business Requirements**](#technical-implementation-of-business-requirements)
 6. [**ML Business Case**](#ml-business-case)
 7. [**Dashboard Design**](#dashboard-design)
+	* [Sidebar](#sidebar)
     * [Quick Summary](#quick-summary)
-    * [Correlation Analysis](#2-correlations-analysis)
-    * [Hypotheses and Validation](#3-hypothesis-validation)
-    * [Predict Sale Price](#4-predict-sale-price)
-    * [Machine Learning Model](#5-machine-learning-model)
-8. [**Unfixed Bugs**](#unfixed-bugs)
-9. [**Project Testing**](#project-testing)
-10. [**Deployment**](#deployment)
-11. [**Credits**](#credits)
+    * [Correlation Analysis](#correlations-analysis)
+    * [Hypotheses and Validation](#hypothesis-and-validation)
+    * [Predict Sale Price](#predict-sale-price)
+    * [Machine Learning Model](#machine-learning-model)
+8. [**Plots**](#plots)
+	* [Histogram](#histogram)
+    * [Heatmaps](#heatmaps)
+    * [Box Plots](#box-plots)
+    * [Line Plots](#line-plots)
+    * [Linear Model Plots](#linear-model-plots)
+    * [Regresson Performance Plot](#regression-performance-plot)
+9. [**Bugs**](#bugs)
+	* [During Development](#during-development)
+10. [**Project Testing**](#project-testing)
+	* [PEP8 - CI Python Linter](#pep8---ci-python-linter)
+    * [Manual Testing](#manual-testing)
+    * [Unit Testing](#unit-testing)
+	* [Notebook Testing](#notebook-testing)
+11. [**Deployment**](#deployment)
+12. [**Main Data Analysis and Machine Learning Libraries**](#main-data-analysis-and-machine-learning-libraries)
+13. [**Credits**](#credits)
     * [Content](#content)
     * [Media](#media)
-12. [**Acknowledgements**](#acknowledgements)
+14. [**Acknowledgements**](#acknowledgements)
 
 
 ## Dataset Content
@@ -178,93 +192,266 @@ To meet the client's business requirements, we developed a machine learning solu
 ## Dashboard Design
 The dashboard for this project is built using Streamlit, an open-source Python library that allows for the rapid development of interactive web applications. Streamlit is particularly well-suited for data science and machine learning projects, as it enables seamless integration of data visualizations, widgets, and machine learning models into a user-friendly interface. The dashboard is designed to address the client's business requirements and provide actionable insights through interactive visualizations and predictive analytics.
 
-### Pages
 
-* **File name**: `multipage.py`
-* **Purpose**: The Streamlit Sidebar is designed to provide intuitive navigation and quick access to essential project details and features. It ensures that users can seamlessly explore the dashboard and interact with its functionalities. 
-* **Content**:
-    * **Navigation**: Navigation with radio buttons to help user be able to switch between pages.
-    * **Arrow for expanding sidebar**: 
+### Sidebar
 
-#### 1. Quick Summary
-* **File name**: `summary.py`
+* **File name**: [`multipage.py`](https://github.com/NatashaRy/milestone-project-heritage-housing-issues/blob/main/app_pages/multipage.py)
+* **Purpose**: The Streamlit Sidebar is designed to provide intuitive navigation and quick access to essential project details and features. It ensures that users can seamlessly explore the dashboard and interact with its functionalities. The sidebar is visible at all time.
+
+![Sidebar](docs/readme-imgs/sidebar.png)
+
+**Content**:
+* **Navigation**: Navigation with radio buttons to help user be able to switch between pages.
+* **Expanding sidebar arrow**: The top right of the sidebar contains an arrow to give the user the possibility to fold/unfold the sidebar.
+
+### Quick Summary
+* **File name**: [`summary.py`](https://github.com/NatashaRy/milestone-project-heritage-housing-issues/blob/main/app_pages/summary.py)
 * **Purpose**: Provide an overview of the project, including its goals, dataset and business requirements.
-* **Project Terms and Jargon**: Definitions of key terms and concepts used in the project.
-* **Describe Project Dataset**: A summary of the dataset, including the number of rows, columns and key features.
 * **State Business Requirements**: A clear statement of the business requirements.
 	1. Identify the most relevant variables correlated with house sale price.
 	2. Predict the sale price of the 4 inherited houses and any other house in Amen, Iowa.
+
+![Summary page](docs/readme-imgs/summary.png)
+
+**Content**:
+* **Introduction**: Summary of project and its goals.
+* **Dataset Details**: Link to the Kaggle and quick summary of dataset listing:
+	* Number of rows
+	* Number of columns
+	* Target varible
+	* Key variables
+	* Dataset preview
+* **Business Requirements**: States the projects two business requirements. 
+* **Link to README**: Link to README file at GitHub.
 	
-#### 2. Correlations Analysis
-* **File name**: `analysis.py`
+	
+### Correlations Analysis
+* **File name**: [`analysis.py`](https://github.com/NatashaRy/milestone-project-heritage-housing-issues/blob/main/app_pages/analysis.py)
 * **Purpose**: Address Business Requirement 1 by analyzing and visualizing the correlation between house attributes and sale prices.
-* **Content**:
-	* **State Business Requirement 1**: Clearly outline the requirement to identify variables correlated with sale prices.
-	* **Data Inspection**: 
-		* Display the number of rows and columns in the dataset.
-		* Show the first 10 rows of the dataset for inspection.
-	* **Correlation Study**: 
-		* Display the most correlated variables to sale price.
-		* Summarize insights from the correlations study.
-	* **Visualizations**:
-		* Interactive plots showing the relationship between sale price and the most correlated variables.
+* **State Business Requirement 1**: Clearly outline the requirement to identify variables correlated with sale prices.
 
-#### 3. Hypothesis Validation
-* **File name**: `hypotheses.py`
+![Correlation Analysis page](docs/readme-imgs/correlation-analysis.png) ![Correlation Analysis](docs/readme-imgs/correlation-analysis-inspect.png)
+
+**Content**:
+* **Introduciton**: 
+	* Page introduction.
+	* Reminder of business requriement 1. 
+	* Checkbox to inspect raw dataset.
+* **Conclusion**: 
+	* Conclusion from correlation analysis with key observations.
+
+![Correlation Analysis - Custom Heatmap Dropdown](docs/readme-imgs/corr-analysis-custom-heatmap.png) ![Correlation Analysis - Custom Heatmat Example](docs/readme-imgs/corr-analysis-custom-heatmap1.png) ![Correlation Analysis - Distribution of Sale Price](docs/readme-imgs/corr-analysis-dist.png)
+
+![Correlation Analysis - Predefined Heatmap](docs/readme-imgs/corr-analysis-predefined-heatmap.png) ![Correlation Analysis - Bivariate Analysis](docs/readme-imgs/corr-analysis-biv.png) ![Correlation Analysis - Bivariate Analysis Continued](docs/readme-imgs/corr-analysis-biv2.png) 
+
+* **Visualizations**:
+	* **Heatmaps**: 
+		* **Custom heatmap**: Dropdown to choose variables to correlate in heatmap.
+		* **Predefined heatmaps**: Checkbox to for user to show Pearson correlation heatmap, Spearman correlation heatmap or PPS Matrix heatmap.
+	* **Distribution of Target Variable**: Shows bar plot of feature importance. 
+	* **Bivariate Analysis**: Displays a series of plots of key variables and SalePrice.
+
+
+### Hypothesis and Validation
+* **File name**: [`hypotheses.py`](https://github.com/NatashaRy/milestone-project-heritage-housing-issues/blob/main/app_pages/hypotheses.py)
 * **Purpose**: Present the hypotheses formulated during the project and describe how they were validated.
-* **Content**:
-	* **Hypoteses**: 
-		1. Larger houses have higher sale price *- confirmed.*
-		2. Houses with higher overall quality have higher sale price *- confirmed.*
-		3. Newer houses have higher sale price *- confirmed.*
-		4. Houses with garages have higher sale price *- confirmed.*
-	* **Validation**: 
-		* Describe how each hypothesis was tested using data analysis and model predictions.
-		* Summarize the conclusions drawn from the validation process.
 
-#### 4. Predict Sale Price
-* **File name**: `price_prediction.py`
+![Hypotheses page](docs/readme-imgs/hypotheses.png) 
+
+**Content**:
+* **Introduction**: 
+	* Page introduction.
+	* Summary of Findings.
+
+![Hypotheses - Dropdrown](docs/readme-imgs/hypotheses-dropdown.png)
+
+* **Dropdown to choose one of the hypothesis**:
+	1. Larger houses have higher sale price *- confirmed.*
+	2. Houses with higher overall quality have higher sale price *- confirmed.*
+	3. Newer houses have higher sale price *- confirmed.*
+	4. Houses with garages have higher sale price *- confirmed.*
+* **Returns choosen hypothesis**.
+
+### Predict Sale Price
+* **File name**: [`price_prediction.py`](https://github.com/NatashaRy/milestone-project-heritage-housing-issues/blob/main/app_pages/price_predictions.py)
 * **Purpose**: Address Business Requirement 2 by providing predictions for the 4 inherited houses and allowing users to predict prices for other houses.
-* **Content**:
-	* **State Business Requirement 2**: Clearly outline the requirement to predict house sale prices.
-	* **Inherited Houses**: 
-		* Display the attributes of the inherited houses.
-		* Show the predicted sale price for each house.
-		* Display the total predicted sale price for all four houses.
-	* **Interactive Prediction**: 
-		* Widgets for users to input house attributes (e.g. `GrLivArea`, `OverallQual`)
-		* A "Run Prediction" button to generate predictions for the entered attributes.
-		* Display the predicted sale price for hte inputted house.
+* **State Business Requirement 2**: Clearly outline the requirement to predict house sale prices.
 
-#### 5. Machine Learning Model
-* **File name**: `ml_pipeline_predictions.py`
+![Predict Sale Price page](docs/readme-imgs/price-prediction.png)
+
+**Content**:
+* **Introduction**:
+	* Page introduction.
+	* Reminder of business requirement 2. 
+
+* **Predict the sale price of inherited houses**:
+	* Displays data of inherited houses in full width table, filtered with best features.
+	* Displays predict sale price for inherited house in full width table.
+	* Displays total predicted price of inherited houses.
+	* Displays interactive bar chart of predicted sale price of the four inherited houses.
+		* When hover over chart, box with price and house gets visible.
+
+* **Prediction of sale price of your own house**: 
+	* Widgets for users to input house attributes: 
+		* `GarageArea`
+		* `GrLivArea`
+		* `KitchenQual` (1-5 scale)
+		* `OverallQual` (1-10 scale)
+	* A "Predict Pride" button to generate predictions for the entered attributes.
+	* Qustionmark help at scale options explaining what each value equals:
+		* 1 = Poor
+		* 2 = Fair
+		* 3 = Typical
+		* 4 = Good
+		* 5 = Excellent
+	* Button labeled "Predict Price", to predict price based on user input.
+	* Returns the predicted sale price based on the inputted house data from user.
+
+### Machine Learning Model
+* **File name**: [`ml_pipeline_predictions.py`](https://github.com/NatashaRy/milestone-project-heritage-housing-issues/blob/main/app_pages/ml_pipeline_prediction.py)
 * **Purpose**: Provide an overview of the machine learning model's performance and technical implementation.
-* **Content**:
-	* **Model Performance**: 
-		* Display key performance metrics (e.g., R²-score, MAE, MSE) for both the training and test sets.
-		* Include visualizations such as Actual vs. Predicted plots and confusion matrices.
-	* **ML Pipeline**: 
-		* Describe the steps in the machine learning pipeline, including data preprocessing, feature engineering, model training, and evaluation.
-	* **Feature Importance**: 
-		* Highlight the most important features used by the model to make predictions.
 
-### Plots
-#### Distribution and Heatmaps
+![Machine Learning Model page](docs/readme-imgs/ml-pipeline.png)
 
-#### Box Plots
+**Content**:
+* **Introduction**: 
+	* Page introduction.
+	* Infobox with key performance metrics R² for Train and Test set. 
+* **ML Pipeline**: 
+	* Displays pipeline steps.
+* **Feature Importance**: 
+	* Highlight the most important features used by the model to make predictions.
+	* Visualization of feature importance for featured variables.
+* **Model Performance**:
+	* Model Evaluation for Train and Test set. 
+	* Displays performance score for each set separatly.
+	* Scored displayed:
+		* Mean Absolute Error (MAE)
+		* Mean Squared Error (MSE)
+		* Root Mean Squared Error (RMSE)
+		* R² (R-squared)
+* **Regression Evaluation Plots**:
+	* Visualization that compares actual values and predictions on both Train and Test set side by side.
 
-#### Line Plots
+## Plots
 
-#### Linear Model Plots
+### Histogram
+
+The histogram shows the distribution of the sales prices (`SalePrice`) in the dataset. This gives an overview of how the prices are spread out and whether there are any clear peaks or outliers.
+
+![Histogram - Distrubtion of Sale Price](docs/plots/hist_plot_SalePrice.png)
+
+### Heatmaps
+
+**Pearson Correlation Heatmap**: Visualizes linear relationships between variables and sales price. Higher values (close to 1 or -1) indicate strong relationships.
+
+![Heatmap - Pearson Correlation Heatmap](docs/plots/pearson_correlation_heatmap.png)
+
+**Spearman Correlation Heatmap**: Visualizes the strong monotonic relationships.
+
+![Heatmap - Spearman Correlation Heatmap](docs/plots/spearman_correlation_heatmap.png)
+
+**Predictive Power Score (PPS) Heatmap**: Shows the predictive strength between variables and the target variable (`SalePrice`), which is useful for identifying important predictors.
+
+![Heatmap - Predictive Power Score (PPS) Heatmap](docs/plots/pps_heatmap.png)
+
+### Box Plots
+Boxplots show how different categories (e.g. `KitchenQual` or `OverallQual`) affect the selling price. They help identify differences between groups.
+
+*Price by Excellent Kitchen Quality*
+
+![Box plot - Price by Kitchen Quality](docs/plots/box_plot_price_by_KitchenQual_Ex.png)
+
+*Price by Good Kitchen Quality*
+
+![Box plot - Price by Good Kitchen Quality](docs/plots/box_plot_price_by_KitchenQual_Gd.png)
+
+*Price by Typical Kitchen Quality*
+
+![Box plot - Price by Typical Kitchen Quality](docs/plots/box_plot_price_by_KitchenQual_TA.png)
+
+*Price by Overall Quality*
+
+![Box plot - Price by Overall Quality](docs/plots/box_plot_price_by_OverallQual.png)
+
+### Line Plots
+The line charts show trends in sales prices over time, for example based on year built (`YearBuilt`) or year renovated (`YearRemodAdd`).
+
+*Price by Year Built*
+
+![Line plot - Price by Year Built](docs/plots/line_plot_price_by_YearBuilt.png)
+
+*Price by Year Remodeled/Added*
+
+![Line plot - Price by BYear Remodeled/Added](docs/plots/line_plot_price_by_YearRemodAdd.png)
 
 
+### Linear Model Plots
+These charts show linear relationships between specific variables (e.g. `GrLivArea`, `GarageArea`) and sales price. They include a regression line to illustrate the trend.
 
-## Unfixed Bugs
+*Price by First Floor Square Feet*
 
-There are no known bugs in the current version of the project. All identified issues during development were resolved. If any bugs are discovered in the future, they will be documented and addressed in subsequent updates.
+![Linear Model Plots - Price by First Floor Square Feet](docs/plots/lm_plot_price_by_1stFlrSF.png)
 
+*Price by Garage Area*
+
+![Linear Model Plots - Price by Garage Area](docs/plots/lm_plot_price_by_GarageArea.png)
+
+*Price by Garage Year Built*
+
+![Linear Model Plots - Price by Garage Year Built](docs/plots/lm_plot_price_by_GarageYrBlt.png)
+
+*Price by Ground Living Area*
+
+![Linear Model Plots - Price by Ground Living Area](docs/plots/lm_plot_price_by_GrLivArea.png)
+
+*Price by Masonry Vaneer Area*
+
+![Linear Model Plots - Price by Masonry Vaneer Area](docs/plots/lm_plot_price_by_MasVnrArea.png)
+
+*Price by Total Basement Square Feet*
+
+![Linear Model Plots - Price by Total Basement Squarefeet](docs/plots/lm_plot_price_by_TotalBsmtSF.png)
+
+### Regression Performance Plot
+
+Regression Performance Plot is a visualization that compares actual sales prices (`SalePrice`) to the predicted prices from your machine learning model.
+
+![Regression Performance Plot](outputs/ml_pipeline/predict_price/v1/regression_performance.png)
+
+
+## Bugs
+
+### During Development
+1. **Issue**: Errors occurred when processing the `GarageFinish` column due to missing values (NaN) and limitations of the `.csv` format.
+	* **Cause**: 
+		* `.csv` files do not preserve data types, causing `GarageFinish` to be read as `object` instead of `category`, leading to inefficiencies and errors.
+		* Missing values (NaN) were inconsistently handled, resulting in unexpected behavior.
+	* **Resolution**: Switched to `.parquet` files, which:
+		* Preserve data types, ensuring GarageFinish remains as `category`.
+		* Handle missing values (NaN) consistently.
+		* Improve performance with faster read/write operations and smaller file sizes.
+
+
+2. **Issue**: Multiple `FutureWarning` messages were triggered during development.
+	* **Cause**: These warnings were caused by updates in libraries (e.g., pandas, Seaborn) that deprecated certain functions or changed their behavior, including:
+		* Deprecation of `is_categorical_dtype`.
+		* Deprecation of `DataFrame.applymap`.
+		* Changes in Seaborn's handling of `palette` without `hue`.
+		
+		While these warnings indicate future changes, they do not affect the functionality or performance of the machine learning model.
+
+	* **Resolution**: To suppress these non-critical warnings and maintain a clean console output, the following code was added:
+	```
+	# Import warnings
+	Import warnings
+
+	# Ignore FutureWarning
+	warning.filterwarnings("ignore", category=FutureWarning)
+	```
 
 ## Project Testing
+
 ### PEP8 - CI Python Linter
 All Python project files were rigorously checked using the CI Python Linter, accessible at [PEP8CI](https://pep8ci.herokuapp.com/). 
 This tool was employed to verify that the code complies with PEP 8 guidelines, promoting uniformity, clarity, and adherence to 
@@ -299,6 +486,18 @@ Basic unit tests were performed for the machine learning model to ensure:
 - Predictions are generated for valid input data.
 - The model's performance metrics (R², MAE, MSE) meet the expected thresholds.
 
+### Notebook Testing
+To ensure that all steps in the Jupyter Notebook function correctly and produce the expected results, the following tests were conducted:
+1. **Dataset Loading**: Verified that the dataset loads successfully and matches the expected structure (e.g., correct number of rows and columns).
+2. **Data Cleaning**: Confirmed that missing values were handled correctly and outliers were addressed using the Winsorizer.
+3. **Feature Engineering**: Ensured that transformations (e.g., log and power transformations) were applied correctly to the specified variables.
+4. **Correlation Analysis**: Checked that correlation matrices and visualizations were generated without errors.
+5. **Model Training**: Verified that the model was trained successfully using GridSearchCV and that the best hyperparameters were identified.
+6. **Model Evaluation**: Confirmed that evaluation metrics (R², MAE, MSE) were calculated correctly and met performance expectations.
+7. **Predictions**: Tested that predictions were generated correctly for both test data and user input.
+8. **Visualizations**: Ensured that all visualizations (e.g., scatter plots, box plots, line plots) were displayed correctly and provided meaningful insights.
+9. **Notebook Execution**: Verified that the entire notebook could be executed from start to finish without any errors.
+
 
 ## Deployment
 
@@ -321,7 +520,7 @@ Basic unit tests were performed for the machine learning model to ensure:
 9. Set build command: `pip install -r requirement.txt && ./setup.sh
 10. Set start command: `streamlit run app.py --server.port $PORT --server.address 0.0.0.0`, to ensure Streamlit is listening on the correct port.
 11. Select instance type: Free (512 mb ram, 0.1 CPU)
-12. Set environment variables: `Key: PYTHON_VERSION` `Value: 3.12.`, follow Render's recommendation and get automatic patch updates
+12. Set environment variables: `Key: PYTHON_VERSION` `Value: 3.12.6`, follow Render's recommendation and get automatic patch updates
 13. Click "Deploy Web Service".
 
 
@@ -373,16 +572,16 @@ This section provides an overview of the key Python libraries and tools used in 
 
 ## Credits
 
-* **Co-Pilot**: I've frequently used Co-Pilot in VScode to help me solve problems when I've got stuck and also to double-check spelling and potential typos, as English is not my native language.
-* **[Walkthrough Project 02](#https://learn.codeinstitute.net/courses/course-v1:CodeInstitute+DDA101+1/courseware/bba260bd5cc14e998b0d7e9b305d50ec/c83c55ea9f6c4e11969591e1b99c6c35/)**: Some code in steps 04 - Feature Engineering and 05 - Model Training I have fully or partially used or modified code from walkthought project 2: Churnometer to move forward with my ML model.
-* **ChatGPT**: I've used ChatGPT, an AI-model created by OpenAI, thoughout the project to help me discuss and review my codes. It especially helped me during the data cleaning phase, I had problems with `missing values` for `GarageFinish`, which meant that I couldn't save and load the files as I had intended. To solve the problem, I asked ChatGpt to help me with an alternative solution, which ended up with me switching to the `parquet` file format instead.
+* [**Co-Pilot**](https://code.visualstudio.com/docs/copilot/overview): I've frequently used Co-Pilot in VScode to help me solve problems when I've got stuck and also to double-check spelling and potential typos, as English is not my native language.
+* [**Code Institute - Walkthrough Project 02 - Churnometer**](#https://learn.codeinstitute.net/courses/course-v1:CodeInstitute+DDA101+1/courseware/bba260bd5cc14e998b0d7e9b305d50ec/c83c55ea9f6c4e11969591e1b99c6c35/): Some code in steps [04 - Feature Engineering](https://github.com/NatashaRy/milestone-project-heritage-housing-issues/blob/main/jupyter_notebooks/04-FeatureEngineering.ipynb) and [05 - Model Training and Evaluation](https://github.com/NatashaRy/milestone-project-heritage-housing-issues/blob/main/jupyter_notebooks/05-ModelTraining.ipynb) I have fully or partially used or modified code from Walkthought project 2: Churnometer to move forward with my ML model.
+* [**Abacus AI**](https://abacus.ai/): I've used Abacus AI, a platform created by Bindu Reddy, Arvind Sundararajan, and Siddartha Naidu, throughout the project to discuss and review my code. It was particularly helpful during the data cleaning phase, especially for handling `missing values` in `GarageFinish`, which led me to switch to the `parquet` file format for better compatibility.
 
 ### Content
 * **Repository Template**: I've used the [repository template](https://github.com/Code-Institute-Solutions/milestone-project-heritage-housing-issues) provided by [Code Institute](https://codeinstitute.net) for this project. 
 
 ### Media
 
-* **Screenshot for README.md**: [AmIResponsive](https://ui.dev/amiresponsive)
+* **Screenshot of Streamlit Dashboard on different devices for README.md**: [AmIResponsive](https://ui.dev/amiresponsive)
 * **Emojis on dashboard**: Windows emojis
 
 
