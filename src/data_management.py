@@ -1,10 +1,3 @@
-"""
-Data management utilities for loading datasets and ML models.
-
-This module provides functions for loading house pricing data,
-inherited house data, and machine learning model pickle files.
-"""
-
 import os
 import joblib
 import pandas as pd

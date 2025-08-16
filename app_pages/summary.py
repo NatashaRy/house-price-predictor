@@ -3,18 +3,22 @@ import pandas as pd
 from src.data_management import load_pricing_data
 
 
+# Page title
+page_title = "Project Overview"
+
+
 def summary_body():
     """
     Displays content of the quick summary page in the Streamlit app.
 
     This includes:
-    - Project Overview
-    - Dataset Details
-    - Business Requirements
+    - Project Overview with summary of the project and its goals
+    - Dataset Details, including quick data summary and dataset preview
+    - Business Requirements stated in list
     - Link to README file
     """
     # Title and introduction
-    st.title("Project Overview")
+    st.title(page_title)
     st.info(
         "### Summary\n"
         "**This project, 'House Price Predictor,' aims to analyze house "
@@ -70,12 +74,14 @@ def summary_body():
         "attributes correlate with the sale price. Therefore, the "
         "client expects data visualizations of the correlated "
         "variables against the sale price to show that. \n"
-        "This is addressed in the **[Correlation Analysis] page.\n"
+        "This is addressed in the "
+        "**Correlation Analysis** page.\n"
         "2. The client is interested in predicting the house sale "
         "price from her four inherited houses and any "
         "other houses in Ames, Iowa.\n"
-        "This is addressed in the **[Predict Sale Price]** page "
-        "and **[Machine Learning Model] page."
+        "This is addressed in the "
+        "**Predict House Sale Price** page "
+        "and **Machine Learning Model** page."
     )
     st.markdown("---")
 

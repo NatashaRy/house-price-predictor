@@ -1,10 +1,3 @@
-"""
-Machine Learning Pipeline Prediction page for the Streamlit app.
-
-This module displays the trained ML pipeline, feature importance,
-and performance metrics for house price prediction.
-"""
-
 import streamlit as st
 import pandas as pd
 import seaborn as sns
@@ -13,17 +6,30 @@ from src.data_management import load_pkl_file
 from src.machine_learning.evaluate_reg import regression_performance
 
 
+# Page title
+page_title = "Machine Learning Model"
+
+
 def ml_pipeline_prediction_body():
     """
     Displays the content of the ML pipeline in the Streamlit app.
 
     This includes:
     - Introduction to the machine learning pipeline
-    - Overview of the model's performance and feature importance
-    - Visualizations of regression performance
+    - Results from R² performance metrics for train and test set
+    - Pipeline steps
+    - Feature importance, listing best features
+    - Visualization of feature importance
+    - Model performance with evaluation of train and test sets performance
+    - Results of metrics score:
+        - Mean Absolute Error (MAE)
+        - Mean Squared Error (MSE)
+        - Root Mean Squared Error (RMSE)
+        - R² Score
+    - Regression Evaluation Plots for train and test set
     """
     # Title and introduction
-    st.title("ML Model: House Price Prediction")
+    st.title(page_title)
     st.markdown(
         "**This page provides an overview of the trained machine learning "
         "pipeline used to predict house prices.**\n"
@@ -40,8 +46,8 @@ def ml_pipeline_prediction_body():
         versions of the model to ensure we explored potential improvements.
 
         * The pipeline performance for the best model:
-            * Train set **R² = 0.83**
-            * Test set **R² = 0.82**
+            * Train set **R² = 0.80**
+            * Test set **R² = 0.79**
 
         We present the pipeline steps, the list of best features along with
         the feature importance plot, pipeline performance, and regression

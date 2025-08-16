@@ -1,16 +1,25 @@
 import streamlit as st
 
 
+# Page title
+page_title = "Hypotheses and Validation"
+
+
 def hypotheses_body():
     """
     Displays content of the hypothesis page in the Streamlit app.
 
     This includes:
-    - Introduction to the hypothesis
-    - Detailed list of hypotheses with rationale, validation and results
+    - Page introduction
+    - Summary of findings from hypotheses validation
+    - Dropdown to select hypothesis to explore
+    - Detailed list of four hypotheses, includes:
+        - Rationale
+        - Validation
+        - Results
     """
     # Title and introduction
-    st.title("Hypotheses and Validation")
+    st.title(page_title)
     st.write(
         """
         **This page outlines the hypotheses that guide

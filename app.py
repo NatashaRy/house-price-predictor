@@ -17,7 +17,7 @@ app = MultiPage(app_name="House Price Predictor")
 app.add_page("Project Overview", summary_body)
 app.add_page("Correlation Analysis", analysis_body)
 app.add_page("Hypotheses and Validation", hypotheses_body)
-app.add_page("Predict Sale Price", predict_price_body)
+app.add_page("Predict House Sale Price", predict_price_body)
 app.add_page("Machine Learning Model", ml_pipeline_prediction_body)
 
 # Run the app

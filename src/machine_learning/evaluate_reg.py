@@ -1,10 +1,3 @@
-"""
-Regression evaluation module for machine learning models.
-
-This module provides functions to evaluate regression model performance
-using various metrics and display results in Streamlit.
-"""
-
 import numpy as np
 import pandas as pd
 import streamlit as st

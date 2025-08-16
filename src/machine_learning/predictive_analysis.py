@@ -1,10 +1,3 @@
-"""
-Predictive analysis module for house price prediction.
-
-This module provides functions to predict house prices for both
-live user input and inherited houses using trained ML pipelines.
-"""
-
 import streamlit as st
 import pandas as pd
 

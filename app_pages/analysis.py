@@ -1,10 +1,3 @@
-"""
-Data analysis and correlation study page for the Streamlit app.
-
-This module provides comprehensive correlation analysis between house
-attributes and sale prices, including various visualization methods.
-"""
-
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -17,18 +10,27 @@ from src.data_management import load_pricing_data
 # Set theme style
 sns.set_theme(style="darkgrid")
 
+# Page title
+page_title = "Correlation Analysis"
+
 
 def analysis_body():
     """
-    Displays content of the data analysis page in the Streamlit app.
+    Displays content of the correlation analysis page in the Streamlit app.
 
     This includes:
-    - Introduction
-    - Correlation analysis with possibility to inspect dataset
-    - Visualizations:
-        - Heatmaps for Pearson, Spearman, and PPS Matrix
-        - Distribution of Sale Price
-        - Bivariate Analysis
+    - Introduction of correlation analysis
+    - Reminder of business requirement 1
+    - Optional: Checkbox to inspect raw dataset
+    - Conclusions with key observations
+    - Data visualizations:
+        - Optional: Dropdown for custom heatmap variables
+        - Optional: Checkboxes to display predefined heatmaps for:
+            - Pearson
+            - Spearman
+            - PPS Matrix
+        - Optional: Checkbox to display distribution of Sale Price
+        - Optional: Checkbox to display bivariate analysis
     """
     # Load raw house pricing data
     df = load_pricing_data()
@@ -38,8 +40,10 @@ def analysis_body():
         st.error("Failed to load the dataset. Please check the file path.")
         return
 
-    # Handle missing values
-    # Code from Notebook 3, Section 3.1: Convert Categorical Variables
+    """
+    Code from Notebook 3,
+    Section 3.1: Convert Categorical Variables
+    """
     categorical_vars = df.select_dtypes(include='object').columns
     numerical_vars = df.select_dtypes(include=['int64', 'float64']).columns
 
@@ -47,14 +51,15 @@ def analysis_body():
     for col in numerical_vars:
         df[col] = df[col].fillna(df[col].median())
 
-    # Perform one-hot encoding
-    # Code from Notebook 3, Section 3.1: Convert Categorical Variables
+    """
+    Code from Notebook 3,
+    Section 3.1: Convert Categorical Variables
+    """
     encoder = OneHotEncoder(
         variables=categorical_vars.to_list(), drop_last=False
     )
     df_ohe = encoder.fit_transform(df)
 
-    # List of variables to study in the analysis
     # Code from Notebook 3, Section 4.1: Combine Top Correlation Features
     vars_to_study = [
         '1stFlrSF', 'GarageArea', 'GarageYrBlt', 'GrLivArea',
@@ -62,9 +67,7 @@ def analysis_body():
         'MasVnrArea', 'OverallQual', 'TotalBsmtSF', 'YearBuilt', 'YearRemodAdd'
     ]
 
-    # Create DataFrame for analysis
     # Code from Notebook 3, Section 4.2: Create New DataFrame for
-    # Exploratory Data Analysis
     df_eda = df_ohe.filter(vars_to_study + ['SalePrice'])
 
     # Check if all variables are present
@@ -77,8 +80,7 @@ def analysis_body():
         return
 
     # Title and introduction
-    # Code from Notebook 3, Section 3: Correlation and PPS Analysis
-    st.title("Correlation Analysis")
+    st.title(page_title)
     st.markdown(
         "**This page explores the relationships between house attributes "
         "and the target variable, sale price.**\n"
@@ -95,7 +97,6 @@ def analysis_body():
         "to show that."
     )
 
-    # Optional inspection of the first 10 rows of the raw dataset
     # Code from Notebook 3, Section 1: Load Data
     if st.checkbox("Would you like to inspect the raw dataset?"):
         st.write("##### Inspection of house prices raw data")
@@ -127,11 +128,7 @@ def analysis_body():
 
     st.markdown("---")
 
-    """
-    Visualizations
-    Code from Notebook 3, Section 3.2: Calculate and Visualize
-    Relationships in Dataset
-    """
+    # Code from Notebook 3, Section 3.2: Calculate and Visualize
     st.write(
         "## Data Visualizations\n"
         "To further illustrate the findings from the correlation study, "
@@ -145,10 +142,7 @@ def analysis_body():
         "relationships more intuitively."
     )
 
-    """
-    Heatmaps
-    Code from Notebook 3, Section 3.4: Generate Correlation Heatmaps
-    """
+    # Code from Notebook 3, Section 3.4: Generate Correlation Heatmaps
     st.write(
         "\n### Heatmaps\n"
         "Below are visualizations of correlation heatmaps using "
@@ -157,6 +151,15 @@ def analysis_body():
 
     # Dynamic variable selection
     st.write("\n#### Custom Correlation Heatmap")
+    st.write(
+        """
+        Select one or more variables from the list below to
+         generate a custom correlation heatmap. This allows you to
+          focus on specific relationships of interest and analyze
+          their relationship. The heatmap will only include the
+          selected variables.
+        """
+        )
     selected_vars = st.multiselect(
         "Select variables for analysis", df_eda.columns
     )
@@ -186,19 +189,12 @@ def analysis_body():
         )
         pps_heatmap(pps_matrix, "PPS Heatmap")
 
-    """
-    Distribution of Target Variable
-    Code from Notebook 3, Section 4.3: Visualization of Target Variable
-    """
+    # Code from Notebook 3, Section 4.3: Visualization of Target Variable
     st.write("\n### Distribution of Target Variable")
     if st.checkbox("Show Distribution"):
         plot_target_hist(df, "SalePrice")
 
-    """
-    Bivariate Analysis of Key Variables and SalePrice
-    Code from Notebook 3, Section 4.4: Bivariate Analysis of Key Variables
-    and SalePrice
-    """
+    # Code from Notebook 3, Section 4.4: Bivariate Analysis of Key Variables
     st.write("\n### Bivariate Analysis of Key Variables and SalePrice")
     st.write(
         "Check the box below to display visualizations for all key variables:"
@@ -309,10 +305,10 @@ def plot_target_hist(df, target_var):
     st.pyplot(fig)
 
 
-# Code from Notebook 3, Section 4.4: Bivariate Analysis of Key Variables
-# and SalePrice
 def plot_box(df, col, target_var):
     """
+    Code from Notebook 3,
+    Section 4.4: Bivariate Analysis of Key Variables and SalePrice
     Create a boxplot for a categorical variable against the target variable.
 
     Args:

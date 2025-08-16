@@ -1,13 +1,7 @@
-"""
-Price prediction page for the Streamlit app.
-
-This module provides functionality to predict house sale prices
-for inherited houses and custom user-defined houses.
-"""
-
 import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
+from plotly.colors import qualitative
 
 from src.data_management import (
     load_inherited_data,
@@ -19,14 +13,31 @@ from src.machine_learning.predictive_analysis import (
     predict_inherited_house_price
 )
 
+# Page title
+page_title = "Predict House Sale Price"
+
 
 def predict_price_body():
     """
     Displays the content of the predict house price page in the Streamlit app.
 
     This includes:
-    - Predicting the sale price of inherited houses.
-    - Predicting the sale price of a custom house based on user input.
+    - Page introduction
+    - Reminder of business requirement 2
+    - Predicting the sale price of inherited houses
+        - Data of inherited houses, filtered with best features
+        - Table with data of inherited houses
+        - Table with predicted sale prices for inherited houses
+        - Total predicted sale price for all four inherited houses
+        - Interactive bar chart of predicted sale prices
+    - Widget to predict house sale price based on user input, including:
+        - Garage Area - `GarageArea`
+        - Ground Living Area - `GrLivArea`
+        - Kitchen Quality - `KitchenQual` (1-5 scale)
+        - Overall Quality - `OverallQual` (1-10 scale)
+        - Question mark help at scale options explaining what each value equals
+        - Button labeled "Predict Price" to execute the prediction
+        - Display area for predicted price output
     """
     # Load the saved pipeline
     version = "v1"
@@ -42,7 +53,7 @@ def predict_price_body():
     house_features = (pd.read_parquet(train_data_path).columns.tolist())
 
     # Title and introduction
-    st.title("Predict House Sale Price")
+    st.title(page_title)
     st.markdown(
         "This page allows you to predict the sale price of inherited houses "
         "and other houses based on their features."
@@ -60,9 +71,18 @@ def predict_price_body():
     # Load dataset of inherited houses
     X_inherited = load_inherited_data()
     if X_inherited is not None:
-        st.write("### Inherited house data\n"
-                 "(Filtered for prediction)")
-        st.write(X_inherited[house_features])
+        st.markdown(
+            "<h3 style='margin-bottom: 0;padding-bottom: 0;'>"
+            "Inherited house data</h3>"
+            "<p style='margin-top: 0;padding-top: 0;'> "
+            "(Filtered for prediction)</p>",
+            unsafe_allow_html=True
+        )
+
+        # Show inherited house data in full width
+        st.dataframe(
+            X_inherited[house_features], use_container_width=True
+        )
 
         # Make predictions for inherited houses
         X_inherited_with_predictions = predict_inherited_house_price(
@@ -70,10 +90,20 @@ def predict_price_body():
         )
 
         if X_inherited_with_predictions is not None:
-            # Show results
-            st.write("### Predicted sale prices for inherited houses")
+            # Ensure "House" column exists
+            if "House" not in X_inherited_with_predictions.columns:
+                X_inherited_with_predictions["House"] = [
+                    f"House {i+1}"
+                    for i in range(len(X_inherited_with_predictions))
+                ]
+
+            # Show results in full width
+            st.write("#### Predicted sale prices for inherited houses")
             prediction_columns = house_features + ["PredictedSalePrice"]
-            st.dataframe(X_inherited_with_predictions[prediction_columns])
+            st.dataframe(
+                X_inherited_with_predictions[prediction_columns],
+                use_container_width=True
+            )
 
             # Sum the total sale price
             total_price = X_inherited_with_predictions[
@@ -85,8 +115,9 @@ def predict_price_body():
             )
 
             st.markdown(" ")
+
             # Visualization: Bar chart of predicted prices
-            st.markdown("### Predicted Sale Prices for Inherited Houses")
+            st.markdown("#### Chart of sales price of inherited houses")
 
             # Round to two decimal places
             predicted_prices = X_inherited_with_predictions[
@@ -96,6 +127,11 @@ def predict_price_body():
                 "PredictedSalePrice"
             ] = predicted_prices
 
+            # Create a color scale based on "Pastel2"
+            colors = qualitative.Pastel2[
+                :len(X_inherited_with_predictions)
+            ]  # Adjust length to number of houses
+
             # Create a bar chart with Plotly
             fig = go.Figure(data=[
                 go.Bar(
@@ -103,24 +139,24 @@ def predict_price_body():
                     x=X_inherited_with_predictions["House"],
                     # Predicted sale prices
                     y=X_inherited_with_predictions["PredictedSalePrice"],
-                    # Show values as text
-                    text=X_inherited_with_predictions["PredictedSalePrice"],
-                    # Place text automatically
-                    textposition="auto",
-                    # Color of the bars
-                    marker_color="blue"
+                    text=X_inherited_with_predictions["PredictedSalePrice"]
+                    .apply(lambda x: f"${x:,.2f}"),  # Show values as text
+                    textposition="auto",  # Place text automatically
+                    # Show only x and y values on hover
+                    hoverinfo="x+y",
+                    marker=dict(color=colors)  # Use color scale
                 )
             ])
 
             # Customize the layout
-            house_count = len(X_inherited_with_predictions["House"])
             fig.update_layout(
-                title="Predicted Sale Price",  # Chart title
                 xaxis_title="Houses",  # X-axis title
                 yaxis_title="Sale Price (USD)",  # Y-axis title
                 xaxis=dict(
                     tickmode="array",  # Show custom tick names
-                    tickvals=list(range(house_count)),
+                    tickvals=list(range(
+                        len(X_inherited_with_predictions["House"])
+                    )),
                     # Custom names for x-axis
                     ticktext=X_inherited_with_predictions["House"]
                 ),
@@ -128,7 +164,9 @@ def predict_price_body():
                     # Format y-axis as currency with two decimal places
                     tickformat="$,.2f"
                 ),
-                template="plotly_white"  # White background for the chart
+                template="plotly_white",  # White background for the chart
+                # Reduce padding above and below the chart
+                margin=dict(t=20, b=20)
             )
 
             # Display the chart in Streamlit
@@ -203,7 +241,7 @@ def draw_input_widgets(house_features):
         'GarageArea': 'Garage Area (sq ft)',
         'GrLivArea': 'Ground Living Area (sq ft)',
         'TotalBsmtSF': 'Total Basement Area (sq ft)',
-        'OverallQual': 'Overall Quality (1-5 scale)',
+        'OverallQual': 'Overall Quality (1-10 scale)',
         'YearBuilt': 'Year Built',
         'KitchenQual': 'Kitchen Quality (1-5 scale)',
         'BsmtExposure': 'Basement Exposure',
@@ -234,9 +272,7 @@ def draw_input_widgets(house_features):
                 default_garage = int(df['GarageArea'].median())
 
             garage_area = st.number_input(
-                label=feature_display_names.get(
-                    'GarageArea', 'GarageArea'
-                ),
+                label=feature_display_names.get('GarageArea', 'GarageArea'),
                 min_value=min_garage,
                 max_value=max_garage,
                 value=default_garage,
@@ -257,9 +293,7 @@ def draw_input_widgets(house_features):
                 default_area = int(df['GrLivArea'].median())
 
             gr_liv_area = st.number_input(
-                label=feature_display_names.get(
-                    'GrLivArea', 'GrLivArea'
-                ),
+                label=feature_display_names.get('GrLivArea', 'GrLivArea'),
                 min_value=min_area,
                 max_value=max_area,
                 value=default_area,
@@ -274,9 +308,7 @@ def draw_input_widgets(house_features):
     with col1:
         if 'KitchenQual' in house_features:
             kitchen_qual = st.slider(
-                label=feature_display_names.get(
-                    'KitchenQual', 'KitchenQual'
-                ),
+                label=feature_display_names.get('KitchenQual', 'KitchenQual'),
                 min_value=1,
                 max_value=5,
                 value=3,  # Default to middle value (TA)
@@ -291,12 +323,10 @@ def draw_input_widgets(house_features):
     with col2:
         if 'OverallQual' in house_features:
             overall_qual = st.slider(
-                label=feature_display_names.get(
-                    'OverallQual', 'OverallQual'
-                ),
+                label=feature_display_names.get('OverallQual', 'OverallQual'),
                 min_value=1,
-                max_value=5,
-                value=3,  # Default to middle value
+                max_value=10,
+                value=5,  # Default to middle value
                 step=1,
                 key='OverallQual',
                 help="1=Poor, 2=Fair, 3=Average, 4=Good, 5=Excellent"
