@@ -13,10 +13,10 @@ The **House Pricing Predictor** is an interactive dashboard designed to help use
 
 ## Table of contents:
 1. [**Site Overview**](#site-overview)
+2. [**CRISP-DM**](#crisp-dm)
 2. [**Dataset Content**](#dataset-content)
-3. [**Business Requirements and Hypotheses**](#requirements-and-hypotheses)
-    * [Requirements](#requirements)
-    * [Hypotheses and Validation Process](#hypotheses-and-validation-process)
+3. [**Business and Dashboard Requirements**](#business-and-dashboard-requirements)
+4. [**Hypotheses and Validation Process**](#hypotheses-and-validation-process)
 4. [**EPICS and User Stories**](#epics-and-user-stories)
 5. [**Technical Implementation of Business Requirements**](#technical-implementation-of-business-requirements)
 6. [**ML Business Case**](#ml-business-case)
@@ -48,6 +48,56 @@ The **House Pricing Predictor** is an interactive dashboard designed to help use
     * [Media](#media)
 14. [**Acknowledgements**](#acknowledgements)
 
+## CRISP-DM 
+CRISP-DM (CRoss Industry Standard Process for Data Mining) is a standardized process model used to structure data analytics projects. It consists of six phases that help ensure that the project is well-organized and meets business requirements. In this project, CRISP-DM was applied as follows:
+
+1. **Business Understanding**
+	* **Objective**: Understand the client’s needs and define the business requirements. The client wants to:
+		1. Identify which house attributes correlate most strongly with sales price.
+		2. Predict the sales price of four inherited and second-hand houses in Ames, Iowa.
+	* **Results**: The business requirements were mapped to two main tasks:
+		* Perform data analysis and visualization to identify correlations.
+		* Build a machine learning model to predict sales prices.
+
+2. **Data Understanding**
+	* **Objective**: Explore and understand the dataset.
+	* **Actions**:
+		* The dataset was downloaded from [Kaggle](https://www.kaggle.com/codeinstitute/housing-prices-data).
+		* An initial analysis was performed to identify key variables and understand the data distribution.
+	* **Results**: Variables such as `GrLivArea`, `GarageArea`, `KitchenQual`, and `OverallQual` were identified as potentially highly correlated with sales price.
+
+3. **Data Preparation**
+	* **Objective**: Prepare data for analysis and modeling.
+	* **Actions**:
+		* Handling missing values (e.g., imputation of `LotFrontage`).
+		* Creation of new features (e.g., log-transformation of `SalePrice` to handle skew).
+		* Splitting data into training and testing sets.
+	* **Result**: A clean and structured dataset ready for analysis and modeling.
+
+4. **Modeling**
+	* **Objective**: Build and optimize a machine learning model.
+	* **Actions**:
+		* A regression model, **ExtraTreesRegressor**, was selected based on the business requirements and its ability to handle both linear and non-linear relationships.
+		* Hyperparameter optimization was performed using GridSearchCV to improve the model’s performance.
+		* The model was trained with the identified best features: `GarageArea`, `GrLivArea`, `KitchenQual` and `OverallQual`.
+	* **Result**: 
+		* R² (Train Set): 0.809
+		* R² (Test Set): 0.793
+		* The model has a good balance between bias and variance, indicating that it generalizes well to new data.
+
+5. **Evaluation**
+	* **Objective**: Evaluate the model’s performance and ensure that it meets the business requirements.
+	* **Actions**:
+		* The model’s performance was evaluated using R² scores and residual plots.
+		* The results were compared with the customer’s requirement of an R² score of at least 0.75.
+	* **Result**: The model met and exceeded the customer’s requirements.
+
+6. **Deployment**
+	* **Objective**: Deploy the solution to the customer.
+	* **Actions**:
+		* A Streamlit app was developed to visualize data and enable real-time predictions.
+		* The app was deployed via [Render](https://render.com).
+	* **Result**: The customer can now use the app to analyze data and predict sales prices.
 
 ## Dataset Content
 * The dataset is sourced from [Kaggle](https://www.kaggle.com/codeinstitute/housing-prices-data). We then created a fictitious user story where predictive analytics can be applied in a real project in the workplace.
@@ -80,34 +130,58 @@ The **House Pricing Predictor** is an interactive dashboard designed to help use
 |YearRemodAdd|Remodel date (same as construction date if no remodelling or additions)|1950 - 2010|
 |SalePrice|Sale Price|34900 - 755000|
 
-## Requirements and Hypotheses
+
+## Business and Dashboard Requirements
 Our client has received an inheritance from a deceased great-grandfather located in Ames, Iowa, to  help in maximizing the sales price for the inherited properties.
 Although your friend has an excellent understanding of property prices in her own state and residential area, she fears that basing her estimates for property worth on her current knowledge might lead to inaccurate appraisals. What makes a house desirable and valuable where she comes from might not be the same in Ames, Iowa. She found a public dataset with house prices for Ames, Iowa, and will provide you with that.
 
-### Requirements
 * **Business Requirement 1**: The client is interested in discovering how the house attributes correlate with the sale price. Therefore, the client expects data visualizations of the correlated variables against the sale price to show that.
 * **Business requirement 2**: The client is interested in predicting the house sale price from her four inherited houses and any other houses in Ames, Iowa.
 * **Dashboard Requirements**: The client requires a dashboard that provides an overview of the project and dataset, highlights key correlations between house attributes and sale prices, and allows users to input house data for real-time price predictions. It should also display the predicted sale price for the 4 inherited houses, their total value, and include a technical page summarizing the model's performance and pipeline.
 
-### Hypotheses and Validation Process
-We have developed four hypotheses to be tested in our correlation study. All four are relevant to our client and satisfy Business Requirement 1 because they explore correlations and provide visualizations to demonstrate the relationship between house attributes and sales price. Additionally, all hypotheses support Business Requirement 2 by identifying key predictors for the regression model.
 
-* **Hypothesis 1:** Larger houses have higher sale price.
-    * **Rationale**: It is expected that houses with larger living areas (`GrLivArea`, `GarageArea`, `TotalBsmtSF`) will have a higher price due to their size and usability.
-    * **Validation:** Perform the correlation analysis between `GrLivArea` (living above ground) and `SalePrice`. Also, create a scatter plot to visualize the relationship and calculate the correlation coefficient to determine the strength of the relationship.
+## Hypotheses and Validation Process
+To meet the business requirements, we have developed four hypotheses that examine how different house attributes affect sales price. These hypotheses are relevant to **Business Requirement 1** as they explore correlations and visualize the relationship between house attributes and sales price. They also support **Business Requirement 2** by identifying key variables for the regression model.
+
+* **Hypothesis 1:**: Larger houses have higher sale price.
+    * **Rationale**: It is expected that houses with larger living area (`GrLivArea`, `GarageArea`, `TotalBsmtSF`) have higher prices due to their size and usability.
+    * **Validation**: 
+		* A correlation analysis showed that `GrLivArea` has a strong positive correlation with sales price *(Pearson correlation: 0.71)*.
+		* A scatterplot showed a clear trend where larger living area resulted in higher prices.
+
+		![GrLivArea vs SalePrice](docs/plots/lm_plot_price_by_GrLivArea.png)
+
+	* **Results**: The hypothesis was validated. `GrLivArea` is one of the most significant variables in predicting sales price.
 	
-* **Hypothesis 2:** Houses with higher overall quality have higher sale price.
-    * **Rationale**: Houses with better construction quality and finishes (`OverallQual`) are likely to command higher prices due to their durability, aesthetics and buyer appeal.
-    * **Validation:** Perform the correlation analysis between `OverallQual` and `SalePrice`. Use boxplots to compare `SalePrice` across different quality levels to visualize the trend.
+* **Hypothesis 2**: Houses with higher overall quality have higher sale price.
+    * **Rationale**: Houses with better construction quality and finish (`OverallQual`) are expected to have higher prices due to their durability, aesthetics and buyer appeal.
+    * **Validation**: 
+		* A correlation analysis showed that `OverallQual` has a very strong positive correlation with sales price *(Pearson correlation: 0.79)*.
+		* A boxplot showed that houses with higher construction quality consistently had higher prices.
 
-* **Hypothesis 3:** Newer houses have higher sale price.
-    * **Rationale**: Newer houses (`YearBuilt`) are expected to have higher price due to modern designs, better materials and lower maintenance costs.
-    * **Validation:** Perform the correlation analysis between `YearBuilt` and `SalePrice`. Create line plot to visualize the relationship.
-	
-* **Hypothesis 4:** Houses with garages have higher sale price.
-    * **Rationale**: Houses with garages (`GarageArea`) are more desirable as they provide additional storage and parking space, which adds value.
-    * **Validation:** Perform the correlation analysis between `GarageArea` and `SalePrice`. Use scatter plot to compare `SalePrice` for houses with and without garages.
+		![OverallQual vs SalePrice](docs/plots/box_plot_price_by_OverallQual.png)
 
+	* **Results**: The hypothesis was validated. `OverallQual` is one of the most decisive factors for the sales price.
+
+* **Hypothesis 3**: Newer houses have higher sale price.
+    * **Rationale**: Newer houses (`YearBuilt`) are expected to have higher prices due to modern design, better materials and lower maintenance costs.
+    * **Validation**: 
+		* A correlation analysis showed a positive correlation between `YearBuilt` and sales price *(Pearson correlation: 0.52)*.
+		* A line plot showed that newer houses generally have higher prices.
+
+		![YearBuilt vs SalePrice](docs/plots/line_plot_price_by_YearBuilt.png)
+
+	* **Results**: The hypothesis was partially validated. Although newer houses have higher prices, the correlation is not as strong as for other variables.
+
+* **Hypothesis 4**: Houses with garages have higher sale price.
+    * **Rationale**: Houses with garages (`GarageArea`) are more attractive because they offer extra storage and parking space, which increases value.
+    * **Validation**: 
+		* A scatterplot showed a positive trend between `GarageArea` and sales price *(Pearson correlation: 0.62)*.
+		* Houses with larger garage areas generally had higher prices.
+
+		![GarageArea vs SalePrice](docs/plots/lm_plot_price_by_GarageArea.png)
+
+	* **Results**: The hypothesis was validated. `GarageArea` affects sales price, but not as strongly as `GrLivArea` or `OverallQual`.
 
 ## EPICS and User Stories
 This project was developed by following a structured approach based on Epics and User Stories. Each Epic represents a major phase of the project, while the User Stories break down the tasks into actionable steps. All Epics and User Stories have been addressed throughout the project to ensure that the client's requirements are met.
