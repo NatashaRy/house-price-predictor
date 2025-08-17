@@ -7,7 +7,7 @@ from src.machine_learning.evaluate_reg import regression_performance
 
 
 # Page title
-page_title = "Machine Learning Model"
+page_title = "Machine Learning Model 🤖"
 
 
 def ml_pipeline_prediction_body():
@@ -31,10 +31,10 @@ def ml_pipeline_prediction_body():
     # Title and introduction
     st.title(page_title)
     st.markdown(
-        "**This page provides an overview of the trained machine learning "
-        "pipeline used to predict house prices.**\n"
-        "**The goal is to evaluate the model's performance, understand the "
-        "importance of features, and visualize the regression results.**"
+        "This page provides an overview of the trained machine learning "
+        "pipeline used to predict house prices.\n"
+        "The goal is to evaluate the model's performance, understand the "
+        "importance of features, and visualize the regression results."
     )
 
     st.info(

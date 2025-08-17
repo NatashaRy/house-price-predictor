@@ -33,8 +33,8 @@ def predict_price_body():
     - Widget to predict house sale price based on user input, including:
         - Garage Area - `GarageArea`
         - Ground Living Area - `GrLivArea`
-        - Kitchen Quality - `KitchenQual` (1-5 scale)
-        - Overall Quality - `OverallQual` (1-10 scale)
+        - Kitchen Quality - `KitchenQual` (dropdown select options)
+        - Overall Quality - `OverallQual` (1-10 slider scale)
         - Question mark help at scale options explaining what each value equals
         - Button labeled "Predict Price" to execute the prediction
         - Display area for predicted price output
@@ -50,13 +50,26 @@ def predict_price_body():
     train_data_path = (
         f"outputs/ml_pipeline/predict_price/{version}/X_train.parquet"
     )
-    house_features = (pd.read_parquet(train_data_path).columns.tolist())
+    house_features = pd.read_parquet(train_data_path).columns.tolist()
 
     # Title and introduction
     st.title(page_title)
     st.markdown(
-        "This page allows you to predict the sale price of inherited houses "
-        "and other houses based on their features."
+        """
+        This page allows you to predict the sale price of houses in Ames,
+        Iowa, including the client's inherited houses and any other house
+        based on its features.
+
+        - **Inherited Houses**: View the predicted sale prices for the
+        client's four inherited houses, along with a total price summary
+        and an interactive bar chart.
+        - **Your Own House**: Use the interactive widgets below to input
+        your house's features and get an instant prediction of its sale
+        price.
+
+        Explore the predictions and gain insights into how different
+        features influence house prices.
+        """
     )
 
     st.info(
@@ -141,7 +154,7 @@ def predict_price_body():
                     y=X_inherited_with_predictions["PredictedSalePrice"],
                     text=X_inherited_with_predictions["PredictedSalePrice"]
                     .apply(lambda x: f"${x:,.2f}"),  # Show values as text
-                    textposition="auto",  # Place text automatically
+                    textposition="auto",             # Place text automatically   
                     # Show only x and y values on hover
                     hoverinfo="x+y",
                     marker=dict(color=colors)  # Use color scale
@@ -307,26 +320,71 @@ def draw_input_widgets(house_features):
 
     with col1:
         if 'KitchenQual' in house_features:
-            kitchen_qual = st.slider(
-                label=feature_display_names.get('KitchenQual', 'KitchenQual'),
-                min_value=1,
-                max_value=5,
-                value=3,  # Default to middle value (TA)
-                step=1,
+            # Load the training data to see valid KitchenQual values
+            if 'KitchenQual' in df.columns:
+                valid_kitchen_values = df['KitchenQual'].dropna().unique()
+                # Sort values by quality order if they match expected pattern
+                quality_order = ['Po', 'Fa', 'TA', 'Gd', 'Ex']
+                sorted_values = [val for val in quality_order
+                                 if val in valid_kitchen_values]
+                if not sorted_values:
+                    sorted_values = sorted(valid_kitchen_values)
+
+                # Create mapping from display names to encoded values
+                display_mapping = {
+                    'Fair': 'Fa',
+                    'Typical/Average': 'TA',
+                    'Good': 'Gd',
+                    'Excellent': 'Ex'
+                }
+
+                # Create reverse mapping for finding default index
+                value_to_display = {v: k for k, v in display_mapping.items()}
+
+                # Create display options list based on available values
+                display_options = [value_to_display[val]
+                                   for val in sorted_values
+                                   if val in value_to_display]
+            else:
+                # Fallback: show common quality levels
+                display_options = ['Fair', 'Typical/Average', 'Good',
+                                   'Excellent']
+                display_mapping = {
+                    'Fair': 'Fa',
+                    'Typical/Average': 'TA',
+                    'Good': 'Gd',
+                    'Excellent': 'Ex'
+                }
+
+            # Find default index (middle value)
+            try:
+                default_index = display_options.index('Typical/Average')
+            except ValueError:
+                default_index = len(display_options)//2
+
+            kitchen_qual_display = st.selectbox(
+                label=feature_display_names.get(
+                    'KitchenQual', 'KitchenQual'
+                ),
+                options=display_options,
+                index=default_index,
                 key='KitchenQual',
-                help="1=Poor, 2=Fair, 3=Typical, 4=Good, 5=Excellent"
+                help="Select the kitchen quality level"
             )
-            # Convert slider value to dataset format
-            quality_mapping = {1: 'Po', 2: 'Fa', 3: 'TA', 4: 'Gd', 5: 'Ex'}
-            X_live['KitchenQual'] = quality_mapping[kitchen_qual]
+
+            # Map display name back to encoded value
+            kitchen_qual_value = display_mapping[kitchen_qual_display]
+            X_live['KitchenQual'] = kitchen_qual_value
 
     with col2:
         if 'OverallQual' in house_features:
             overall_qual = st.slider(
-                label=feature_display_names.get('OverallQual', 'OverallQual'),
+                label=feature_display_names.get(
+                    'OverallQual', 'OverallQual'
+                ),
                 min_value=1,
                 max_value=10,
-                value=5,  # Default to middle value
+                value=5,
                 step=1,
                 key='OverallQual',
                 help="1=Poor, 2=Fair, 3=Average, 4=Good, 5=Excellent"
@@ -338,7 +396,15 @@ def draw_input_widgets(house_features):
     for feature in house_features:
         if feature not in X_live.columns:
             if feature == 'KitchenQual':
-                X_live[feature] = "TA"  # Default to Typical/Average
+                # Ensure we use a valid value that exists in training data
+                if 'KitchenQual' in df.columns:
+                    most_common_kitchen = df['KitchenQual'].mode()
+                    if len(most_common_kitchen) > 0:
+                        X_live[feature] = most_common_kitchen[0]
+                    else:
+                        X_live[feature] = "TA"  # Fallback default
+                else:
+                    X_live[feature] = "TA"      # Default to Typical/Average
             elif feature == 'OverallQual':
                 # Default to middle value (3 on 1-5 scale = 6 on 1-10 scale)
                 X_live[feature] = 6

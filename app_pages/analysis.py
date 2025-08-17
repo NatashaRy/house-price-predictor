@@ -82,11 +82,19 @@ def analysis_body():
     # Title and introduction
     st.title(page_title)
     st.markdown(
-        "**This page explores the relationships between house attributes "
-        "and the target variable, sale price.**\n"
-        "**The goal is to identify key predictors for modeling and provide "
-        "insights into how these attributes influence house prices.**"
-    )
+        """
+        On this page, we explore how various house attributes
+        influence the sale price.
+        Through interactive visualizations and correlation
+        metrics, you can uncover
+        patterns and relationships that are key to understanding the dataset.
+
+        Use the tools below to inspect predefined heatmaps,
+        analyze the distribution
+        of the target variable, and perform bivariate analysis
+        for deeper insights.
+        """
+        )
 
     # Reminder of business requirement 1
     st.info(

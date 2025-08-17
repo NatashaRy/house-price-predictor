@@ -19,6 +19,17 @@ def summary_body():
     """
     # Title and introduction
     st.title(page_title)
+    st.markdown(
+        """
+        This page serves as the starting point for th
+        House Price Predictor App.
+        Here, you'll find a quick summary of the project's
+        objectives, the dataset used,
+        and the business requirements we aim to address.
+        Use this as a guide to navigate
+        through the app and explore the insights and predictions it offers.
+        """
+        )
     st.info(
         "### Summary\n"
         "**This project, 'House Price Predictor,' aims to analyze house "
@@ -82,7 +93,7 @@ def summary_body():
         "This is addressed in the "
         "**Predict House Sale Price** page "
         "and **Machine Learning Model** page."
-    )
+        )
     st.markdown("---")
 
     # Link to README file, section "Requirements and Hypotheses"
