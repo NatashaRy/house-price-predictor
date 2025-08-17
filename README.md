@@ -58,12 +58,14 @@ By following a structured methodology ([CRISP-DM](#crisp-dm-a-structured-approac
     - [EPICS and User Stories Testing](#epics-and-user-stories-testing)
     - [Model Unit Testing](#model-unit-testing)
     - [Jupyter Notebook Testing](#jupyter-notebook-testing)
+13. [**Bugs**](#bugs)
     - [Bugs Identified During Development](#bugs-identified-during-development)
-13. [**Future Improvements**](#future-improvements)
-14. [**Deployment**](#deployment)
-15. [**Technologies and Python Packages**](#technologies-and-python-packages)
-16. [**Credits**](#credits)
-17. [**Acknowledgements**](#acknowledgements)
+	- [Bugs Identified After Deployment](#bugs-identified-after-deployment)
+14. [**Future Improvements**](#future-improvements)
+15. [**Deployment**](#deployment)
+16. [**Technologies and Python Packages**](#technologies-and-python-packages)
+17. [**Credits**](#credits)
+18. [**Acknowledgements**](#acknowledgements)
 
 ## Terminology
 
@@ -610,9 +612,9 @@ Regression Performance Plot is a visualization that compares actual sales prices
 ![Regression Performance Plot](outputs/ml_pipeline/predict_price/v1/regression_performance.png)
 
 
-## Testing and Bugs
+## Testing
 
-This section outlines the testing strategies and bug resolutions implemented during the development of the project. A combination of automated and manual testing was conducted to ensure the functionality, reliability, and performance of the dashboard and machine learning model.
+This section outlines the testing strategies implemented during the development and deployment of the project. A combination of automated and manual testing was conducted to ensure the functionality, reliability, and performance of the dashboard and machine learning model.
 
 **Summary**:
 - All tests passed successfully, confirming that the project meets the client's requirements.
@@ -794,32 +796,53 @@ To ensure that all steps in the Jupyter Notebook function correctly and produce 
 
 **Result**: All notebook tests passed successfully, confirming that the analysis and modeling steps are reproducible and error-free.
 
+
+## Bugs 
+
+This section documents the key bugs identified during the development and after the deployment of the project, along with their resolutions. Addressing these issues ensured a robust and error-free solution.
+
 ### Bugs Identified During Development
 
 1. **Issue**: Errors occurred when processing the `GarageFinish` column due to missing values (NaN) and limitations of the `.csv` format.
-	* **Cause**: 
+	- **Cause**: 
 		- `.csv` files do not preserve data types, causing `GarageFinish` to be read as `object` instead of `category`, leading to inefficiencies and errors.
 		- Missing values (NaN) were inconsistently handled, resulting in unexpected behavior.
-	* **Resolution**: Switched to `.parquet` files, which:
+	- **Resolution**: Switched to `.parquet` files, which:
 		- Preserve data types, ensuring `GarageFinish` remains as `category`.
 		- Handle missing values (NaN) consistently.
 		- Improve performance with faster read/write operations and smaller file sizes.
-	* **Impact**: This resolution improved data processing efficiency and ensured consistent handling of missing values, reducing errors during analysis and modeling.
+	- **Impact**: This resolution improved data processing efficiency and ensured consistent handling of missing values, reducing errors during analysis and modeling.
 
 2. **Issue**: Multiple `FutureWarning` messages were triggered during development.
-	* **Cause**: These warnings were caused by updates in libraries (e.g., pandas, Seaborn) that deprecated certain functions or changed their behavior, including:
+	- **Cause**: These warnings were caused by updates in libraries (e.g., pandas, Seaborn) that deprecated certain functions or changed their behavior, including:
 		- Deprecation of `is_categorical_dtype`.
 		- Deprecation of `DataFrame.applymap`.
 		- Changes in Seaborn's handling of `palette` without `hue`.
-	* **Resolution**: To suppress these non-critical warnings and maintain a clean console output, the following code was added:
+	- **Resolution**: To suppress these non-critical warnings and maintain a clean console output, the following code was added:
 	```python
 	import warnings
 
 	# Ignore FutureWarning
 	warnings.filterwarnings("ignore", category=FutureWarning)
 	```
-	* **Impact**: This resolution ensured a cleaner development environment without affecting the functionality or performance of the model.
+	- **Impact**: This resolution ensured a cleaner development environment without affecting the functionality or performance of the model.
 
+
+
+### Bugs Identified After Deployment
+
+#### SyntaxError in `hypotheses.py`
+- **Issue**: A `SyntaxError` was identified in the file `hypotheses.py` on line 64 due to a missing colon (`:`) in an `if` statement.
+- **Cause**: The `if` statement was improperly formatted, and there were minor inconsistencies in indentation.
+- **Resolution**:
+  1. Added the missing colon (`:`) to the `if` statement.
+  2. Refactored the code to ensure compliance with PEP8 standards.
+  3. Retested the app to confirm the issue was resolved.
+- **Impact**: The bug caused the app to crash when navigating to the "Hypotheses and Validation" page. After fixing the issue, the app now functions as expected.
+
+**Error Message Screenshot**:
+
+![SyntaxError Screenshot](docs/readme-imgs/syntaxerror-hypoteses.png)
 
 ## Future Improvements
 
