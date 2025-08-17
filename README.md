@@ -40,7 +40,7 @@ By following a structured methodology ([CRISP-DM](#crisp-dm-a-structured-approac
     - [Sidebar](#sidebar)
     - [Quick Summary](#quick-summary)
     - [Correlations Analysis](#correlations-analysis)
-    - [Hypothesis and Validation](#hypothesis-and-validation)
+    - [Hypothesis and Validation](#hypotheses-and-validation)
     - [Predict Sale Price](#predict-sale-price)
     - [Machine Learning Model](#machine-learning-model)
 11. [**Plots**](#plots)
@@ -65,6 +65,8 @@ By following a structured methodology ([CRISP-DM](#crisp-dm-a-structured-approac
 15. [**Deployment**](#deployment)
 16. [**Technologies and Python Packages**](#technologies-and-python-packages)
 17. [**Credits**](#credits)
+	- [Content](#content)
+	- [Media](#media)
 18. [**Acknowledgements**](#acknowledgements)
 
 ## Terminology
@@ -803,7 +805,8 @@ This section documents the key bugs identified during the development and after 
 
 ### Bugs Identified During Development
 
-1. **Issue**: Errors occurred when processing the `GarageFinish` column due to missing values (NaN) and limitations of the `.csv` format.
+1. ****
+	- **Issue**: Errors occurred when processing the `GarageFinish` column due to missing values (NaN) and limitations of the `.csv` format.
 	- **Cause**: 
 		- `.csv` files do not preserve data types, causing `GarageFinish` to be read as `object` instead of `category`, leading to inefficiencies and errors.
 		- Missing values (NaN) were inconsistently handled, resulting in unexpected behavior.
@@ -813,7 +816,8 @@ This section documents the key bugs identified during the development and after 
 		- Improve performance with faster read/write operations and smaller file sizes.
 	- **Impact**: This resolution improved data processing efficiency and ensured consistent handling of missing values, reducing errors during analysis and modeling.
 
-2. **Issue**: Multiple `FutureWarning` messages were triggered during development.
+2. ****
+	- **Issue**: Multiple `FutureWarning` messages were triggered during development.
 	- **Cause**: These warnings were caused by updates in libraries (e.g., pandas, Seaborn) that deprecated certain functions or changed their behavior, including:
 		- Deprecation of `is_categorical_dtype`.
 		- Deprecation of `DataFrame.applymap`.
@@ -827,6 +831,20 @@ This section documents the key bugs identified during the development and after 
 	```
 	- **Impact**: This resolution ensured a cleaner development environment without affecting the functionality or performance of the model.
 
+3. **ValueError in `price_prediction.py`**
+	- **Issue**: A `ValueError` occurred during the prediction process when the user selected `1` (Poor) for `KitchenQual` (Kitchen Quality). The input data (X) contained `NaN` values, which the ExtraTreesRegressor model does not support natively, causing the prediction to fail.
+	- **Cause**: The value `1` (Poor) for `KitchenQual` was not adequately represented in the training data. This led to the model being unable to process this input effectively when used in the slider, as it lacked sufficient examples to learn from during training. Consequently, the preprocessing pipeline failed to handle this edge case, resulting in missing values (`NaN`) in the input data.
+	- **Resolution**:
+		1. Replaced the slider for `KitchenQual` with a dropdown `selectbox` that only includes valid options (`Fair`, T`ypical/Average`, `Good`, and `Excellent`), excluding `Poor` as it was not well-represented in the training data.
+		2. Ensured that the dropdown options are mapped to the correct encoded values (`Fa`, `TA`, `Gd`, `Ex`) used by the model.
+		3. Updated the preprocessing pipeline to handle any unsupported or missing values by defaulting to `Typical/Average` (`TA`).
+		4. Retested the app to confirm the issue was resolved and predictions were accurate.
+	
+	**Error Message Screenshot**:
+
+	![ValueError price_predictor.py](docs/readme-imgs/valueerror-nan-kitchenqual.png)
+
+	- **Impact**: The error caused the prediction process to fail when users selected `1` (Poor) for `KitchenQual`, preventing the app from displaying predicted house prices. After implementing the dropdown `selectbox` and excluding `Poor` as an option, the app now handles this edge case correctly, and predictions are generated without errors.
 
 
 ### Bugs Identified After Deployment
@@ -842,7 +860,7 @@ This section documents the key bugs identified during the development and after 
 
 **Error Message Screenshot**:
 
-![SyntaxError Screenshot](docs/readme-imgs/syntaxerror-hypoteses.png)
+![SyntaxError hypotheses.py](docs/readme-imgs/syntaxerror-hypoteses.png)
 
 ## Future Improvements
 
@@ -898,6 +916,7 @@ This section provides an overview of the key Python libraries and tools used in 
 - [**GitHub**](https://github.com): A web-based platform for version control and collaboration. It was used to host the project's repository, track changes, and manage branches.
 - [**GitHub Codespaces**](https://github.com/features/codespaces): A cloud-based development environment that allows you to write, build, and debug code directly in the browser. It was used to streamline development and ensure consistency across devices.
 - [**VScode**](https://code.visualstudio.com/): A lightweight and powerful code editor with support for debugging, syntax highlighting, and extensions. It was used for local development and debugging. *VScode version: 1.103.1 (user setup)*
+- [**Streamlit**](https://streamlit.io/): An open-source Python framework for building interactive web applications. It was used to create the dashboard for visualizing predictions, feature importance, and correlation analysis, making the project accessible to users.
 - [**Render**](https://render.com/): A cloud platform for deploying web applications. It was used to host the Streamlit dashboard, making it accessible to users.
 - [**CI Python Linter**](https://pep8ci.herokuapp.com/): A tool for checking Python code against PEP8 standards. It was used to ensure code quality and consistency throughout the project.
 - [**GoFullPage**](https://gofullpage.com/): A browser extension for capturing full-page screenshots. It was used to create responsive design screenshots for the README file.
@@ -959,7 +978,7 @@ This project would not have been possible without the support and guidance of th
 
 ### Media
 - **Screenshot of Streamlit Dashboard on different devices for README.md**: [AmIResponsive](https://ui.dev/amiresponsive)
-- **Emojis on dashboard**: Windows emojis
+- **Emojis on dashboard**: Windows Emojis
 
 
 ## Acknowledgements
