@@ -1,9 +1,7 @@
 import streamlit as st
 
-
 # Page title
 page_title = "Hypotheses and Validation"
-
 
 def hypotheses_body():
     """
@@ -31,7 +29,7 @@ def hypotheses_body():
         requirements, specifically *Business Requirement 1*, which focuses
         on understanding how house attributes correlate with sale prices.**
         """
-    )
+        )
 
     st.markdown("---")
 
@@ -51,106 +49,134 @@ def hypotheses_body():
 
     st.markdown(" ")
 
-# Dropdown for hypothesis selection
+    # Dropdown for hypothesis selection
     selected_hypothesis = st.selectbox("Select a hypothesis to explore", [
         "Hypothesis 1: Larger houses have higher sale price",
-        "Hypothesis 2: "
-        "Houses with higher overall quality have higher sale price",
+        "Hypothesis 2: Houses with higher overall quality have higher sale price",
         "Hypothesis 3: Newer houses have higher sale price",
         "Hypothesis 4: Houses with garages have higher sale price"
     ])
 
     # Hypothesis 1
-    if selected_hypothesis == \
-            "Hypothesis 1: Larger houses have higher sale price":
+    if selected_hypothesis == "Hypothesis 1: Larger houses have higher sale price":
         st.markdown("### Hypothesis 1: Larger houses have higher sale price")
         st.markdown(
             """
-            - **Rationale**: It is expected that houses with larger living
-             areas (`GrLivArea`, `GarageArea`, `TotalBsmtSF`)
-              will have a higher price due to their size and usability.\n
-            - **Validation**:
-                - Performed correlation analysis between
-                 `GrLivArea` and `SalePrice`.
-                - Created a scatter plot to visualize the relationship.
-                - Calculated the correlation coefficient to determine the
-                 strength of the relationship.\n
-            - **Result**: **Correct** ✅
-                - The analysis confirmed a strong positive
-                 correlation between `GrLivArea` and `SalePrice`
-                  (Pearson correlation coefficient: 0.71).
-                - The scatter plot showed a clear upward trend,
-                 validating the hypothesis.\n
+            #### **Rationale**:
+            Larger houses (`GrLivArea`, `GarageArea`, `TotalBsmtSF`) are expected to have higher prices due to:
+            - Increased usability
+            - Greater living space
+            - Higher market demand
             """
-        )
-
-    # Hypothesis 2
-    elif selected_hypothesis == \
-            "Hypothesis 2: Houses with higher overall quality have " + \
-            "higher sale price":
-        st.markdown("### Hypothesis 2: "
-                    "Houses with higher overall quality have higher sale price"
-                    )
+            )
+        st.markdown("#### **Validation**:")
         st.markdown(
             """
-            - **Rationale**: Houses with better construction
-                quality and finishes (`OverallQual`) are likely to
-                command higher prices
-                due to their durability, aesthetics, and buyer appeal.\n
-            - **Validation**:
-                - Performed correlation analysis between
-                    `OverallQual` and `SalePrice`.
-                - Created boxplots to compare `SalePrice`
-                    across different quality levels.\n
-            - **Result**: **Correct** ✅
-                - The analysis showed a strong positive correlation
-                    (Pearson correlation coefficient: 0.79).
-                - Boxplots revealed a clear trend of increasing
-                    `SalePrice` with higher `OverallQual` levels.\n
+            - A correlation analysis showed that `GrLivArea` has a strong positive correlation with sales price *(Pearson correlation: 0.71)*.
+            - A scatterplot showed a clear trend where larger living areas resulted in higher prices.
             """
-        )
+            )
+        # Add the scatterplot image
+        st.image("docs/plots/lm_plot_price_by_GrLivArea.png",
+                 caption="Scatterplot: GrLivArea vs SalePrice",
+                 use_container_width=True)
+
+        st.markdown(
+            """
+            #### **Result**: ✅
+            The hypothesis was **validated**. `GrLivArea` is one of the most significant variables in predicting sales price.
+            """
+            )
+
+    # Hypothesis 2
+    elif selected_hypothesis == "Hypothesis 2: Houses with higher overall quality have higher sale price":
+        st.markdown("### Hypothesis 2: Houses with higher overall quality have higher sale price")
+        st.markdown(
+            """
+            #### **Rationale**:
+            Houses with better construction quality and finish (`OverallQual`) are expected to have higher prices due to:
+            - Durability
+            - Aesthetics
+            - Greater buyer appeal
+            """
+            )
+        st.markdown("#### **Validation**:")
+        st.markdown(
+            """
+            - A correlation analysis showed that `OverallQual` has a very strong positive correlation with sales price *(Pearson correlation: 0.79)*.
+            - A boxplot showed that houses with higher construction quality consistently had higher prices.
+            """
+            )
+        # Add the boxplot image
+        st.image("docs/plots/box_plot_price_by_OverallQual.png",
+                 caption="Boxplot: OverallQual vs SalePrice",
+                 use_container_width=True)
+
+        st.markdown(
+            """
+            #### Result: ✅
+            The hypothesis was **validated**. `OverallQual` is one of the most decisive factors for the sales price.
+            """
+            )
 
     # Hypothesis 3
-    elif selected_hypothesis == \
-            "Hypothesis 3: Newer houses have higher sale price":
+    elif selected_hypothesis == "Hypothesis 3: Newer houses have higher sale price":
         st.markdown("### Hypothesis 3: Newer houses have higher sale price")
         st.markdown(
             """
-            - **Rationale**: Newer houses (`YearBuilt`) are expected to
-                have higher prices due to modern designs, better materials,
-                and lower maintenance costs.\n
-            - **Validation**:
-                - Performed correlation analysis between
-                    `YearBuilt` and `SalePrice`.
-                - Created a line plot to visualize the relationship.\n
-            - **Result**: **Correct** ✅
-                - The analysis confirmed a moderate positive correlation
-                    (Pearson correlation coefficient: 0.52).
-                - The line plot showed that newer houses tend
-                    to have higher sale prices.\n
+            #### Rationale:
+            Newer houses (`YearBuilt`) are expected to have higher prices due to:
+            - Modern design
+            - Better materials
+            - Lower maintenance costs
             """
-        )
-
-    # Hypothesis 4
-    elif selected_hypothesis == \
-            "Hypothesis 4: Houses with garages have higher sale price":
-        st.markdown("### Hypothesis 4: Houses with garages "
-                    "have higher sale price"
-                    )
+            )
+        st.markdown("#### Validation:")
         st.markdown(
             """
-            - **Rationale**: Houses with garages (`GarageArea`) are more
-             desirable as they provide additional storage and parking space,
-              which adds value.\n
-            - **Validation**:
-                - Performed correlation analysis between
-                 `GarageArea` and `SalePrice`.
-                - Created a scatter plot to compare `SalePrice` for houses
-                 with and without garages.\n
-            - **Result**: **Correct** ✅
-                - The analysis showed a strong positive correlation
-                 (Pearson correlation coefficient: 0.62).
-                - The scatter plot confirmed that houses with larger
-                 garage areas tend to have higher sale prices.\n
+            - A correlation analysis showed a positive correlation between `YearBuilt` and sales price *(Pearson correlation: 0.52)*.
+            - A line plot showed that newer houses generally have higher prices.
             """
-        )
+            )
+        # Add the line plot image
+        st.image("docs/plots/line_plot_price_by_YearBuilt.png",
+                 caption="YearBuilt vs SalePrice",
+                 use_container_width=True)
+
+        st.markdown(
+            """
+            #### Result: ✅
+            The hypothesis was **partially validated**. Although newer houses have higher prices, the correlation is not as strong as for other variables.
+            """
+            )
+
+    # Hypothesis 4
+    elif selected_hypothesis == "Hypothesis 4: Houses with garages have higher sale price":
+        st.markdown("### Hypothesis 4: Houses with garages have higher sale price")
+        st.markdown(
+            """
+            #### Rationale:
+            Houses with garages (`GarageArea`) are more attractive because they offer:
+            - Extra storage
+            - Parking space
+            - Increased property value
+            """
+            )
+        st.markdown("#### Validation:")
+        st.markdown(
+            """
+            - A scatterplot showed a positive trend between `GarageArea` and sales price *(Pearson correlation: 0.62)*.
+            - Houses with larger garage areas generally had higher prices.
+            """
+            )
+        # Add the scatterplot image
+        st.image("docs/plots/lm_plot_price_by_GarageArea.png",
+                 caption="GarageArea vs SalePrice",
+                 use_container_width=True)
+
+        st.markdown(
+            """
+            #### Result: ✅
+            The hypothesis was **validated**. `GarageArea` affects sales price, but not as strongly as `GrLivArea` or `OverallQual`.
+            """
+            )
