@@ -16,15 +16,21 @@ def regression_performance(X_train, y_train, X_test, y_test, pipeline):
         y_test (pd.Series or np.ndarray): Target variable for test set.
         pipeline (sklearn Pipeline): Trained pipeline model.
     """
-    st.write("### Model Evaluation")
+    st.subheader("Model Evaluation")
+    st.write("")
 
-    # Evaluate training set
-    st.info("**Train Set Performance**")
-    regression_evaluation(X_train, y_train, pipeline)
+    # Displays evaluation metrics in two columns
+    col1, col2 = st.columns(
+            2, gap="medium", vertical_alignment="top", border=True)
+    with col1:
+        # Evaluate training set
+        st.write("#### Train Set\n")
+        regression_evaluation(X_train, y_train, pipeline)
 
-    # Evaluate test set
-    st.info("**Test Set Performance**")
-    regression_evaluation(X_test, y_test, pipeline)
+    with col2:
+        # Evaluate test set
+        st.write("#### Test Set\n")
+        regression_evaluation(X_test, y_test, pipeline)
 
 
 def regression_evaluation(X, y, pipeline):

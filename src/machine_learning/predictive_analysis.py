@@ -24,8 +24,11 @@ def predict_house_price(X_live, house_features, price_pipeline):
                 # Add missing feature with appropriate default value
                 if feature == 'KitchenQual':
                     X_live_copy[feature] = "TA"  # Default to Typical/Average
-                elif feature in X_live_copy.select_dtypes(include="object").columns:
-                    X_live_copy[feature] = "None"  # Default for other categorical features
+                elif feature in X_live_copy.select_dtypes(
+                        include="object").columns:
+                    # Default for other categorical features
+                    X_live_copy[feature] = "None"
+
                 else:
                     X_live_copy[feature] = 0  # Default for numerical features
 
@@ -56,7 +59,8 @@ def predict_inherited_house_price(X_inherited, house_features, price_pipeline):
     Make a prediction for the sale price of inherited houses.
 
     Args:
-        X_inherited (pd.DataFrame): Data with features for the inherited houses.
+        X_inherited (pd.DataFrame): Data with features for the
+         inherited houses.
         house_features (list): List of features used in the model.
         price_pipeline (Pipeline): The trained ML pipeline.
 
@@ -73,7 +77,8 @@ def predict_inherited_house_price(X_inherited, house_features, price_pipeline):
             if feature not in X_inherited_copy.columns:
                 if feature == 'KitchenQual':
                     X_inherited_copy[feature] = "TA"
-                elif feature in X_inherited_copy.select_dtypes(include="object").columns:
+                elif feature in X_inherited_copy.select_dtypes(
+                        include="object").columns:
                     X_inherited_copy[feature] = "None"
                 else:
                     X_inherited_copy[feature] = 0
