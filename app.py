@@ -1,27 +1,21 @@
 import streamlit as st
 
-# Import site navigation
-from app_pages.multipage import MultiPage
+# Define site's title and icon
+st.set_page_config(
+    page_title="House Price Predictor",
+    page_icon="🏠",
+    initial_sidebar_state="expanded",
+)
 
-# Import pages
-from app_pages.summary import summary_body
-from app_pages.analysis import analysis_body
-from app_pages.hypotheses import hypotheses_body
-from app_pages.price_predictions import predict_price_body
-from app_pages.ml_pipeline_prediction import ml_pipeline_prediction_body
 
-# Initialize MultiPage app
-app = MultiPage(app_name="House Price Predictor")
+# Define pages
+pg = st.navigation([
+    st.Page("pages/summary.py", title="Project Overview", icon=":material/home:", default=True),
+    st.Page("pages/analysis.py", title="Correlation Analysis", icon=":material/analytics:"),
+    st.Page("pages/hypotheses.py", title="Hypotheses and Validation", icon=":material/lightbulb:"),
+    st.Page("pages/price_predictions.py", title="Sale Price Predictor", icon=":material/money_bag:"),
+    st.Page("pages/ml_pipeline_prediction.py", title="Machine Learning Model", icon=":material/smart_toy:"),
+], position="sidebar")
 
-# Add page to the app
-app.add_page("Project Overview", summary_body)
-app.add_page("Correlation Analysis", analysis_body)
-app.add_page("Hypotheses and Validation", hypotheses_body)
-app.add_page("Predict House Sale Price", predict_price_body)
-app.add_page("Machine Learning Model", ml_pipeline_prediction_body)
-
-# Run the app
-try:
-    app.run()
-except Exception as e:
-    st.error(f"An error occurred: {e}")
+# Run the selected page
+pg.run()
