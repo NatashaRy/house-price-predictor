@@ -41,7 +41,7 @@ By following a structured methodology ([CRISP-DM](#crisp-dm-a-structured-approac
     - [Quick Summary](#quick-summary)
     - [Correlations Analysis](#correlations-analysis)
     - [Hypothesis and Validation](#hypotheses-and-validation)
-    - [Predict Sale Price](#predict-sale-price)
+    - [Sale Price Predictor](#sale-price-predictor)
     - [Machine Learning Model](#machine-learning-model)
 11. [**Plots**](#plots)
     - [Histogram](#histogram)
@@ -64,6 +64,11 @@ By following a structured methodology ([CRISP-DM](#crisp-dm-a-structured-approac
 14. [**Future Improvements**](#future-improvements)
 15. [**Deployment**](#deployment)
 16. [**Technologies and Python Packages**](#technologies-and-python-packages)
+17. [**Why We Chose the New Streamlit Approach**](#why-we-chose-the-new-streamlit-approach)
+	- [Key Reasons for This Choice](#key-reasons-for-this-choice)
+	- [Streamlit Theme Customizations](#streamlit-theme-customizations)
+	- [Exampel of `config.toml`](#example-of-configtoml)
+	- [Why Not Use `multipage.py`?](#why-not-use-multipagepy)
 17. [**Credits**](#credits)
 	- [Content](#content)
 	- [Media](#media)
@@ -389,17 +394,19 @@ The dashboard for this project is built using Streamlit, an open-source Python l
 
 
 ### Sidebar
-- **File name**: [`multipage.py`](https://github.com/NatashaRy/milestone-project-heritage-housing-issues/blob/main/app_pages/multipage.py)
+- **File name**: [`app.py`](https://github.com/NatashaRy/milestone-project-heritage-housing-issues/blob/main/app_pages/multipage.py)
 - **Purpose**: The Streamlit Sidebar is designed to provide intuitive navigation and quick access to essential project details and features. It ensures that users can seamlessly explore the dashboard and interact with its functionalities. The sidebar is visible at all time.
 
 ![Sidebar](docs/readme-imgs/sidebar.png)
 
 **Content**:
-- **Navigation**: Navigation with radio buttons to help user be able to switch between pages.
-- **Expanding sidebar arrow**: The top right of the sidebar contains an arrow to give the user the possibility to fold/unfold the sidebar.
+- **Navigation**: Navigation with [Material Icons](#media).
+- **Expanding sidebar arrow**: The top right of the sidebar contains an arrow to give the user the possibility to fold/unfold the sidebar. If the sidebar is expanded, the arrow will appear when hovering over the sidebar.
+- **Adjustable Sidebar Widht**: Users can choose the width of the sidebar themselves by dragging it out or in on the page to enlarge or reduce it as needed.
 
-### Quick Summary
+### Project Overview
 - **File name**: [`summary.py`](https://github.com/NatashaRy/milestone-project-heritage-housing-issues/blob/main/app_pages/summary.py)
+- **Icon**: 🗒️
 - **Purpose**: Provide an overview of the project, including its goals, dataset and business requirements.
 - **State Business Requirements**: A clear statement of the business requirements.
 	1. Identify the most relevant variables correlated with house sale price.
@@ -408,54 +415,64 @@ The dashboard for this project is built using Streamlit, an open-source Python l
 ![Summary page](docs/readme-imgs/summary.png)
 
 **Content**:
-- **Introduction**: Summary of project and its goals.
-- **Dataset Details**: Link to the Kaggle and quick summary of dataset listing:
+- **Introduction**: Explains what the page is about.
+- **Project Summary**: Summarizes the project and its goals.
+- **Dataset Details**: Link to the Kaggle dataset and quick summary of dataset listing:
 	- Number of rows
 	- Number of columns
 	- Target varible
 	- Key variables
 	- Dataset preview
-- **Business Requirements**: States the project's two business requirements. 
+- **Business Requirements**: Both project business requirements are listed with links to pages associated with them. 
 - **Link to README**: Link to the README file on GitHub.
 	
 	
 ### Correlation Analysis
 - **File name**: [`analysis.py`](https://github.com/NatashaRy/milestone-project-heritage-housing-issues/blob/main/app_pages/analysis.py)
+- **Icon**: 📈
 - **Purpose**: Address Business Requirement 1 by analyzing and visualizing the correlation between house attributes and sale prices.
 - **State Business Requirement 1**: Clearly outline the requirement to identify variables correlated with sale prices.
 
 ![Correlation Analysis page](docs/readme-imgs/correlation-analysis.png) ![Correlation Analysis](docs/readme-imgs/correlation-analysis-inspect.png)
 
 **Content**:
-- **Introduciton**: 
-	- Page introduction.
-	- Reminder of business requriement 1. 
-	- Checkbox to inspect raw dataset.
-- **Conclusion**: 
-	- Conclusion from correlation analysis with key observations.
+- **Introduciton**: Explains what the page is about.
+- *Optional* - **Checkbox to inspect raw dataset**: When checked a scrollable table with the 10 first rows of raw dataset is displayed.
+- **Summary of Analysis**: Summary of what the correlation analysis contributed and conclusions along with information box.
+	- **Information Box**: Listing 3 key observations from the correlations analysis.
+
 
 ![Correlation Analysis - Custom Heatmap Dropdown](docs/readme-imgs/corr-analysis-custom-heatmap.png) ![Correlation Analysis - Custom Heatmap Example](docs/readme-imgs/corr-analysis-custom-heatmap1.png) ![Correlation Analysis - Distribution of Sale Price](docs/readme-imgs/corr-analysis-dist.png)
 
 ![Correlation Analysis - Predefined Heatmap](docs/readme-imgs/corr-analysis-predefined-heatmap.png) ![Correlation Analysis - Bivariate Analysis](docs/readme-imgs/corr-analysis-biv.png) ![Correlation Analysis - Bivariate Analysis Continued](docs/readme-imgs/corr-analysis-biv2.png) 
 
-- **Visualizations**:
-	- **Heatmaps**: 
-		* **Custom heatmap**: Dropdown to choose variables to correlate in heatmap.
-		* **Predefined heatmaps**: Checkbox to for user to show Pearson correlation heatmap, Spearman correlation heatmap or PPS Matrix heatmap.
-	- **Distribution of Target Variable**: Shows bar plot of feature importance. 
-	- **Bivariate Analysis**: Displays a series of plots of key variables and SalePrice.
+
+- **Heatmaps**: Divided into two tabs; one for predefined heatmaps and one for create custom heatmap.
+	- **Column 1 - Checkboxes to Display Predefined heatmaps**: When checked chosen heatmap is displayed, including:
+		- Pearson Correlation Heatmap
+		- Spearman Correlation Heatmap
+		- PPS Matrix Heatmap
+	- **Column 2 - Create Custom Heatmap**: Users can select their own variables for correlation analysis using the multiple choice dropdown menu.
+- **Checkbox to Display Target Variable Distribution**: When checked a histogram with distrubution of `SalePrice` is displayed.
+- **Checkbox to Display Bivariate Analysis**: When checked several plots are displayed, showing the relationshop between key variables and the target variable.
 
 
 ### Hypotheses and Validation
 - **File name**: [`hypotheses.py`](https://github.com/NatashaRy/milestone-project-heritage-housing-issues/blob/main/app_pages/hypotheses.py)
+- **Icon**: 🔍
 - **Purpose**: Present the hypotheses formulated during the project and describe how they were validated.
 
 ![Hypotheses page](docs/readme-imgs/hypotheses.png) 
 
 **Content**:
-- **Introduction**: 
-	- Page introduction.
-	- Summary of Findings.
+- **Introduction**: Explains what the page is about.
+- **Hypotheses and Results**: Summary of the results we have reached when we have tested the hypotheses displayed in an information box.
+- **Explore Hypotheses**: Dropdown that allows the user to select one of the four hypothesis to explore further.
+- **Hypothesis**: Each hypothesis is described with:
+	- **Rationale**: Explains the reasoning behind the hypothesis.
+	- **Validation**: Describes the methods and analyses used to test it.
+	- **Plot image**: Visualizes the relationship between variables.
+	- **Result**: Summarizes whether the hypothesis was confirmed, partially confirmed, or rejected.
 
 ![Hypotheses - Dropdown](docs/readme-imgs/hypotheses-dropdown.png)
 
@@ -466,66 +483,65 @@ The dashboard for this project is built using Streamlit, an open-source Python l
 	4. Houses with garages have higher sale price *- confirmed.*
 - **Returns chosen hypothesis**.
 
-### Predict Sale Price
+### Sale Price Predictor
 - **File name**: [`price_prediction.py`](https://github.com/NatashaRy/milestone-project-heritage-housing-issues/blob/main/app_pages/price_predictions.py)
+- **Icon**: 💰
 - **Purpose**: Address Business Requirement 2 by providing predictions for the 4 inherited houses and allowing users to predict prices for other houses.
 - **State Business Requirement 2**: Clearly outline the requirement to predict house sale prices.
 
 ![Predict Sale Price page](docs/readme-imgs/price-prediction.png)
 
 **Content**:
-- **Introduction**:
-	- Page introduction.
-	- Reminder of business requirement 2. 
-
-- **Predict the sale price of inherited houses**:
-- **Displays data of inherited houses in a full width table, filtered with best features.
-	- Displays predicted sale price for inherited houses in a full width table.
-	- Displays total predicted price of inherited houses.
-	- Displays interactive bar chart of predicted sale price of the four inherited houses.
-		- When hover over chart, box with price and house gets visible.
-
-- **Prediction of sale price of your own house**: 
-	- Widgets for users to input house attributes: 
-		- `GarageArea`
-		- `GrLivArea`
-		- `KitchenQual` (1-5 scale)
-		- `OverallQual` (1-10 scale)
-	- A "Predict Price" button to generate predictions for the entered attributes.
-	- Question mark help at scale options explaining what each value equals:
+- **Introduction**: Explains what the page is about.
+- **Reminder of business requirement 2**
+- **Predict the sale price of inherited houses**: This section is divided into two subheadings, each providing tabs for users to choose how they want to view the data:
+	1. **Inherited House Data**: Allows users to explore the raw data of the inherited houses.
+		- **Tab 1 - Data Table**: Displays a full-width table with data filtered using the best features.
+		- **Tab 2 - Chart**: Displays a full-width chart visualizing the data.
+	2. **Predicted Sale Prices for Inherited Houses**: Focuses on the predicted sale prices for the inherited houses.
+		- **Tab 1 - Data Table**: Displays a full-width table with the predicted sale prices.
+		- **Tab 2 - Chart**: Displays a full-width chart visualizing the predicted sale prices.
+- **Sum of total sale price for all inherited houses**.
+- **Prediction of sale price of your own house**: Allows users to input specific house attributes and receive a predicted sale price based on the entered data.
+	- **Input Widgets**: Users can provide the following house attributes using interactive widgets:
+		- `GarageArea`: Size of the garage in square feet.
+		- `GrLivArea`: Above-ground living area in square feet.
+		- `KitchenQual`: Kitchen quality, selected from a dropdown menu.
+		- `OverallQual`: Overall material and finish quality, selected on a scale from 1 to 10. Has a help box to explain 1=Poor and 10=Excellent quality.
+	- **Question Mark Help**: `OverallQual` has each a help mark explaining what the steps are equal to in quality:
 		- 1 = Poor
-		- 2 = Fair
-		- 3 = Typical
-		- 4 = Good
-		- 5 = Excellent
-	- Button labeled "Predict Price", to predict price based on user input.
-	- Returns the predicted sale price based on the inputted house data from the user.
+		- 3 = Fair
+		- 5 = Typical/Average
+		- 7 = Good
+		- 10 = Excellent
+	- Button labeled *"Predict Sale Price"*, to predict price based on user input.
+		- Returns the predicted sale price based on the inputted house data from the user.
 
 ### Machine Learning Model
 - **File name**: [`ml_pipeline_predictions.py`](https://github.com/NatashaRy/milestone-project-heritage-housing-issues/blob/main/app_pages/ml_pipeline_prediction.py)
+- **Icon**: 🤖
 - **Purpose**: Provide an overview of the machine learning model's performance and technical implementation.
 
 ![Machine Learning Model page](docs/readme-imgs/ml-pipeline.png)
 
 **Content**:
-- **Introduction**: 
-	* Page introduction.
-	* Infobox with key performance metrics R² for Train and Test set. 
-- **ML Pipeline**: 
-	- Displays pipeline steps.
+- **Introduction**: Provides an overview of the page, explaining its purpose to present the machine learning model, its performance, and key insights.
+- **Information box**: Summarizes the model training and evaluation process, including key metrics and highlights of the pipeline's performance.
+- **Machine Learning Pipeline**: Displays the structure of the trained machine learning pipeline, outlining the steps involved in data preprocessing, feature selection, and prediction.
 - **Feature Importance**: 
-	- Highlight the most important features used by the model to make predictions.
-	- Visualization of feature importance for featured variables.
+	- Highlights the most important features used by the model to make predictions.
+	- Includes a visualization that shows the relative importance of each feature.
 - **Model Performance**:
-	- Model Evaluation for Train and Test set. 
-	- Displays performance score for each set separately.
-	- Scores displayed:
+	- Evaluates the model's performance on both the training and test datasets.
+	- Performance scores are displayed side by side in columns for easy comparison.
+	- Metrics include:
 		- Mean Absolute Error (MAE)
 		- Mean Squared Error (MSE)
 		- Root Mean Squared Error (RMSE)
 		- R² (R-squared)
 - **Regression Evaluation Plots**:
-	- Visualization that compares actual values and predictions on both Train and Test sets side by side.
+	- Visualizations that compare actual values and predicted values for both the training and test datasets.
+	- Plots are displayed side by side for a clear comparison.
 
 ## Plots
 
@@ -964,6 +980,105 @@ This section provides an overview of the key Python libraries and tools used in 
 - `evaluate_reg.py` (Custom module) - Used to calculate performance metrics such as R² and MAE for the trained models.
 
 
+## Why We Chose the New Streamlit Approach
+
+In this project, we opted to use Streamlit's **newer single-file approach** (`app.py`) instead of the traditional multipage structure with a custom `multipage.py` module. This decision was driven by the need for greater **design flexibility** and the ability to fully leverage [**Streamlit Themes**](https://docs.streamlit.io/develop/concepts/configuration/theming), including customizations for the sidebar and overall app appearance.
+
+### Key Reasons for This Choice:
+1. **Enhanced Design Freedom**:
+   - By using the new Streamlit approach, we were able to take full advantage of the built-in **Streamlit Theme** options, such as `theme.primaryColor`, `theme.backgroundColor`, and `theme.sidebar.backgroundColor`. This allowed us to create a visually cohesive and professional dashboard that aligns with the project's branding.
+   - The ability to customize the sidebar (`theme.sidebar`) provided a more polished and user-friendly navigation experience.
+
+2. **Simplified Codebase**:
+   - Instead of managing multiple files and a custom `multipage.py` module for navigation, the single-file approach streamlined the app's structure. This made the codebase easier to maintain and reduced the complexity of adding new features or pages.
+
+3. **Improved User Experience**:
+   - The new approach allowed us to create a seamless navigation experience without relying on external modules or workarounds. Users can easily switch between sections of the app using the sidebar, which is fully integrated with the Streamlit Theme.
+
+4. **Future-Proofing**:
+   - Streamlit's newer features, such as **Themes** and **native multipage support**, are designed to simplify app development and improve performance. By adopting this approach, we ensured that the project is aligned with Streamlit's latest best practices and is easier to update as new features are released.
+
+
+### Streamlit Theme Customizations
+
+To enhance the visual appeal and user experience of the app, we implemented a custom Streamlit theme. This was achieved by creating a `.streamlit` directory and a `config.toml` file, where we defined the theme's appearance and styling. Below is an overview of the customizations applied:
+
+#### **1. Creating the Theme**
+- A directory named `.streamlit` was created in the project root, containing a `config.toml` file.  
+- The `[theme]` section in the file was used for general theme customizations, while `[theme.sidebar]` was used to style the sidebar specifically.
+
+#### **2. Theme Customizations**
+To ensure a cohesive and professional design, we made the following adjustments:
+
+- **Base Theme**:  
+  - We selected a **light theme** to complement the Seaborn "Spectral" and Plotly "Pastel2" color palettes used in the visualizations. The light theme aligns with the playful and approachable tone of the project, making it visually appealing for the end client.
+
+- **Color Adjustments**:  
+  - **Primary Color**: A green shade (`#45a348`) was chosen to represent growth and positivity.  
+  - **Background Colors**:  
+    - Main background: `#fdfdf8` (light and clean).  
+    - Secondary background (e.g., widgets): `#e8e8df`.  
+    - Code block background: `#fdf9e8ff`.  
+  - **Text and Links**:  
+    - Text color: `#333333` (dark gray for readability).  
+    - Link color: `#8e47ecff` (purple for contrast and visibility).  
+
+- **Fonts**:  
+  - **Regular Text**: `sans-serif`, chosen for its modern and clean readability.  
+  - **Headings**: `monospace`, selected to add a unique style reminiscent of calculator fonts, fitting for a data-driven dashboard.  
+  - **Code Blocks**: `monospace`, to maintain consistency with the technical nature of the project.  
+
+- **Other Adjustments**:  
+  - Rounded corners (`baseRadius = "8px"`) for a softer, modern look.  
+  - Dataframe border color: `#acc8fcff` for a subtle yet distinct table outline.  
+  - General border color: `#66c2a5` for consistency with the primary color.  
+  - Custom colors for categorical and sequential charts:  
+    - **Categorical Colors**: Plotly "Pastel2" palette.  
+    - **Sequential Colors**: Based on Seaborn "Spectral" palette.
+
+#### **3. Sidebar Customizations**
+The sidebar was styled to ensure it complements the overall theme while remaining functional and visually distinct:
+- **Background Color**: `#f0f0ec` (light gray for subtle contrast).  
+- **Font**: `monospace` for headings, creating a consistent style with the rest of the app.  
+- **Link Color**: `#666357` (muted gray-green for a clean look).  
+- **Heading Font Size**: `15px`, ensuring readability without overwhelming the design.
+
+
+### Example of config.toml
+Below is the configuration file used to define the custom theme:
+
+```toml
+[theme]
+base = "light"
+primaryColor = "#45a348"
+backgroundColor = "#fdfdf8"
+secondaryBackgroundColor = "#e8e8df"
+font = "sans-serif"
+textColor = "#333333"
+linkColor = "#8e47ecff"
+codeFont = "monospace"
+codeBackgroundColor = "#fdf9e8ff"
+headingFont = "monospace"
+headingFontSizes = ["2.5rem"]
+baseRadius = "8px"
+dataframeBorderColor = "#acc8fcff"
+borderColor = "#66c2a5"
+chartCategoricalColors = ["#66c2a5", "#fc8d62", "#8da0cb", "#e78ac3", "#a6d854", "#ffd92f"]
+chartSequentialColors = ["#4CAF50", "#8BC34A", "#CDDC39", "#FFEB3B", "#FFC107", "#FF9800", "#F44336", "#FF5722", "#E91E63", "#9C27B0"]
+
+[theme.sidebar]
+backgroundColor = "#f0f0ec"
+headingFontSizes = "15px"
+headingFont = "monospace"
+linkColor = "#666357"
+```
+
+### Why Not Use multipage.py?
+While the traditional `multipage.py` approach is still valid, it comes with limitations:
+- It requires additional code to manage navigation between pages, which can become cumbersome in larger projects.
+- It does not fully support the new Streamlit Theme features, limiting the ability to customize the app's appearance.
+- The newer approach simplifies navigation and integrates seamlessly with Streamlit's built-in features, making it a more efficient choice for modern app development.
+
 ## Credits
 
 This project would not have been possible without the support and guidance of the following individuals and resources:
@@ -979,6 +1094,7 @@ This project would not have been possible without the support and guidance of th
 ### Media
 - **Screenshot of Streamlit Dashboard on different devices for README.md**: [AmIResponsive](https://ui.dev/amiresponsive)
 - **Emojis on dashboard**: Windows Emojis
+- **Icons in navigation menu**: [Google Material Icons](https://fonts.google.com/icons?icon.set=Material+Symbols&icon.style=Rounded)
 
 
 ## Acknowledgements
