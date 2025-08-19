@@ -4,6 +4,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from src.data_management import load_pkl_file
 from src.machine_learning.evaluate_reg import regression_performance
+from utils import create_toc
 
 
 # This page displays content of the content of
@@ -22,6 +23,20 @@ from src.machine_learning.evaluate_reg import regression_performance
 #     - Root Mean Squared Error (RMSE)
 #     - R² Score
 # - Regression Evaluation Plots for train and test set
+
+# Define page configuration
+st.set_page_config(
+    page_title="Machine Learning Model",
+    page_icon="🤖",
+    initial_sidebar_state="expanded",
+)
+
+# Create sidebar table of contents
+create_toc([
+    ("⚒️ ML Pipeline", "machine-learning-pipeline"),
+    ("🌟 Feature Importance", "feature-importance"),
+    ("🚀 Model Performance", "model-performance"),
+], page_title="Machine Learning Model")
 
 # Title and Introduction
 st.title("🤖 Machine Learning Model")

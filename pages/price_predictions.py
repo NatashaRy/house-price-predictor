@@ -12,6 +12,7 @@ from src.machine_learning.predictive_analysis import (
     predict_house_price,
     predict_inherited_house_price
 )
+from utils import create_toc
 
 # This page displays content of the
 # Sale Price Predictor page in the Streamlit app.
@@ -33,8 +34,15 @@ from src.machine_learning.predictive_analysis import (
 #   - Button "Predict Sale Price" to trigger prediction
 #   - Return predicted sale value
 
+# Define page configuration
+st.set_page_config(
+    page_title="Sale Price Predictor",
+    page_icon="💰",
+    initial_sidebar_state="expanded",
+)
+
 # Title and introduction
-st.title("💰Predict House Sale Price")
+st.title("💰Sale Price Predictor")
 st.markdown(
     """
     This page allows you to predict the sale price of houses in Ames,
@@ -49,9 +57,11 @@ st.markdown(
     price.
 
     Explore the predictions and gain insights into how different
-    features influence house prices.
+    features influence house prices.\n
     """
 )
+
+st.markdown(" ")
 
 # Reminder of business requirement 2
 st.info(
@@ -224,13 +234,8 @@ def predict_price_body():
     # Load dataset of inherited houses
     X_inherited = load_inherited_data()
     if X_inherited is not None:
-        st.markdown(
-            "<h3 style='margin-bottom: 0;padding-bottom: 0;'>"
-            "Inherited House Data</h3>"
-            "<p style='margin-top: 3px;padding-top: 0;'> "
-            "(Filtered for prediction)</p>",
-            unsafe_allow_html=True
-        )
+        st.subheader("Inherited House Data")
+        st.write("(Filtered for prediction)")
 
         # Make predictions for inherited houses
         X_inherited_with_predictions = predict_inherited_house_price(
@@ -358,6 +363,9 @@ def predict_price_body():
 
     # Prediction for user's own house
     st.header("🔮Predict the sale price of your own house")
+    # Anchor for quick navigation
+    st.markdown('<div id="predict-the-sale-price-of-your-own-house"></div>',
+                unsafe_allow_html=True)
     st.write("Enter the features of your house below and "
              "click 'Predict Sale Price'."
              )
@@ -369,7 +377,7 @@ def predict_price_body():
     prediction_placeholder = st.empty()
 
     # Make prediction for user's house
-    if st.button("Predict Sale Price"):
+    if st.button("Predict Sale Price", type="primary"):
         price_prediction = predict_house_price(
             X_live, house_features, regression_pipeline
         )

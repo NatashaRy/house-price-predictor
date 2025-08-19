@@ -1,4 +1,5 @@
 import streamlit as st
+from utils import create_toc
 
 # This page displays content of the hypotheses page in the Streamlit app.
 #
@@ -10,6 +11,19 @@ import streamlit as st
 #     - Validation
 #     - Plot image
 #     - Results
+
+# Define page configuration
+st.set_page_config(
+    page_title="Hypotheses and Validation",
+    page_icon="🔍",
+    initial_sidebar_state="expanded",
+)
+
+# Create sidebar table of contents
+create_toc([
+    ("🧠 Hypotheses and Results", "hypotheses-and-results"),
+    ("🧪 Explore Hypotheses", "explore-hypotheses"),
+], page_title="Hypotheses and Validation")
 
 
 # Title and Page Introduction

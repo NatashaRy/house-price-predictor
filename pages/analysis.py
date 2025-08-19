@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import ppscore as pps
 from feature_engine.encoding import OneHotEncoder
 from src.data_management import load_pricing_data
+from utils import create_toc
 
 # This page displays content of the
 # correlation analysis page in the Streamlit app.
@@ -26,6 +27,21 @@ from src.data_management import load_pricing_data
 #             analysis using the multiselect dropdown.
 # - Checkbox to display distribution plot of target variable.
 # - Checkbox to display bivariate analysis plots of key variables.
+
+# Define page configuration
+st.set_page_config(
+    page_title="Correlation Analysis",
+    page_icon="📈",
+    initial_sidebar_state="expanded",
+)
+
+# Create sidebar table of contents
+create_toc([
+    ("📑 Summary of Analysis", "summary-of-analysis"),
+    ("🔥 Heatmaps", "heatmaps"),
+    ("🎯 Target Distribution", "target-variable-distribution"),
+    ("📊 Bivariate Analysis", "bivariate-analysis"),
+], page_title="Correlation Analysis")
 
 # Set theme style
 sns.set_theme(style="darkgrid")
@@ -348,10 +364,10 @@ def analysis():
         )
         # Horizontal divider
         st.divider()
-        # Bivariate Analysis
+        # Bivariate Analysis Insights
         st.write(
             """
-            #### **Bivariate Analysis**:\n
+            #### **Bivariate Analysis Insights**:\n
             - Scatterplots and regression lines reveal trends between
              numerical variables and `SalePrice`.
             - Boxplots show how categorical variables like

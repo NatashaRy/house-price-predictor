@@ -17,8 +17,8 @@ chartCategoricalColors = ["#66c2a5", "#fc8d62", "#8da0cb", "#e78ac3", "#a6d854",
 chartSequentialColors = ["#4CAF50", "#8BC34A", "#CDDC39", "#FFEB3B", "#FFC107", "#FF9800", "#F44336", "#FF5722", "#E91E63", "#9C27B0"]      # Based on Seaborn Spectral colors
 
 [theme.sidebar]
-backgroundColor = "#f0f0ec"
-headingFontSizes = "15px"
-headingFont = "monospace"
-fontSize = "0.9rem"
-linkColor = "#666357"
+backgroundColor = "#f0f0ec"              # Sidebar background color
+headingFontSizes = "15px"                  # Custom font size for headings
+headingFont = "monospace"                  # Custom font family for headings
+font = "monospace"                         # Custom font family 
+linkColor = "#666357"                    # Custom link color

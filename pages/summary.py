@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from src.data_management import load_pricing_data
+from utils import create_toc
 
 # This page displays content of the summary page in the Streamlit app.
 #
@@ -11,6 +12,13 @@ from src.data_management import load_pricing_data
 #   - With quick dataset summary and dataset preview
 # - List of Business requirements
 # - Link to README file
+
+# Define page configuration
+st.set_page_config(
+    page_title="Project Overview",
+    page_icon="🗒️",
+    initial_sidebar_state="expanded",
+)
 
 # Title and page introduction
 st.title("🗒️Project Overview")
@@ -84,13 +92,13 @@ st.write(
     "client expects data visualizations of the correlated "
     "variables against the sale price to show that. \n"
     "This is addressed in the "
-    "[**Correlation Analysis**](analysis) page.\n"
+    "[Correlation Analysis](analysis) page.\n"
     "2. The client is interested in predicting the house sale "
     "price from her four inherited houses and any "
     "other houses in Ames, Iowa.\n"
     "This is addressed in the "
-    "[**Predict House Sale Price**](price_predictions) "
-    "and [**Machine Learning Model**](ml_pipeline_prediction) pages."
+    "[Predict House Sale Price](price_predictions) "
+    "and [Machine Learning Model](ml_pipeline_prediction) pages."
     )
 
 # Horizontal line
