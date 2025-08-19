@@ -13,7 +13,9 @@ from src.data_management import load_pricing_data
 # - Page introduction
 # - Optional: Checkbox to review raw dataset,
 #   displays raw data table if checked
-# - Summary of correlation analysis, with key observations
+# - Summary of correlation analysis
+#   - Optional: Expander with more details about the analysis
+#   - Key observations and insights
 # - Tabs to display heatmaps:
 #     - Tab 1: Predefined heatmaps
 #           - Checkbox to display Pearson Correlation Heatmap
@@ -305,6 +307,69 @@ def analysis():
         """
     )
 
+    # Expander for detailed analysis
+    with st.expander(
+            "**Read more details about the analysis**",
+            expanded=False):
+        st.subheader("Detailed Analysis")
+        st.write(
+            """
+            This section provides a deeper dive into the correlation
+             analysis conducted on the dataset. By exploring different
+              correlation methods and visualizations,we aim to uncover
+              meaningful relationships between house attributes and sale
+              prices. These insights are critical for understanding the dataset
+              and guiding the feature engineering and modeling processes.
+            """
+        )
+        # Correlations methods explained
+        st.write(
+            """
+            #### **Correlation Methods**:\n
+            - **Pearson Correlation**: Measures linear relationships
+             between variables.
+            - **Spearman Correlation**: Captures monotonic relationships,
+             even if they are non-linear.
+            - **Predictive Power Score (PPS)**: Quantifies the predictive
+             strength of one variable for another.
+            """
+        )
+        # Horizontal divider
+        st.divider()
+        # Heatmap Insights
+        st.write(
+            """
+            #### **Heatmap Insights**:\n
+            - Variables like `GrLivArea` and `OverallQual` show strong
+             positive correlations with `SalePrice`.
+            - PPS highlights non-linear relationships that traditional
+             correlation metrics might miss.
+            """
+        )
+        # Horizontal divider
+        st.divider()
+        # Bivariate Analysis
+        st.write(
+            """
+            #### **Bivariate Analysis**:\n
+            - Scatterplots and regression lines reveal trends between
+             numerical variables and `SalePrice`.
+            - Boxplots show how categorical variables like
+             `KitchenQual` impact prices.
+            """
+        )
+        # Whitespace
+        st.markdown(" ")
+        # Informational box
+        st.info(
+            """
+            All visualizations were saved in the `docs/plots`
+            directory for further use in the Streamlit app and
+            to meet **Business Requirement 1**.
+            """
+        )
+
+    # Key Observations from analysis
     st.info(
         """
         ### **Key Observations**:
@@ -322,12 +387,7 @@ def analysis():
         """
     )
 
-    st.write("All visualizations were saved in the `docs/plots` "
-             "directory for further use in the Streamlit app and "
-             "to meet **Business Requirement 1**."
-             )
-
-    # Heatmaps
+    # Visualization of Heatmaps
     st.header("🔥Heatmaps")
 
     # Create tabs for heatmaps
