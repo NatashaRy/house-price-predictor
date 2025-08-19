@@ -9,10 +9,11 @@ linkColor = "#8e47ecff"                 # Link color
 codeFont = "monospace"                    # Font for code
 codeBackgroundColor = "#fdf9e8ff"       # Background for code blocks
 headingFont = "monospace"                 # Heading font family
-headingFontSizes = ["2.5rem"]
+headingFontSizes = ["2.5rem"]             # Custom font size for H1
 baseRadius = "8px"                        # Rounded corners on buttons and widgets
 dataframeBorderColor = "#acc8fcff"      # Border for data frames
 borderColor = "#66c2a5"                 # General borders
+linkUnderline = false                     # Remove underline from links
 chartCategoricalColors = ["#66c2a5", "#fc8d62", "#8da0cb", "#e78ac3", "#a6d854", "#ffd92f"]     # Plotly Pastel2 colors
 chartSequentialColors = ["#4CAF50", "#8BC34A", "#CDDC39", "#FFEB3B", "#FFC107", "#FF9800", "#F44336", "#FF5722", "#E91E63", "#9C27B0"]      # Based on Seaborn Spectral colors
 
@@ -22,3 +23,4 @@ headingFontSizes = "15px"                  # Custom font size for headings
 headingFont = "monospace"                  # Custom font family for headings
 font = "monospace"                         # Custom font family 
 linkColor = "#666357"                    # Custom link color
+linkUnderline = false                      # Remove underline from links
