@@ -77,18 +77,18 @@ def hypotheses_body():
     selected_hypothesis = st.selectbox(
         "Select a hypothesis to explore",
         [
-            "Hypothesis 1: Larger houses have higher sale price",
+            "Hypothesis 1: Larger houses have a higher sale price",
             "Hypothesis 2: Houses with higher overall quality have "
-            "higher sale price",
-            "Hypothesis 3: Newer houses have higher sale price",
-            "Hypothesis 4: Houses with garages have higher sale price",
+            "a higher sale price",
+            "Hypothesis 3: Newer houses have a higher sale price",
+            "Hypothesis 4: Houses with garages have a higher sale price",
         ],
     )
 
     # Hypothesis 1
     if (selected_hypothesis ==
-            "Hypothesis 1: Larger houses have higher sale price"):
-        st.subheader("Hypothesis 1: Larger houses have higher sale price")
+            "Hypothesis 1: Larger houses have a higher sale price"):
+        st.subheader("Hypothesis 1: Larger houses a have higher sale price")
         st.write(
             """
             #### Rationale:
@@ -125,9 +125,9 @@ def hypotheses_body():
     # Hypothesis 2
     elif (selected_hypothesis ==
           "Hypothesis 2: Houses with higher overall quality have "
-          "higher sale price"):
+          "a higher sale price"):
         st.subheader("Hypothesis 2: Houses with higher overall "
-                     "quality have higher sale price"
+                     "quality have a higher sale price"
                      )
         st.write(
             """
@@ -164,8 +164,8 @@ def hypotheses_body():
 
     # Hypothesis 3
     elif (selected_hypothesis ==
-          "Hypothesis 3: Newer houses have higher sale price"):
-        st.subheader("Hypothesis 3: Newer houses have higher sale price")
+          "Hypothesis 3: Newer houses have a higher sale price"):
+        st.subheader("Hypothesis 3: Newer houses have a higher sale price")
         st.write(
             """
             #### Rationale:
@@ -201,9 +201,9 @@ def hypotheses_body():
 
     # Hypothesis 4
     elif (selected_hypothesis ==
-          "Hypothesis 4: Houses with garages have higher sale price"):
+          "Hypothesis 4: Houses with garages have a higher sale price"):
         st.subheader("Hypothesis 4: Houses with garages "
-                     "have higher sale price"
+                     "a have higher sale price"
                      )
         st.write(
             """
