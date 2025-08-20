@@ -1,56 +1,40 @@
-# House Pricing Predictor
+# House Price Predictor
 
-The **House Pricing Predictor** is an interactive dashboard designed to analyze housing data from Ames, Iowa, and predict house sale prices. This project combines data analysis, machine learning, and interactive visualizations to provide actionable insights for homeowners, real estate agents, and property investors.
+The **House Price Predictor** is an interactive dashboard designed to analyze housing data from Ames, Iowa, and predict house sale prices. This project combines data analysis, machine learning, and interactive visualizations to provide actionable insights for homeowners, real estate agents, and property investors.
 
-### Key Features:
-- **Data-Driven Decisions**: Empower users to make informed decisions about property pricing based on data insights.
-- **Insightful Analysis**: Explore the factors that most strongly influence house prices, such as size, quality, and age.
-- **Real-Time Predictions**: Predict house sale prices instantly, reducing uncertainty and saving time.
-
-By following a structured methodology ([CRISP-DM](#crisp-dm-a-structured-approach)) and leveraging advanced machine learning techniques, this project delivers accurate predictions and valuable insights tailored to the needs of its users.
+By following a structured methodology ([CRISP-DM](#crisp-dm-and-machine-learning-business-case)) and leveraging advanced machine learning techniques, this project delivers accurate predictions and valuable insights tailored to the needs of its users.
 
 [**Try the Dashboard Here**](https://pp5-sales-price-predictor.onrender.com)
 
-![Am I responsive screenshot](docs/readme-imgs/house-price-prediction.png)
+![Am I responsive screenshot](docs/readme-imgs/house-price-predictor.png)
+
+## Project Summary
+This project analyzes housing data from Ames, Iowa, to predict house sale prices using machine learning. Key findings include:
+- **Strongest Predictors**: Overall quality (`OverallQual`) and living area (`GrLivArea`) are the most influential factors.
+- **Model Performance**: The regression model achieved an R² score of 0.793 on the test set.
+- **Interactive Dashboard**: Users can explore data, validate hypotheses, and predict house prices in real-time.
+
 
 ## Table of Contents
-1. [**House Pricing Predictor**](#house-pricing-predictor)
+1. [**House Pricing Predictor**](#house-price-predictor)
+	- [Project Summary](#project-summary)
 2. [**Terminology**](#terminology)
-3. [**CRISP-DM: A Structured Approach**](#crisp-dm-a-structured-approach)
+3. [**CRISP-DM and Machine Learning Business Case**](#crisp-dm-and-machine-learning-business-case)
    - [Summary of CRISP-DM Phases and Their Purpose](#summary-of-crisp-dm-phases-and-their-purpose)
    - [Detailed Explanation of Each Phase](#detailed-explanation-of-each-phase)
 4. [**Dataset Content**](#dataset-content)
 5. [**Business and Dashboard Requirements**](#business-and-dashboard-requirements)
-6. [**Hypotheses and Validation Process**](#hypotheses-and-validation-process)
-   - [Hypothesis 1: Larger houses have higher sale price](#hypothesis-1-larger-houses-have-higher-sale-price)
-   - [Hypothesis 2: Houses with higher overall quality have higher sale price](#hypothesis-2-houses-with-higher-overall-quality-have-higher-sale-price)
-   - [Hypothesis 3: Newer houses have higher sale price](#hypothesis-3-newer-houses-have-higher-sale-price)
-   - [Hypothesis 4: Houses with garages have higher sale price](#hypothesis-4-houses-with-garages-have-higher-sale-price)
-7. [**Agile Methodology: EPICS and User Stories**](#epics-and-user-stories)
-8. [**Technical Implementation of Business Requirements**](#technical-implementation-of-business-requirements)
-9. [**ML Business Case**](#ml-business-case)
-   - [Problem Definition](#1-problem-definition)
-   - [Objectives](#2-objectives)
-   - [Solution](#3-solution)
-   - [Business Value](#4-business-value)
-   - [Model Performance](#5-model-performance)
-   - [Agile Development Approach](#6-agile-development-approach)
-   - [Business Case Assessment](#7-business-case-assessment)
+6. [**Data Exploration and Cleaning**](#data-exploration-and-cleaning)
+7. [**Hypotheses and Validation Process**](#hypotheses-and-validation-process)
+	- [Hypotheses and Results](#hypotheses-and-results)
+	- [Key Insights from Correlations Analysis](#key-insights-from-correlation-analysis)
+8. [**Agile Methodology: EPICS and User Stories**](#epics-and-user-stories)
+9. [**Technical Implementation of Business Requirements**](#technical-implementation-of-business-requirements)
 10. [**Dashboard Design**](#dashboard-design)
-    - [Sidebar](#sidebar)
-    - [Quick Summary](#quick-summary)
-    - [Correlations Analysis](#correlations-analysis)
-    - [Hypothesis and Validation](#hypotheses-and-validation)
-    - [Sale Price Predictor](#sale-price-predictor)
-    - [Machine Learning Model](#machine-learning-model)
+	- [Why We Chose the New Streamlit Approach](#why-we-chose-the-new-streamlit-approach)
+	- [Sidebar and Page Descriptions](#sidebar-and-page-descriptions)
 11. [**Plots**](#plots)
-    - [Histogram](#histogram)
-    - [Heatmaps](#heatmaps)
-    - [Box Plots](#box-plots)
-    - [Line Plots](#line-plots)
-    - [Linear Model Plots](#linear-model-plots)
-    - [Regression Performance Plot](#regression-performance-plot)
-12. [**Testing and Bugs**](#testing-and-bugs)
+12. [**Testing**](#testing)
     - [Testing Overview](#testing-overview)
     - [Code Quality Testing with PEP8](#code-quality-testing-with-pep8)
     - [Functional Testing](#functional-testing)
@@ -64,11 +48,6 @@ By following a structured methodology ([CRISP-DM](#crisp-dm-a-structured-approac
 14. [**Future Improvements**](#future-improvements)
 15. [**Deployment**](#deployment)
 16. [**Technologies and Python Packages**](#technologies-and-python-packages)
-17. [**Why We Chose the New Streamlit Approach**](#why-we-chose-the-new-streamlit-approach)
-	- [Key Reasons for This Choice](#key-reasons-for-this-choice)
-	- [Streamlit Theme Customizations](#streamlit-theme-customizations)
-	- [Exampel of `config.toml`](#example-of-configtoml)
-	- [Why Not Use `multipage.py`?](#why-not-use-multipagepy)
 17. [**Credits**](#credits)
 	- [Content](#content)
 	- [Media](#media)
@@ -95,9 +74,9 @@ This section provides definitions for key terms and concepts used throughout the
 - **Winsorization**: A statistical technique used to limit extreme values in the data to reduce the effect of outliers.
 - **Dashboard**: An interactive interface that provides visualizations, insights, and tools for users to explore data and generate predictions.
 
-## CRISP-DM: A Structured Approach
+## CRISP-DM and Machine Learning Business Case
 
-CRISP-DM (CRoss Industry Standard Process for Data Mining) is a standardized process model used to structure data analytics projects. It provides a clear roadmap for tackling complex data problems, ensuring that the project is well-organized and meets business requirements. This methodology was applied throughout the project to deliver a reliable and actionable solution.
+This project follows the **CRISP-DM methodology** (CRoss Industry Standard Process for Data Mining) to ensure a structured and systematic approach to solving the client's business problems. The methodology was applied as follows:
 
 ### Summary of CRISP-DM Phases and Their Purpose
 
@@ -115,57 +94,41 @@ The table below provides a high-level overview of the six CRISP-DM phases and th
 
 ### Detailed Explanation of Each Phase
 
-1. **Business Understanding**
-	- **Objective**: Understand the client’s needs and define the business requirements. The client wants to:
-		1. Identify which house attributes correlate most strongly with sales price.
-		2. Predict the sales price of four inherited and second-hand houses in Ames, Iowa.
-	- **Results**: The business requirements were mapped to two main tasks:
-		- Perform data analysis and visualization to identify correlations.
-		- Build a machine learning model to predict sales prices.
+#### 1. Business Understanding
+- **Objective**: Address the client's needs:
+  1. Identify which house attributes correlate most strongly with sale prices.
+  2. Predict the sale prices of four inherited houses and other properties in Ames, Iowa.
+- **Outcome**: Two main tasks were defined:
+  - Perform data analysis and visualization to identify correlations.
+  - Build a machine learning model to predict house prices.
 
-2. **Data Understanding**
-	- **Objective**: Explore and understand the dataset.
-	- **Actions**:
-		- The dataset was downloaded from [Kaggle](https://www.kaggle.com/codeinstitute/housing-prices-data).
-		- An initial analysis was performed to identify key variables and understand the data distribution.
-	- **Results**: Variables such as `GrLivArea`, `GarageArea`, `KitchenQual`, and `OverallQual` were identified as potentially highly correlated with sales price.
+#### 2. Data Understanding
+- **Dataset**: Sourced from [Kaggle](https://www.kaggle.com/codeinstitute/housing-prices-data), containing 79 variables describing house attributes and sale prices.
+- **Key Variables**: Features like `GrLivArea`, `OverallQual`, and `GarageArea` were identified as potentially significant predictors.
 
-3. **Data Preparation**
-	- **Objective**: Prepare data for analysis and modeling.
-	- **Actions**:
-		- Handling missing values (e.g., imputation of `LotFrontage`).
-		- Creation of new features (e.g., log-transformation of `SalePrice` to handle skew).
-		- Splitting data into training and testing sets.
-	- **Result**: A clean and structured dataset ready for analysis and modeling.
+#### 3. Data Preparation
+- **Steps**:
+  - Handled missing values (e.g., imputation for `LotFrontage`).
+  - Created new features like `TotalSF` (Total Square Footage) and `HouseAge`.
+  - Addressed outliers and optimized data types.
+- **Outcome**: A clean dataset ready for analysis and modeling.
 
-4. **Modeling**
-	- **Objective**: Build and optimize a machine learning model.
-	- **Actions**:
-		* A regression model, **ExtraTreesRegressor**, was selected based on the business requirements and its ability to handle both linear and non-linear relationships.
-		* Hyperparameter optimization was performed using GridSearchCV to improve the model’s performance.
-		* The model was trained with the identified best features: `GarageArea`, `GrLivArea`, `KitchenQual` and `OverallQual`.
-	- **Result**: 
-		- R² (Train Set): 0.809
-		- R² (Test Set): 0.793
-		- The model exceeded the client's expectations by achieving an R² score of 0.793 on the test set, surpassing the minimum requirement of 0.75.
+#### 4. Modeling
+- **Model**: An **ExtraTreesRegressor** was selected for its ability to handle both linear and non-linear relationships.
+- **Performance**:
+  - **Train Set R²**: 0.809
+  - **Test Set R²**: 0.793
+- **Key Features**: `OverallQual`, `GrLivArea`, `GarageArea`, and `KitchenQual`.
 
-5. **Evaluation**
-	- **Objective**: Evaluate the model’s performance and ensure that it meets the business requirements.
-	- **Actions**:
-		- The model’s performance was evaluated using R² scores and residual plots.
-		- The results were compared with the customer’s requirement of an R² score of at least 0.75.
-	- **Result**: The model met and exceeded the customer’s requirements.
+#### 5. Evaluation
+- The model exceeded the client's expectations, achieving an R² score above the required 0.75 on the test set.
+- Visualizations like residual plots and feature importance charts were used to validate the model's performance.
 
-6. **Deployment**
-	- **Objective**: Deploy the solution to the customer.
-	- **Actions**:
-		- A Streamlit app was developed to visualize data and enable real-time predictions.
-		- The app was deployed via [Render](https://render.com).
-	- **Result**: The customer can now use the app to analyze data and predict sales prices. [Try the app here](https://pp5-sales-price-predictor.onrender.com).
+#### 6. Deployment
+- A user-friendly dashboard was developed using **Streamlit** to present insights and allow real-time predictions.
+- The app was deployed via [Render](https://render.com) for easy access.
 
-### Conclusion
-
-By following the CRISP-DM methodology, this project ensured a structured and systematic approach, resulting in a reliable and actionable solution for the client.
+By combining data analysis, machine learning, and an interactive dashboard, this project delivers actionable insights and accurate predictions tailored to the client's needs.
 
 
 ## Dataset Content
@@ -199,7 +162,6 @@ By following the CRISP-DM methodology, this project ensured a structured and sys
 |YearRemodAdd|Remodel date (same as construction date if no remodelling or additions)|1950 - 2010|
 |SalePrice|Sale Price|34900 - 755000|
 
-
 ## Business and Dashboard Requirements
 
 The success of this project depends on meeting the client's business and dashboard requirements. These requirements ensure that the solution is both actionable and user-friendly, addressing the client's need to maximize the value of their inherited properties in Ames, Iowa.
@@ -211,49 +173,90 @@ By addressing these requirements, the project delivers a comprehensive solution 
 - **Dashboard Requirements**: The client requires a dashboard that provides an overview of the project and dataset, highlights key correlations between house attributes and sale prices, and allows users to input house data for real-time price predictions. It should also display the predicted sale price for the 4 inherited houses, their total value, and include a technical page summarizing the model's performance and pipeline.
 
 
+## Data Exploration and Cleaning
+
+Before conducting the analysis and building the predictive model, the dataset was thoroughly explored and cleaned to ensure data quality and reliability. This step was crucial for addressing missing values, optimizing data types, and preparing the dataset for hypothesis validation and model training.
+
+#### Key Steps in Data Cleaning:
+1. **Handling Missing Values**:  
+   - Missing values were analyzed and handled based on their impact on the dataset.  
+   - Features with a high percentage of missing values (e.g., `EnclosedPorch`, `WoodDeckSF`) were dropped due to their limited contribution to the analysis.  
+   - For other features, missing values were imputed using appropriate strategies, such as filling with the median (`LotFrontage`) or mode (`GarageType`).
+
+2. **Optimizing Data Types**:  
+   - Data types were optimized to reduce memory usage and improve processing speed.  
+   - For example, categorical variables like `MSZoning` and `Neighborhood` were converted to the `category` data type.
+
+3. **Feature Engineering**:  
+   - New features were created to enhance the predictive power of the model.  
+   - For instance, `TotalSF` (Total Square Footage) was introduced by combining `TotalBsmtSF`, `1stFlrSF`, and `2ndFlrSF`.  
+   - Temporal features like `HouseAge` and `RemodelAge` were derived from `YearBuilt` and `YearRemodAdd`.
+
+4. **Outlier Detection and Removal**:  
+   - Outliers in key numerical features (e.g., `GrLivArea`, `SalePrice`) were identified using visualizations like scatter plots and box plots.  
+   - Extreme outliers were removed to improve model performance and reduce skewness.
+
+5. **Encoding Categorical Variables**:  
+   - Categorical variables were encoded to make them suitable for machine learning models.  
+   - Techniques like one-hot encoding and label encoding were applied to variables such as `Neighborhood` and `GarageType`.
+
+6. **Saving the Cleaned Dataset**:  
+   - The cleaned dataset was saved as a CSV file for further analysis and modeling.
+
+#### Conclusion:
+The data cleaning process ensured that the dataset was free of inconsistencies, optimized for analysis, and ready for hypothesis validation and model training. This step laid the foundation for accurate and reliable predictions.
+
+
 ## Hypotheses and Validation Process
 
-To meet the business requirements, we developed four hypotheses to explore how different house attributes affect sales price. These hypotheses were tested using correlation analysis and visualizations, providing insights into the most significant variables for the regression model.
+To address **Business Requirement 1**, we formulated and tested four hypotheses to explore how house attributes affect sale prices. These hypotheses were validated using correlation analysis and visualizations, which provided insights into the most significant predictors of house prices.
 
-### **Hypothesis 1**: Larger houses have higher sale price.
+### Hypotheses and Results
+
+#### Hypothesis 1: Larger houses have higher sale price.
 - **Rationale**: It is expected that houses with larger living area (`GrLivArea`, `GarageArea`, `TotalBsmtSF`) have higher prices due to their size and usability.
 - **Validation**: 
 	- A correlation analysis showed that `GrLivArea` has a strong positive correlation with sales price *(Pearson correlation: 0.71)*.
 	- A scatterplot showed a clear trend where larger living area resulted in higher prices.
-
-	![GrLivArea vs SalePrice](docs/plots/lm_plot_price_by_GrLivArea.png)
-
 - **Results**: The hypothesis was validated. `GrLivArea` is one of the most significant variables in predicting sales price.
+- **Visualization**:
+
+![GrLivArea vs SalePrice](docs/plots/lm_plot_price_by_GrLivArea.png)
 	
-### **Hypothesis 2**: Houses with higher overall quality have higher sale price.
+#### Hypothesis 2: Houses with higher overall quality have higher sale price.
 - **Rationale**: Houses with better construction quality and finish (`OverallQual`) are expected to have higher prices due to their durability, aesthetics and buyer appeal.
 - **Validation**: 
 	- A correlation analysis showed that `OverallQual` has a very strong positive correlation with sales price *(Pearson correlation: 0.79)*.
 	- A boxplot showed that houses with higher construction quality consistently had higher prices.
-
-	![OverallQual vs SalePrice](docs/plots/box_plot_price_by_OverallQual.png)
-
 - **Results**: The hypothesis was validated. `OverallQual` is one of the most decisive factors for the sales price.
+- **Visualization**:
 
-### **Hypothesis 3**: Newer houses have higher sale price.
+![OverallQual vs SalePrice](docs/plots/box_plot_price_by_OverallQual.png)
+
+#### Hypothesis 3: Newer houses have higher sale price.
 - **Rationale**: Newer houses (`YearBuilt`) are expected to have higher prices due to modern design, better materials and lower maintenance costs.
 - **Validation**: 
 	- A correlation analysis showed a positive correlation between `YearBuilt` and sales price *(Pearson correlation: 0.52)*.
 	- A line plot showed that newer houses generally have higher prices.
-
-	![YearBuilt vs SalePrice](docs/plots/line_plot_price_by_YearBuilt.png)
-
 - **Results**: The hypothesis was partially validated. Although newer houses have higher prices, the correlation is not as strong as for other variables.
+- **Visualization**:
 
-### **Hypothesis 4**: Houses with garages have higher sale price.
+![YearBuilt vs SalePrice](docs/plots/line_plot_price_by_YearBuilt.png)
+
+#### Hypothesis 4: Houses with garages have higher sale price.
 - **Rationale**: Houses with garages (`GarageArea`) are more attractive because they offer extra storage and parking space, which increases value.
 - **Validation**: 
 	- A scatterplot showed a positive trend between `GarageArea` and sales price *(Pearson correlation: 0.62)*.
 	- Houses with larger garage areas generally had higher prices.
-
-	![GarageArea vs SalePrice](docs/plots/lm_plot_price_by_GarageArea.png)
-
 - **Results**: The hypothesis was validated. `GarageArea` affects sales price, but not as strongly as `GrLivArea` or `OverallQual`.
+- **Visualization**:
+
+![GarageArea vs SalePrice](docs/plots/lm_plot_price_by_GarageArea.png)
+
+### Key Insights from Correlation Analysis
+
+- **Strongest Predictors**: `OverallQual` and `GrLivArea` are the most influential variables, with strong positive correlations to `SalePrice`.
+- **Moderate Predictors**: `GarageArea` and `YearBuilt` also impact sale prices but to a lesser extent.
 
 
 ## EPICS and User Stories
@@ -297,7 +300,7 @@ To address the client's business requirements, we have implemented specific data
 		- Perform correlation analysis between house attributes and sale price.
 		- Visualize the correlations using scatter plots, box plots, and heatmaps.
 		- Identify the most correlated variables and present them in an interactive dashboard.
-    - **Notebook**: [03 - Correlation Analysis Notebook and Visualization](https://github.com/NatashaRy/milestone-project-heritage-housing-issues/blob/main/jupyter_notebooks/03-CorrelationStudy.ipynb)
+    - **Notebook**: [03 - Correlation Analysis Notebook and Visualization](https://github.com/NatashaRy/house-price-predictor/blob/main/jupyter_notebooks/03-CorrelationStudy.ipynb)
 		
 2. **Business Requirement 2**: Predict the sale price for the inherited houses and other houses in Ames, Iowa.
 	- **Rationale**: By building a machine learning model, we can provide the client with accurate sale price predictions based on house attributes. This helps the client maximize the value of the inherited houses.
@@ -305,7 +308,7 @@ To address the client's business requirements, we have implemented specific data
 		- Train a regression model to predict sale prices.
 		- Implement an interactive feature in the dashboard where users can input house attributes and get real-time predictions.
 		- Display the predicted prices for the inherited houses and their total value.
-    - **Notebook**: [05 - Model Training and Evaluation Notebook](https://github.com/NatashaRy/milestone-project-heritage-housing-issues/blob/main/jupyter_notebooks/05-ModelTraining.ipynb)
+    - **Notebook**: [05 - Model Training and Evaluation Notebook](https://github.com/NatashaRy/house-price-predictor/blob/main/jupyter_notebooks/05-ModelTraining.ipynb)
 		
 3. **Dashboard Requirements**:
 	- **Rationale**: The dashboard serves as a central platform to present insights and predictions in a user-friendly way.
@@ -315,194 +318,217 @@ To address the client's business requirements, we have implemented specific data
 		- Include a technical page showing the model's performance and pipeline.
 
 
-## ML Business Case
-
-To meet the client's business requirements, we developed a machine learning solution using a regression model to predict sale prices based on house attributes. This approach was chosen because it allows for accurate predictions and provides actionable insights into the factors that most influence house prices.
-
-By leveraging machine learning, the project ensures that the client can make data-driven decisions and maximize the value of their inherited properties.
-
-### 1. Problem Definition
-- The client needs to understand which factors influence the sale price and predict the sale price for their inherited houses.
-- The challenge is that the client's current knowledge of property prices is insufficient for making accurate appraisals in Ames, Iowa.
-- The client also requires a user-friendly dashboard to explore insights and generate predictions.
-
-### 2. Objectives
-- Identify the most relevant attributes that influence the sale price through data analysis and visualization.
-- Build a machine learning model capable of predicting sale prices with high accuracy.
-- Develop an interactive dashboard to present insights and allow real-time predictions for both the inherited houses and any other house in Ames, Iowa.
-
-### 3. Solution
-To address the client's needs, the following steps were implemented:
-- **Data Analysis**: Conducted correlation studies to identify the most relevant variables influencing sale prices.
-- **Feature Engineering**: Prepared the dataset by handling missing values, addressing outliers, and creating new features (e.g., log-transformation of skewed variables).
-- **Model Training**: Trained a regression model, specifically an **ExtraTreesRegressor**, to predict sale prices. Hyperparameter optimization was performed using GridSearchCV to improve performance.
-- **Dashboard Development**: Built an interactive dashboard using Streamlit, allowing users to:
-  - Explore correlations between house attributes and sale prices.
-  - Input house attributes to generate real-time predictions.
-  - View the predicted sale prices for the 4 inherited houses and their total value.
-
-### 4. Business Value
-- **Data-Driven Decisions**: The client can make informed decisions about pricing and selling their inherited houses based on data insights.
-- **User-Friendly Dashboard**: The dashboard provides an intuitive platform to explore data and generate predictions, saving time and reducing uncertainty.
-- **Maximized Sales Price**: By identifying key factors influencing sale prices, the client can maximize the value of their inherited properties.
-
-### 5. Model Performance
-The model was evaluated using key metrics to ensure it meets the agreed performance criteria:
-
-#### **Train Set**
-- **R² Score**: 0.809
-- **Mean Absolute Error (MAE)**: $21,887.23
-- **Mean Squared Error (MSE)**: 1,139,899,653.43
-- **Root Mean Squared Error (RMSE)**: $33,762.40
-
-#### **Test Set**
-- **R² Score**: 0.793
-- **Mean Absolute Error (MAE)**: $23,600.74
-- **Mean Squared Error (MSE)**: 1,586,891,756.46
-- **Root Mean Squared Error (RMSE)**: $39,835.81
-
-The model exceeded the client's expectations by achieving an **R² score of 0.793** on the test set, surpassing the minimum requirement of 0.75. These results demonstrate that the model is both accurate and reliable for predicting house sale prices.
-A technical page in the dashboard displays these performance metrics alongside visualizations, such as residual plots and feature importance, to provide further insights into the model's behavior.
-
-### 6. Agile Development Approach
-To ensure the project was delivered efficiently and met the client's requirements, we adopted an [**agile methodology**](#epics-and-user-stories). The project was broken down into **EPICS** and **User Stories**, which were tracked and addressed iteratively. This approach allowed for continuous feedback and ensured that all business requirements were met.
-
-
-### 7. Business Case Assessment
-The following questions guided the development of the project:
-- **What are the business requirements?**
-  - Discover how house attributes correlate with sale prices.
-  - Predict the sale prices for the 4 inherited houses and any other house in Ames, Iowa.
-- **Can conventional data analysis answer any requirements?**
-  - Yes, correlation analysis was used to investigate how house attributes are related to sale prices.
-- **Does the client need a dashboard or an API endpoint?**
-  - The client requires a dashboard.
-- **What does the client consider a successful outcome?**
-  - A study showing the most relevant variables correlated with sale prices.
-  - A capability to predict the sale price for the inherited houses and other houses in Ames, Iowa.
-- **What are the model's inputs and outputs?**
-  - Inputs: House attribute information (e.g., `GrLivArea`, `GarageArea`, `KitchenQual`, `OverallQual`).
-  - Output: Predicted sale price.
-- **What are the performance criteria for the model?**
-  - An R² score of at least 0.75 on both the train and test sets.
-- **How will the client benefit?**
-  - The client will maximize the sales price for the inherited properties and gain a deeper understanding of the factors influencing house prices.
-
-
 ## Dashboard Design
-The dashboard for this project is built using Streamlit, an open-source Python library that allows for the rapid development of interactive web applications. Streamlit is particularly well-suited for data science and machine learning projects, as it enables seamless integration of data visualizations, widgets, and machine learning models into a user-friendly interface. The dashboard is designed to address the client's business requirements and provide actionable insights through interactive visualizations and predictive analytics.
 
+The dashboard was built using **Streamlit**, an open-source Python framework for creating interactive web applications. Instead of using the traditional `multipage.py` structure, this project adopted Streamlit's **newer single-file approach** (`app.py`) to fully leverage **Streamlit Themes** and simplify the app's structure.
 
-### Sidebar
-- **File name**: [`app.py`](https://github.com/NatashaRy/milestone-project-heritage-housing-issues/blob/main/app_pages/multipage.py)
-- **Purpose**: The Streamlit Sidebar is designed to provide intuitive navigation and quick access to essential project details and features. It ensures that users can seamlessly explore the dashboard and interact with its functionalities. The sidebar is visible at all time.
+### Why We Chose the New Streamlit Approach
 
-![Sidebar](docs/readme-imgs/sidebar.png)
+1. **Enhanced Design**: Streamlit Themes allow full customization of colors, fonts, and sidebar styling, creating a cohesive and professional look.
+2. **Simplified Codebase**: The single-file structure reduced complexity, making the app easier to maintain and extend.
+3. **Improved User Experience**: Seamless navigation and polished visuals enhance usability.
+4. **Future-Proofing**: Aligns with Streamlit's latest features, ensuring scalability and easier updates.
 
-**Content**:
-- **Navigation**: Navigation with [Material Icons](#media).
-- **Expanding sidebar arrow**: The top right of the sidebar contains an arrow to give the user the possibility to fold/unfold the sidebar. If the sidebar is expanded, the arrow will appear when hovering over the sidebar.
-- **Adjustable Sidebar Widht**: Users can choose the width of the sidebar themselves by dragging it out or in on the page to enlarge or reduce it as needed.
+#### Streamlit Theme Customizations
 
-### Project Overview
-- **File name**: [`summary.py`](https://github.com/NatashaRy/milestone-project-heritage-housing-issues/blob/main/app_pages/summary.py)
+To enhance the app's visual appeal, we implemented the following customizations in the `config.toml` file:
+- **Primary Color**: `#45a348` (green) for a positive and professional tone.
+- **Background Colors**: Light and clean (`#fdfdf8` for main background, `#e8e8df` for widgets).
+- **Fonts**: `sans-serif` for readability and `monospace` for headings and code blocks.
+- **Rounded Corners**: `8px` for a modern, softer look.
+- **Custom Chart Colors**: Plotly "Pastel2" and Seaborn "Spectral" palettes for consistency.
+
+#### Benefits of This Approach
+
+By adopting this approach, the app achieves:
+- A visually cohesive and user-friendly design.
+- A simplified and maintainable codebase.
+- Compatibility with Streamlit's latest best practices.
+
+This decision allowed us to prioritize both functionality and design, delivering a modern and intuitive dashboard that meets the client's needs.
+
+### Sidebar and Page Descriptions 
+
+#### Sidebar
+
+- **File name**: [`app.py`](https://github.com/NatashaRy/house-price-predictor/blob/main/app.py)  
+- **Purpose**: The Streamlit Sidebar enhances user experience by providing intuitive navigation and quick access to key features and project details. It allows users to seamlessly switch between pages, explore dynamic content like the Table of Contents (TOC), and access essential links. The sidebar remains visible at all times, ensuring easy access to navigation, quick links, and project information.
+
+The following image demonstrates the different **sidebar stages**:
+
+![Sidebar Stages](docs/readme-imgs/sidebar-stages.png)
+
+**Content**
+1. **Expanding Sidebar Arrow**:  
+	- Located at the top right of the sidebar, the arrow allows users to fold or unfold the sidebar.
+	- When expanded, the arrow becomes visible on hover, providing a seamless way to toggle its visibility **(2: Hover Effect in the sidebar stages image)**.
+2. **Adjustable Sidebar Width**:  
+	- Users can resize the sidebar by dragging it in or out.  
+	- When hovering over the right edge, a green line appears, indicating that the sidebar is resizable.
+	- This feature allows users to adjust the sidebar's width to suit their preferences and screen size, enhancing usability **(3: Resizable Sidebar in the sidebar stages image)**. 
+3. **Custom Header**: 
+	- Displays the app icon and title ("🏠 House Price Predictor") above the navigation links, giving the sidebar a polished and professional appearance.
+4. **Navigation**: **(1: Default Stage)**  
+	- The sidebar contains five navigation options, each paired with a [Material Icon](#media) and a page title.  
+	- These options allow users to switch between different pages of the app. The navigation items include:  
+		- **Project Overview**  
+			- Icon: [Material Icon "home"](https://fonts.google.com/icons?icon.set=Material+Symbols&icon.style=Rounded&selected=Material+Symbols+Outlined:home:FILL@0;wght@0;GRAD@0;opsz@24)  
+		- **Correlation Analysis**  
+			- Icon: [Material Icon "analytics"](https://fonts.google.com/icons?icon.set=Material+Symbols&icon.style=Rounded&selected=Material+Symbols+Outlined:analytics:FILL@0;wght@0;GRAD@0;opsz@24)  
+		- **Hypotheses and Validation**  
+			- Icon: [Material Icon "lightbulb"](https://fonts.google.com/icons?icon.set=Material+Symbols&icon.style=Rounded&selected=Material+Symbols+Outlined:lightbulb:FILL@0;wght@0;GRAD@0;opsz@24)  
+		- **Sale Price Predictor**  
+			- Icon: [Material Icon "money_bag"](https://fonts.google.com/icons?icon.set=Material+Symbols&icon.style=Rounded&selected=Material+Symbols+Outlined:money_bag:FILL@0;wght@0;GRAD@0;opsz@24)  
+		- **Machine Learning Model**  
+			- Icon: [Material Icon "smart_toy"](https://fonts.google.com/icons?icon.set=Material+Symbols&icon.style=Rounded&selected=Material+Symbols+Outlined:smart_toy:FILL@0;wght@0;GRAD@0;opsz@24)
+5. **Dynamic Table of Contents (TOC)**: 
+	- A custom function, `create_toc`, located in [`utils.py`](https://github.com/NatashaRy/house-price-predictor/blob/main/utils.py), dynamically generates a TOC for pages with multiple sections.
+	- The TOC is styled for clarity and ease of navigation **(4: Sidebar with TOC in the sidebar stages image)**.
+	- Pages with TOC:
+		- Correlation Analysis
+		- Hypotheses and Validation
+		- Machine Learning Model
+6. **Quick Links**:
+	- Includes links to the GitHub repository and the README file for easy access:
+		- [GitHub Repository](https://github.com/NatashaRy/house-price-predictor)
+		- [README file](https://github.com/NatashaRy/house-price-predictor/blob/main/README.md)
+7. **"About this project" Section**:
+	- A dedicated section at the bottom of the sidebar provides information about the project, including:
+		- The purpose of the app: *"The app predicts house prices in Ames, Iowa, using machine learning. Users can analyze data and make predictions."*
+		- Acknowledgment of the [Code Institute Full Stack Software Developer Course](https://codeinstitute.net/se/full-stack-software-development-diploma/) as the context for this project. 
+		- Copyright information: *"© 2025 Natasha Rydell. All rights reserved."*
+	- This section is always displayed last in the sidebar, ensuring users can always access key project details.
+
+#### Project Overview
+
+- **File name**: [`summary.py`](https://github.com/NatashaRy/house-price-predictor/blob/main/pages/summary.py)
 - **Icon**: 🗒️
 - **Purpose**: Provide an overview of the project, including its goals, dataset and business requirements.
 - **State Business Requirements**: A clear statement of the business requirements.
 	1. Identify the most relevant variables correlated with house sale price.
 	2. Predict the sale price of the 4 inherited houses and any other house in Amen, Iowa.
 
-![Summary page](docs/readme-imgs/summary.png)
+The following image demonstrate the **Project Overview** page:
+
+![Project Overview](docs/readme-imgs/project-overview.png)
 
 **Content**:
-- **Introduction**: Explains what the page is about.
-- **Project Summary**: Summarizes the project and its goals.
-- **Dataset Details**: Link to the Kaggle dataset and quick summary of dataset listing:
+1. **Introduction**: Explains what the page is about.
+2. **Project Summary**: Summarizes the project and its goals.
+3. **Dataset Details**: Link to the Kaggle dataset and quick summary of dataset listing:
 	- Number of rows
 	- Number of columns
 	- Target varible
 	- Key variables
 	- Dataset preview
-- **Business Requirements**: Both project business requirements are listed with links to pages associated with them. 
-- **Link to README**: Link to the README file on GitHub.
+4. **Business Requirements**: Both project business requirements are listed with links to pages associated with them. 
+5. **Link to README**: Link to the README file on GitHub.
 	
 	
-### Correlation Analysis
-- **File name**: [`analysis.py`](https://github.com/NatashaRy/milestone-project-heritage-housing-issues/blob/main/app_pages/analysis.py)
+#### Correlation Analysis
+
+- **File name**: [`analysis.py`](https://github.com/NatashaRy/house-price-predictor/blob/main/pages/analysis.py)
 - **Icon**: 📈
 - **Purpose**: Address Business Requirement 1 by analyzing and visualizing the correlation between house attributes and sale prices.
 - **State Business Requirement 1**: Clearly outline the requirement to identify variables correlated with sale prices.
 
-![Correlation Analysis page](docs/readme-imgs/correlation-analysis.png) ![Correlation Analysis](docs/readme-imgs/correlation-analysis-inspect.png)
+The following image demonstrate the **Correlations Analysis** page in it's default state:
+
+![Correlation Analysis page](docs/readme-imgs/correlation-analysis.png)
 
 **Content**:
-- **Introduciton**: Explains what the page is about.
-- *Optional* - **Checkbox to inspect raw dataset**: When checked a scrollable table with the 10 first rows of raw dataset is displayed.
-- **Summary of Analysis**: Summary of what the correlation analysis contributed and conclusions along with information box.
+1. **Introduciton**: Explains what the page is about.
+
+The following images demonstrates: 
+
+1. Checked checkbox: **Would you like to inspect the raw dataset**.
+2. Expanded expander: **Read more for detailed analysis**.
+
+![Inspect raw dataset & expander for more details on analysis](docs/readme-imgs/correlation-inspect-detailed-analysis.png)
+
+2. *Optional* - **Checkbox to inspect raw dataset (1)**: When checked a scrollable table with the 10 first rows of raw dataset is displayed.
+3. **Summary of Analysis**: Summary of what the correlation analysis contributed and conclusions along with information box.
 	- **Information Box**: Listing 3 key observations from the correlations analysis.
+	- **Expander for more detailed analysis (2)**:
 
+The following images demonstrates the different options for **Heatmaps**:
 
-![Correlation Analysis - Custom Heatmap Dropdown](docs/readme-imgs/corr-analysis-custom-heatmap.png) ![Correlation Analysis - Custom Heatmap Example](docs/readme-imgs/corr-analysis-custom-heatmap1.png) ![Correlation Analysis - Distribution of Sale Price](docs/readme-imgs/corr-analysis-dist.png)
+![Heatmaps](docs/readme-imgs/correlation-analysis-heatmaps.png)
 
-![Correlation Analysis - Predefined Heatmap](docs/readme-imgs/corr-analysis-predefined-heatmap.png) ![Correlation Analysis - Bivariate Analysis](docs/readme-imgs/corr-analysis-biv.png) ![Correlation Analysis - Bivariate Analysis Continued](docs/readme-imgs/corr-analysis-biv2.png) 
+4. **Heatmaps**: Divided into two tabs; one for predefined heatmaps and one for create custom heatmap **(1: Heatmaps)**.
+	- **Tab 1 - Checkboxes to Display Predefined heatmaps (1: Heatmaps)**: When checked chosen heatmap is displayed, including:
+		- Pearson Correlation Heatmap **(3: Predefined Heatmaps)**
+		- Spearman Correlation Heatmap **(3: Predefined Heatmaps)**
+		- PPS Matrix Heatmap **(4: Predefined Heatmaps)**
+	- **Tab 2 - Create Custom Heatmap**: Users can select their own variables for correlation analysis using the multiple choice dropdown menu **(5: Custom Heatmap)**.
 
+The following images demonstrates:
 
-- **Heatmaps**: Divided into two tabs; one for predefined heatmaps and one for create custom heatmap.
-	- **Column 1 - Checkboxes to Display Predefined heatmaps**: When checked chosen heatmap is displayed, including:
-		- Pearson Correlation Heatmap
-		- Spearman Correlation Heatmap
-		- PPS Matrix Heatmap
-	- **Column 2 - Create Custom Heatmap**: Users can select their own variables for correlation analysis using the multiple choice dropdown menu.
-- **Checkbox to Display Target Variable Distribution**: When checked a histogram with distrubution of `SalePrice` is displayed.
-- **Checkbox to Display Bivariate Analysis**: When checked several plots are displayed, showing the relationshop between key variables and the target variable.
+1. Checked checkbox **Display Distribution of Target Variable**.
+2. Checked checkbox **Display all visualizations for key variables**.
 
+![Target variable distrubution & Bivariate analysis](docs/readme-imgs/correlation-analysis-target-bivariate.png)
 
-### Hypotheses and Validation
-- **File name**: [`hypotheses.py`](https://github.com/NatashaRy/milestone-project-heritage-housing-issues/blob/main/app_pages/hypotheses.py)
+5. **Checkbox to Display Target Variable Distribution (1: Target Variable Distrubution)**: When checked a histogram with distrubution of `SalePrice` is displayed.
+6. **Checkbox to Display Bivariate Analysis (2: Bivariate Analysis)**: When checked several plots are displayed, showing the relationshop between key variables and the target variable.
+ 
+
+#### Hypotheses and Validation
+
+- **File name**: [`hypotheses.py`](https://github.com/NatashaRy/house-price-predictor/blob/main/pages/hypotheses.py)
 - **Icon**: 🔍
 - **Purpose**: Present the hypotheses formulated during the project and describe how they were validated.
 
-![Hypotheses page](docs/readme-imgs/hypotheses.png) 
+The following image demonstrate the **Hypotheses and Validation** page in it's default state with hypothesis 1 chosen to be explored:
+
+![Hypotheses and Validation page](docs/readme-imgs/hypotheses.png)
 
 **Content**:
-- **Introduction**: Explains what the page is about.
-- **Hypotheses and Results**: Summary of the results we have reached when we have tested the hypotheses displayed in an information box.
-- **Explore Hypotheses**: Dropdown that allows the user to select one of the four hypothesis to explore further.
-- **Hypothesis**: Each hypothesis is described with:
+1. **Introduction**: Explains what the page is about.
+2. **Hypotheses and Results**: Summary of the results we have reached when we have tested the hypotheses displayed in an information box.
+3. **Explore Hypotheses**: Dropdown that allows the user to select one of the four hypothesis to explore further.
+4. **Hypothesis**: Each hypothesis is described with:
 	- **Rationale**: Explains the reasoning behind the hypothesis.
 	- **Validation**: Describes the methods and analyses used to test it.
 	- **Plot image**: Visualizes the relationship between variables.
 	- **Result**: Summarizes whether the hypothesis was confirmed, partially confirmed, or rejected.
+5. **Dropdown to choose one of the hypotheses**:
+	1. Larger houses have higher sale price 						*- Validated.*
+	2. Houses with higher overall quality have higher sale price 	*- Validated.*
+	3. Newer houses have higher sale price 							*- Validated.*
+	4. Houses with garages have higher sale price 					*- Validated.*
+6. **Returns chosen hypothesis**.
 
-![Hypotheses - Dropdown](docs/readme-imgs/hypotheses-dropdown.png)
+#### Sale Price Predictor
 
-- **Dropdown to choose one of the hypotheses**:
-	1. Larger houses have higher sale price *- confirmed.*
-	2. Houses with higher overall quality have higher sale price *- confirmed.*
-	3. Newer houses have higher sale price *- confirmed.*
-	4. Houses with garages have higher sale price *- confirmed.*
-- **Returns chosen hypothesis**.
-
-### Sale Price Predictor
-- **File name**: [`price_prediction.py`](https://github.com/NatashaRy/milestone-project-heritage-housing-issues/blob/main/app_pages/price_predictions.py)
+- **File name**: [`price_predictions.py`](https://github.com/NatashaRy/house-price-predictor/blob/main/pages/price_predictions.py)
 - **Icon**: 💰
 - **Purpose**: Address Business Requirement 2 by providing predictions for the 4 inherited houses and allowing users to predict prices for other houses.
 - **State Business Requirement 2**: Clearly outline the requirement to predict house sale prices.
 
-![Predict Sale Price page](docs/readme-imgs/price-prediction.png)
+The following image demonstrate the **Sale Price Predictor** page in it's default state with a prediction made with user inputs:
+
+![Sale Price Predictor](docs/readme-imgs/sale-price-predictor.png)
 
 **Content**:
-- **Introduction**: Explains what the page is about.
-- **Reminder of business requirement 2**
-- **Predict the sale price of inherited houses**: This section is divided into two subheadings, each providing tabs for users to choose how they want to view the data:
+1. **Introduction**: Explains what the page is about.
+2. **Reminder of business requirement 2**
+3. **Predict the sale price of inherited houses**: This section is divided into two subheadings, each providing tabs for users to choose how they want to view the data:
+
+	The following images demonstrate the charts of:
+	1. **Inherited House Data**.
+	2. **Predicted Sale Price for Inherited Houses**
+
+	![Inherited Houses Charts](docs/readme-imgs/sale-price-predictor-charts.png)
+
 	1. **Inherited House Data**: Allows users to explore the raw data of the inherited houses.
-		- **Tab 1 - Data Table**: Displays a full-width table with data filtered using the best features.
-		- **Tab 2 - Chart**: Displays a full-width chart visualizing the data.
+		- **Tab 1 - Data Table (Overview images of page)**: Displays a full-width table with data filtered using the best features.
+		- **Tab 2 - Chart (1: Inherited House Data)**: Displays a full-width chart visualizing the data.
 	2. **Predicted Sale Prices for Inherited Houses**: Focuses on the predicted sale prices for the inherited houses.
-		- **Tab 1 - Data Table**: Displays a full-width table with the predicted sale prices.
-		- **Tab 2 - Chart**: Displays a full-width chart visualizing the predicted sale prices.
-- **Sum of total sale price for all inherited houses**.
-- **Prediction of sale price of your own house**: Allows users to input specific house attributes and receive a predicted sale price based on the entered data.
+		- **Tab 1 - Data Table (Overview images of page)**: Displays a full-width table with the predicted sale prices.
+		- **Tab 2 - Chart (2: Predicted Sale Price for Inherited Houses)**: Displays a full-width chart visualizing the predicted sale prices.
+4. **Sum of total sale price for all inherited houses**.
+5. **Prediction of sale price of your own house**: Allows users to input specific house attributes and receive a predicted sale price based on the entered data.
 	- **Input Widgets**: Users can provide the following house attributes using interactive widgets:
 		- `GarageArea`: Size of the garage in square feet.
 		- `GrLivArea`: Above-ground living area in square feet.
@@ -517,21 +543,24 @@ The dashboard for this project is built using Streamlit, an open-source Python l
 	- Button labeled *"Predict Sale Price"*, to predict price based on user input.
 		- Returns the predicted sale price based on the inputted house data from the user.
 
-### Machine Learning Model
-- **File name**: [`ml_pipeline_predictions.py`](https://github.com/NatashaRy/milestone-project-heritage-housing-issues/blob/main/app_pages/ml_pipeline_prediction.py)
+#### Machine Learning Model
+
+- **File name**: [`ml_pipeline_predictions.py`](https://github.com/NatashaRy/house-price-predictor/blob/main/pages/ml_pipeline_prediction.py)
 - **Icon**: 🤖
 - **Purpose**: Provide an overview of the machine learning model's performance and technical implementation.
 
-![Machine Learning Model page](docs/readme-imgs/ml-pipeline.png)
+The following image demonstrate the **Machine Learning Model** page in it's default state:
+
+![Machine Learning Model](docs/readme-imgs/machine-learning-model.png)
 
 **Content**:
-- **Introduction**: Provides an overview of the page, explaining its purpose to present the machine learning model, its performance, and key insights.
-- **Information box**: Summarizes the model training and evaluation process, including key metrics and highlights of the pipeline's performance.
-- **Machine Learning Pipeline**: Displays the structure of the trained machine learning pipeline, outlining the steps involved in data preprocessing, feature selection, and prediction.
-- **Feature Importance**: 
+1. **Introduction**: Provides an overview of the page, explaining its purpose to present the machine learning model, its performance, and key insights.
+2. **Information box**: Summarizes the model training and evaluation process, including key metrics and highlights of the pipeline's performance.
+3. **Machine Learning Pipeline**: Displays the structure of the trained machine learning pipeline, outlining the steps involved in data preprocessing, feature selection, and prediction.
+4. **Feature Importance**: 
 	- Highlights the most important features used by the model to make predictions.
 	- Includes a visualization that shows the relative importance of each feature.
-- **Model Performance**:
+5. **Model Performance**:
 	- Evaluates the model's performance on both the training and test datasets.
 	- Performance scores are displayed side by side in columns for easy comparison.
 	- Metrics include:
@@ -539,7 +568,7 @@ The dashboard for this project is built using Streamlit, an open-source Python l
 		- Mean Squared Error (MSE)
 		- Root Mean Squared Error (RMSE)
 		- R² (R-squared)
-- **Regression Evaluation Plots**:
+7. **Regression Evaluation Plots**:
 	- Visualizations that compare actual values and predicted values for both the training and test datasets.
 	- Plots are displayed side by side for a clear comparison.
 
@@ -595,7 +624,6 @@ The line charts show trends in sales prices over time, for example based on year
 
 ![Line plot - Price by Year Remodeled/Added](docs/plots/line_plot_price_by_YearRemodAdd.png)
 
-
 ### Linear Model Plots
 These charts show linear relationships between specific variables (e.g., `GrLivArea`, `GarageArea`) and sales price. They include a regression line to illustrate the trend.
 
@@ -629,19 +657,17 @@ Regression Performance Plot is a visualization that compares actual sales prices
 
 ![Regression Performance Plot](outputs/ml_pipeline/predict_price/v1/regression_performance.png)
 
-
 ## Testing
 
 This section outlines the testing strategies implemented during the development and deployment of the project. A combination of automated and manual testing was conducted to ensure the functionality, reliability, and performance of the dashboard and machine learning model.
 
-**Summary**:
+### Summary
 - All tests passed successfully, confirming that the project meets the client's requirements.
 - Key bugs were identified and resolved, ensuring a robust and error-free solution.
 
 ### Testing Overview
 
 A combination of automated and manual testing was conducted to ensure the functionality, reliability, and performance of the dashboard and machine learning model. All tests passed successfully, confirming that the project meets the client's requirements and provides a robust solution.
-
 
 | **Test Type** | **Objective** | **Testing Method** | **Result** |
 |---------------------------|---------------------------|--------------------------|-----------------------|
@@ -680,7 +706,6 @@ The following tests were performed manually to ensure the functionality of the d
 4. **Dashboard Navigation**: Ensured that all pages in the dashboard are accessible and display the correct content.
 
 **Result**: All manual tests passed successfully, confirming that the dashboard functions as intended.
-
 
 ### Responsive Testing
 
@@ -723,11 +748,9 @@ To ensure the dashboard is fully functional and visually appealing on various de
 
 **Result**: All tests passed successfully. The dashboard is fully responsive, ensuring a seamless user experience across desktop, tablet, and mobile devices.
 
-
 ### EPICS and User Stories Testing
 
 To ensure that all business requirements were met, each EPIC and its associated User Stories were tested thoroughly. Below is a summary of the testing process and results for each EPIC.
-
 
 #### **EPIC 1 - Information Gathering and Data Collection**
 - **User Story (E1US01)**: **As a data analyst**, I want to download the dataset from Kaggle so that I can start analyzing it.
@@ -740,7 +763,6 @@ To ensure that all business requirements were met, each EPIC and its associated 
   - **Test**: Verified that the documented requirements aligned with the client's goals and were clearly stated in the README file.
   - **Result**: Passed.
 
-
 #### **EPIC 2 - Data Visualization, Cleaning, and Preparation**
 - **User Story (E2US04)**: **As a data analyst**, I want to clean the dataset by handling missing values and outliers so that it is ready for analysis.
   - **Test**: Verified that missing values were handled correctly (e.g., imputation for `LotFrontage`) and outliers were addressed using Winsorization.
@@ -751,7 +773,6 @@ To ensure that all business requirements were met, each EPIC and its associated 
 - **User Story (E2US06)**: **As a data scientist**, I want to create visualizations of the correlations so that I can present insights to the user.
   - **Test**: Checked that scatter plots, box plots, and heatmaps were displayed correctly in the dashboard.
   - **Result**: Passed.
-
 
 #### **EPIC 3 - Model Training, Optimization, and Validation**
 - **User Story (E3US07)**: **As a data analyst**, I want to split the dataset into training and testing data so that I can evaluate the model's performance.
@@ -767,7 +788,6 @@ To ensure that all business requirements were met, each EPIC and its associated 
   - **Test**: Verified that the model achieved an R² score of at least 0.75 on both the training and test sets.
   - **Result**: Passed.
 
-
 #### **EPIC 4 - Dashboard Planning, Designing, and Development**
 - **User Story (E4US11)**: **As a user**, I want to see an overview page that describes the project and dataset so that I understand its purpose.
   - **Test**: Verified that the overview page displayed the project goals, dataset details, and business requirements.
@@ -782,12 +802,10 @@ To ensure that all business requirements were met, each EPIC and its associated 
   - **Test**: Verified that the technical page displayed the model's performance metrics and feature importance.
   - **Result**: Passed.
 
-
 #### **EPIC 5 - Documentation and Deployment**
 - **User Story (E5US15)**: **As a project reviewer**, I want to read a README.md file that describes the project so that I can understand its purpose.
   - **Test**: Verified that the README file included all necessary sections (e.g., introduction, CRISP-DM, business requirements, testing) and was clear and well-structured.
   - **Result**: Passed.
-
 
 ### Model Unit Testing
 
@@ -797,7 +815,6 @@ Basic unit tests were performed for the machine learning model to ensure:
 - The model's performance metrics (R², MAE, MSE) meet the expected thresholds.
 
 **Result**: All unit tests passed successfully, confirming that the model is reliable and meets performance expectations.
-
 
 ### Jupyter Notebook Testing
 
@@ -821,18 +838,18 @@ This section documents the key bugs identified during the development and after 
 
 ### Bugs Identified During Development
 
-1. ****
+1. **`GarageFinish` missing values**
 	- **Issue**: Errors occurred when processing the `GarageFinish` column due to missing values (NaN) and limitations of the `.csv` format.
 	- **Cause**: 
 		- `.csv` files do not preserve data types, causing `GarageFinish` to be read as `object` instead of `category`, leading to inefficiencies and errors.
-		- Missing values (NaN) were inconsistently handled, resulting in unexpected behavior.
+		- Missing values (`NaN`) were inconsistently handled, resulting in unexpected behavior.
 	- **Resolution**: Switched to `.parquet` files, which:
 		- Preserve data types, ensuring `GarageFinish` remains as `category`.
-		- Handle missing values (NaN) consistently.
+		- Handle missing values (`NaN`) consistently.
 		- Improve performance with faster read/write operations and smaller file sizes.
 	- **Impact**: This resolution improved data processing efficiency and ensured consistent handling of missing values, reducing errors during analysis and modeling.
 
-2. ****
+2. **`FutureWarning` message**
 	- **Issue**: Multiple `FutureWarning` messages were triggered during development.
 	- **Cause**: These warnings were caused by updates in libraries (e.g., pandas, Seaborn) that deprecated certain functions or changed their behavior, including:
 		- Deprecation of `is_categorical_dtype`.
@@ -865,7 +882,7 @@ This section documents the key bugs identified during the development and after 
 
 ### Bugs Identified After Deployment
 
-#### SyntaxError in `hypotheses.py`
+1. **SyntaxError in `hypotheses.py`**
 - **Issue**: A `SyntaxError` was identified in the file `hypotheses.py` on line 64 due to a missing colon (`:`) in an `if` statement.
 - **Cause**: The `if` statement was improperly formatted, and there were minor inconsistencies in indentation.
 - **Resolution**:
@@ -882,21 +899,20 @@ This section documents the key bugs identified during the development and after 
 
 While the project meets the client's requirements, there are opportunities to enhance its functionality and scalability. These improvements aim to ensure the model remains relevant, accurate, and user-friendly as new data and technologies become available.
 
-1. **Model Enhancements**:
-   - Experiment with additional machine learning models (e.g., Gradient Boosting, LightGBM) to further improve prediction accuracy.
-   - Implement feature selection techniques to optimize the model's performance.
-
-2. **Dashboard Features**:
-   - Add more interactive visualizations, such as time-series analysis for trends over the years.
-   - Include a "What-If" analysis tool to allow users to simulate different scenarios.
-
-3. **Data Updates**:
-   - Incorporate more recent housing data to ensure the model remains relevant and accurate.
-   - Add external data sources, such as economic indicators, to enhance predictions.
-
-4. **Scalability**:
-   - Develop an API endpoint for integration with other applications.
-   - Optimize the dashboard for faster performance with larger datasets.
+1. **Internal Linking Between Pages**: ***Known limitation***
+	- Streamlit currently does not support internal linking between pages within the same tab. This limitation affects navigation between sections on different pages and may reduce user-friendliness.
+2. **Model Enhancements**:
+   	- Experiment with additional machine learning models (e.g., Gradient Boosting, LightGBM) to further improve prediction accuracy.
+   	- Implement feature selection techniques to optimize the model's performance.
+3. **Dashboard Features**:
+   	- Add more interactive visualizations, such as time-series analysis for trends over the years.
+   	- Include a "What-If" analysis tool to allow users to simulate different scenarios.
+4. **Data Updates**:
+   	- Incorporate more recent housing data to ensure the model remains relevant and accurate.
+   	- Add external data sources, such as economic indicators, to enhance predictions.
+5. **Scalability**:
+   	- Develop an API endpoint for integration with other applications.
+   	- Optimize the dashboard for faster performance with larger datasets.
 
 
 ## Deployment
@@ -936,6 +952,8 @@ This section provides an overview of the key Python libraries and tools used in 
 - [**Render**](https://render.com/): A cloud platform for deploying web applications. It was used to host the Streamlit dashboard, making it accessible to users.
 - [**CI Python Linter**](https://pep8ci.herokuapp.com/): A tool for checking Python code against PEP8 standards. It was used to ensure code quality and consistency throughout the project.
 - [**GoFullPage**](https://gofullpage.com/): A browser extension for capturing full-page screenshots. It was used to create responsive design screenshots for the README file.
+- [**Adobe Illustrator**](https://www.adobe.com/products/illustrator.html): A vector graphics editor, was used to create and edit image collages for the README file, ensuring a clean and professional presentation.
+- [**Photoshop**](https://www.adobe.com/se/products/photoshop.html): A powerful image editing program, was also used to create and edit image collages for the README file. 
 
 ### Python Packages
 
@@ -980,121 +998,21 @@ This section provides an overview of the key Python libraries and tools used in 
 - `evaluate_reg.py` (Custom module) - Used to calculate performance metrics such as R² and MAE for the trained models.
 
 
-## Why We Chose the New Streamlit Approach
-
-In this project, we opted to use Streamlit's **newer single-file approach** (`app.py`) instead of the traditional multipage structure with a custom `multipage.py` module. This decision was driven by the need for greater **design flexibility** and the ability to fully leverage [**Streamlit Themes**](https://docs.streamlit.io/develop/concepts/configuration/theming), including customizations for the sidebar and overall app appearance.
-
-### Key Reasons for This Choice:
-1. **Enhanced Design Freedom**:
-   - By using the new Streamlit approach, we were able to take full advantage of the built-in **Streamlit Theme** options, such as `theme.primaryColor`, `theme.backgroundColor`, and `theme.sidebar.backgroundColor`. This allowed us to create a visually cohesive and professional dashboard that aligns with the project's branding.
-   - The ability to customize the sidebar (`theme.sidebar`) provided a more polished and user-friendly navigation experience.
-
-2. **Simplified Codebase**:
-   - Instead of managing multiple files and a custom `multipage.py` module for navigation, the single-file approach streamlined the app's structure. This made the codebase easier to maintain and reduced the complexity of adding new features or pages.
-
-3. **Improved User Experience**:
-   - The new approach allowed us to create a seamless navigation experience without relying on external modules or workarounds. Users can easily switch between sections of the app using the sidebar, which is fully integrated with the Streamlit Theme.
-
-4. **Future-Proofing**:
-   - Streamlit's newer features, such as **Themes** and **native multipage support**, are designed to simplify app development and improve performance. By adopting this approach, we ensured that the project is aligned with Streamlit's latest best practices and is easier to update as new features are released.
-
-
-### Streamlit Theme Customizations
-
-To enhance the visual appeal and user experience of the app, we implemented a custom Streamlit theme. This was achieved by creating a `.streamlit` directory and a `config.toml` file, where we defined the theme's appearance and styling. Below is an overview of the customizations applied:
-
-#### **1. Creating the Theme**
-- A directory named `.streamlit` was created in the project root, containing a `config.toml` file.  
-- The `[theme]` section in the file was used for general theme customizations, while `[theme.sidebar]` was used to style the sidebar specifically.
-
-#### **2. Theme Customizations**
-To ensure a cohesive and professional design, we made the following adjustments:
-
-- **Base Theme**:  
-  - We selected a **light theme** to complement the Seaborn "Spectral" and Plotly "Pastel2" color palettes used in the visualizations. The light theme aligns with the playful and approachable tone of the project, making it visually appealing for the end client.
-
-- **Color Adjustments**:  
-  - **Primary Color**: A green shade (`#45a348`) was chosen to represent growth and positivity.  
-  - **Background Colors**:  
-    - Main background: `#fdfdf8` (light and clean).  
-    - Secondary background (e.g., widgets): `#e8e8df`.  
-    - Code block background: `#fdf9e8ff`.  
-  - **Text and Links**:  
-    - Text color: `#333333` (dark gray for readability).  
-    - Link color: `#8e47ecff` (purple for contrast and visibility).  
-
-- **Fonts**:  
-  - **Regular Text**: `sans-serif`, chosen for its modern and clean readability.  
-  - **Headings**: `monospace`, selected to add a unique style reminiscent of calculator fonts, fitting for a data-driven dashboard.  
-  - **Code Blocks**: `monospace`, to maintain consistency with the technical nature of the project.  
-
-- **Other Adjustments**:  
-  - Rounded corners (`baseRadius = "8px"`) for a softer, modern look.  
-  - Dataframe border color: `#acc8fcff` for a subtle yet distinct table outline.  
-  - General border color: `#66c2a5` for consistency with the primary color.  
-  - Custom colors for categorical and sequential charts:  
-    - **Categorical Colors**: Plotly "Pastel2" palette.  
-    - **Sequential Colors**: Based on Seaborn "Spectral" palette.
-
-#### **3. Sidebar Customizations**
-The sidebar was styled to ensure it complements the overall theme while remaining functional and visually distinct:
-- **Background Color**: `#f0f0ec` (light gray for subtle contrast).  
-- **Font**: `monospace` for headings, creating a consistent style with the rest of the app.  
-- **Link Color**: `#666357` (muted gray-green for a clean look).  
-- **Heading Font Size**: `15px`, ensuring readability without overwhelming the design.
-
-
-### Example of config.toml
-Below is the configuration file used to define the custom theme:
-
-```toml
-[theme]
-base = "light"
-primaryColor = "#45a348"
-backgroundColor = "#fdfdf8"
-secondaryBackgroundColor = "#e8e8df"
-font = "sans-serif"
-textColor = "#333333"
-linkColor = "#8e47ecff"
-codeFont = "monospace"
-codeBackgroundColor = "#fdf9e8ff"
-headingFont = "monospace"
-headingFontSizes = ["2.5rem"]
-baseRadius = "8px"
-dataframeBorderColor = "#acc8fcff"
-borderColor = "#66c2a5"
-chartCategoricalColors = ["#66c2a5", "#fc8d62", "#8da0cb", "#e78ac3", "#a6d854", "#ffd92f"]
-chartSequentialColors = ["#4CAF50", "#8BC34A", "#CDDC39", "#FFEB3B", "#FFC107", "#FF9800", "#F44336", "#FF5722", "#E91E63", "#9C27B0"]
-
-[theme.sidebar]
-backgroundColor = "#f0f0ec"
-headingFontSizes = "15px"
-headingFont = "monospace"
-linkColor = "#666357"
-```
-
-### Why Not Use multipage.py?
-While the traditional `multipage.py` approach is still valid, it comes with limitations:
-- It requires additional code to manage navigation between pages, which can become cumbersome in larger projects.
-- It does not fully support the new Streamlit Theme features, limiting the ability to customize the app's appearance.
-- The newer approach simplifies navigation and integrates seamlessly with Streamlit's built-in features, making it a more efficient choice for modern app development.
-
 ## Credits
 
 This project would not have been possible without the support and guidance of the following individuals and resources:
 
 - [**Co-Pilot**](https://code.visualstudio.com/docs/copilot/overview): I've frequently used Co-Pilot in VScode to help me solve problems when I've got stuck and also to double-check spelling and potential typos, as English is not my native language.
-- [**Code Institute - Walkthrough Project 02 - Churnometer**](#https://learn.codeinstitute.net/courses/course-v1:CodeInstitute+DDA101+1/courseware/bba260bd5cc14e998b0d7e9b305d50ec/c83c55ea9f6c4e11969591e1b99c6c35/): Some code in steps [04 - Feature Engineering](https://github.com/NatashaRy/milestone-project-heritage-housing-issues/blob/main/jupyter_notebooks/04-FeatureEngineering.ipynb) and [05 - Model Training and Evaluation](https://github.com/NatashaRy/milestone-project-heritage-housing-issues/blob/main/jupyter_notebooks/05-ModelTraining.ipynb) I have fully or partially used or modified code from Walkthought project 2: Churnometer to move forward with my ML model.
+- [**Code Institute - Walkthrough Project 02 - Churnometer**](#https://learn.codeinstitute.net/courses/course-v1:CodeInstitute+DDA101+1/courseware/bba260bd5cc14e998b0d7e9b305d50ec/c83c55ea9f6c4e11969591e1b99c6c35/): Some code in steps [04 - Feature Engineering](https://github.com/NatashaRy/milestone-project-heritage-housing-issues/blob/main/jupyter_notebooks/04-FeatureEngineering.ipynb) and [05 - Model Training and Evaluation](https://github.com/NatashaRy/house-price-predictor/blob/main/jupyter_notebooks/05-ModelTraining.ipynb) I have fully or partially used or modified code from Walkthought project 2: Churnometer to move forward with my ML model.
 - [**Abacus AI**](https://abacus.ai/): I've used Abacus AI, a platform created by Bindu Reddy, Arvind Sundararajan, and Siddartha Naidu, throughout the project to discuss and review my code. It was particularly helpful during the data cleaning phase, especially for handling `missing values` in `GarageFinish`, which led me to switch to the `parquet` file format for better compatibility.
 
 ### Content
-
 - **Repository Template**: I've used the [repository template](https://github.com/Code-Institute-Solutions/milestone-project-heritage-housing-issues) provided by [Code Institute](https://codeinstitute.net) for this project. 
 
 ### Media
-- **Screenshot of Streamlit Dashboard on different devices for README.md**: [AmIResponsive](https://ui.dev/amiresponsive)
-- **Emojis on dashboard**: Windows Emojis
-- **Icons in navigation menu**: [Google Material Icons](https://fonts.google.com/icons?icon.set=Material+Symbols&icon.style=Rounded)
+- **Screenshot of Streamlit Dashboard on different devices**: Created using [Am I Responsive](https://ui.dev/amiresponsive), a tool to showcase how the dashboard looks on various screen sizes.
+- **Emojis used in the dashboard**: [Windows Emojis](https://getemoji.com/) for a playful and user-friendly design.
+- **Icons in the navigation menu**: [Google Material Icons](https://fonts.google.com/icons?icon.set=Material+Symbols&icon.style=Rounded) for a clean and modern look.
 
 
 ## Acknowledgements

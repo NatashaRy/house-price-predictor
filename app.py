@@ -27,7 +27,7 @@ st.markdown(
             font-weight: bold;          /* Make it bold */
             display: block;             /* Ensure it appears as a block */
             margin-bottom: 1.3rem;      /* Add spacing below the text */
-            margin-top: 1rem;           /* Optional: Add spacing above */
+            margin-top: 1rem;           /* Add spacing above */
             text-transform: uppercase;  /* Transform text to uppercase */
         }
 
