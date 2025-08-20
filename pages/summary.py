@@ -110,7 +110,7 @@ st.write(
         "#### ⬇️ Wanna know more about this project?\n"
         "Please visit [README file]"
         "(https://github.com/NatashaRy/"
-        "milestone-project-heritage-housing-issues/"
-        "blob/main/README.md) for additional information."
+        "house-price-predictor/blob/main/README.md) "
+        "for additional information."
     )
 )
