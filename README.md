@@ -958,10 +958,10 @@ This section provides an overview of the key Python libraries and tools used in 
 ### Python Packages
 
 #### **Web Application Framework**
-- `Streamlit==1.40.3` - Used to create widgets for user input (e.g., sliders for house attributes) and to display interactive visualizations and prediction results.
+- `Streamlit==1.48.1` - Used to create widgets for user input (e.g., sliders for house attributes) and to display interactive visualizations and prediction results.
 
 #### **Data Manipulation and Analysis**
-- `pandas==2.1.1` - Used to load the dataset, clean missing values, and perform exploratory data analysis (EDA). 
+- `pandas==1.5.3` - Used to load the dataset, clean missing values, and perform exploratory data analysis (EDA). 
 - `numpy==1.26.1` - Used for mathematical operations such as calculating correlation coefficients and handling large arrays efficiently.
 
 #### **Data Visualization**
@@ -971,12 +971,12 @@ This section provides an overview of the key Python libraries and tools used in 
 
 #### **Machine Learning and Model Training** 
 - `scikit-learn==1.3.1` - Used to train regression models, evaluate their performance (e.g., R², MAE, MSE), and preprocess data using `StandardScaler`.
-- `xgboost==1.7.6` - Used to train a high-performance regression model for predicting house prices.
+- `xgboost==1.6.2` - Used to train a high-performance regression model for predicting house prices.
 - `feature-engine==1.6.1` - Used for encoding categorical variables, imputing missing values, and handling outliers with the `Winsorizer`.
 - `imbalanced-learn==0.11.0` - Tools for handling imbalanced datasets.
 
 #### **Data Analysis and Profiling**
-- `ppscore==1.1.0` - Used during EDA to identify the most important predictors of house prices.
+- `ppscore==1.3.0` - Used during EDA to identify the most important predictors of house prices.
 - `ydata-profiling==4.12.0` (Development only) - Used to create a detailed report of the dataset, including distributions, correlations, and missing values.
 
 #### **Model Persistence and File Operations**
